@@ -1,14 +1,10 @@
 package com.example.somsom_market.domain;
 
 import lombok.Data;
-
-import java.io.Serializable;
-import java.util.Date;
 import java.util.Map;
 
 @Data
-@SuppressWarnings("serial")
-public class Order implements Serializable {
+public class Order {
     private int orderId;
     private String userName;
     private String orderDate;
