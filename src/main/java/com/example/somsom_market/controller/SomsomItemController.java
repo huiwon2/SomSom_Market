@@ -1,6 +1,7 @@
 package com.example.somsom_market.controller;
 
-import com.idle.somsommarket.service.SomsomItemService;
+
+import com.example.somsom_market.service.SomsomItemService;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.beans.factory.annotation.Autowired;
