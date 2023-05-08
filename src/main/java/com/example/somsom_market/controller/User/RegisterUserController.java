@@ -1,4 +1,4 @@
-package com.example.somsom_market.controller;
+package com.example.somsom_market.controller.User;
 
 import com.idle.somsommarket.controller.User.UserRegistRequest;
 import com.idle.somsommarket.service.AccountService;
