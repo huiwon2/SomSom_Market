@@ -28,6 +28,11 @@ public class AccountService {
         return null;
     }
 
+    // 회원 정보 비밀번호 변경
+    public void updatePassword(int userId, String password) {
+
+    }
+
     // 회원 삭제
     public void deleteAccount(Account account) {
 
