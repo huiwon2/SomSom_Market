@@ -1,5 +1,8 @@
 package com.example.somsom_market.controller.User;
 
+import lombok.Getter;
+
+@Getter
 public class UserRegistRequest {
     private String userName;
     private String nickName;
@@ -16,14 +19,11 @@ public class UserRegistRequest {
     }
 
     public UserRegistRequest(String userName, String nickName, String id,
-                             String password, String passwordCheck,
                              String email, String address, String bankName,
                              String bankAccount, String phoneNumber) {
         this.userName = userName;
         this.nickName = nickName;
         this.id = id;
-        this.password = password;
-        this.passwordCheck = passwordCheck;
         this.email = email;
         this.address = address;
         this.bankName = bankName;
