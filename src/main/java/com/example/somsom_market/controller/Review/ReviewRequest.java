@@ -26,7 +26,7 @@ public class ReviewRequest {
         return description;
     }
 
-    public void setDescription(String description) {
+    public void setDescription() {
         this.description = description;
     }
 

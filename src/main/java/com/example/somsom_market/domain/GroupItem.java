@@ -1,12 +1,13 @@
 package com.example.somsom_market.domain;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
 
 import java.util.Date;
 
 @Data
 public class GroupItem extends Item{
-    private String sellerId;
+    private int sellerId;
     private int salesTarget;
     private int salesNow;
     private Date startDate;

@@ -1,5 +1,6 @@
 package com.example.somsom_market.controller.Review;
 
+import com.example.somsom_market.service.ReviewService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -12,8 +13,12 @@ import javax.servlet.http.HttpSession;
 
 @Controller
 public class ReviewController {
-    @Autowired
     private ReviewService reviewService;
+
+    @Autowired
+    public void setReviewService(ReviewService reviewService){
+        this.reviewService = reviewService;
+    }
 
     private final String ReviewForm = "/reviewForm";
     private final String Registered = "/review/registered";
@@ -37,15 +42,15 @@ public class ReviewController {
         if(result.hasErrors()){
             return ReviewForm;
         }
-        int reviewId = reviewService.registerReview(reviewRequest);
+        int reviewId = reviewService.registerNewReview(reviewRequest);
         model.addAttribute("reviewId", reviewId);
         status.setComplete();
         return Registered;
     }
     @RequestMapping("/review/delete")
-    public String reviewDelete(@RequestParam("itemId") int itemId, HttpSession session){
+    public String reviewDelete(@RequestParam("reviewId") int reviewId, HttpSession session){
         int userId = (int) session.getAttribute("userId");
-        reviewService.remove(userId, itemId);
+        reviewService.deleteReview(reviewId);
         return Mypage;
     }
 
