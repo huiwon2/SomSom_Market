@@ -1,7 +1,6 @@
 package com.example.somsom_market.dao;
-import com.example.somsom_market.domain.GroupItem;
 
-import java.util.List;
+import com.example.somsom_market.domain.GroupItem;
 
 public interface GroupItemDao extends ItemDao{
     GroupItem getItem(String itemId);

@@ -48,8 +48,7 @@ public class ReviewController {
         return Registered;
     }
     @RequestMapping("/review/delete")
-    public String reviewDelete(@RequestParam("reviewId") int reviewId, HttpSession session){
-        int userId = (int) session.getAttribute("userId");
+    public String reviewDelete(@RequestParam("reviewId") int reviewId){
         reviewService.deleteReview(reviewId);
         return Mypage;
     }

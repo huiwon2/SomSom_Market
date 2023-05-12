@@ -4,13 +4,9 @@ import com.example.somsom_market.controller.GroupItem.GroupItemRequest;
 import com.example.somsom_market.dao.AccountDao;
 import com.example.somsom_market.dao.GroupItemDao;
 import com.example.somsom_market.domain.GroupItem;
-import com.example.somsom_market.domain.Item;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 public class GroupItemService {
     /*Map<String, GroupItem> map = new HashMap<String, GroupItem>();

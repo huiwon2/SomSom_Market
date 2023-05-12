@@ -1,6 +1,5 @@
 package com.example.somsom_market.domain;
 
-import lombok.AllArgsConstructor;
 import lombok.Data;
 
 import java.util.Date;
