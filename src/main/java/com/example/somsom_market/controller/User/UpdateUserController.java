@@ -69,13 +69,34 @@ public class UpdateUserController {
         return "redirect:/" + "user/myPage";
     }
 
-//    @PostMapping("/update/password")
-//    public String updatePassword() {
-//
-//    }
+    @PostMapping("/update/password")
+    public String updatePassword( HttpServletRequest request,
+                                  @RequestParam("currentPassword") String currentPassword,
+                                  @RequestParam("newPassword") String newPassword,
+                                  @RequestParam("newPasswordCheck") String newPasswordCheck) {
 
-//    @PostMapping("/delete")
-//    public String delete() {
-//
-//    }
+        UserSession userSession = (UserSession) WebUtils.getSessionAttribute(request, "userSession");
+        Account account = userSession.getAccount();
+
+        if (account.getPassword().equals(currentPassword)) { // 현재 비밀번호 틀릴 경우
+            return "redirect:/" + "user/myPage"; // 추후 수정
+        }
+
+        if (newPassword.equals(newPasswordCheck)) { // 새 비밀번호와 비밀번호 확인이 다를 경우
+            return "redirect:/" + "user/myPage"; // 추후 수정
+        }
+
+        accountService.updatePassword(account.getUserId(), newPassword);
+
+        return "redirect:/" + "user/myPage";
+    }
+
+    @PostMapping("/delete")
+    public String delete(HttpServletRequest request) {
+        UserSession userSession = (UserSession) WebUtils.getSessionAttribute(request, "userSession");
+        Account account = userSession.getAccount();
+        accountService.deleteAccount(account);
+
+        return "redirect:/" + "/main";
+    }
 }
