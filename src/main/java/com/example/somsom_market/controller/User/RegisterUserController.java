@@ -10,6 +10,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 @Controller
 @RequestMapping("/user/register")
@@ -35,19 +36,24 @@ public class RegisterUserController {
     }
 
     @PostMapping
-    public String submit(@ModelAttribute("memReq") UserRegistRequest memReq, // 추후에 입력 값 검증 추가
-                         BindingResult bindingResult, Model model) {
+    public String submit(HttpSession session,
+                        @ModelAttribute("memReq") UserRegistRequest memReq, // 추후에 입력 값 검증 추가
+                         BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             return USER_REGISTRATION_FORM;
         }
         
-        // id 중복 확인 (추후 수정)
-
         Account account = accountService.insertAccount(memReq); // 계정 생성
         UserSession userSession = new UserSession(account); // account를 세션에 저장
-        model.addAttribute("userSession", userSession);
+        session.setAttribute("userSession", userSession);
         // -> 따로 로그인하지 않아도 회원가입 완료하면 자동 로그인
 
         return "redirect:/main.jsp"; // 메인화면으로 redirection
+    }
+
+    @PostMapping("/checkId")
+    @ResponseBody
+    public boolean checkId(@RequestParam("id") String userId) {
+        return true; // 추후 수정
     }
 }
