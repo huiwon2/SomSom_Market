@@ -38,6 +38,11 @@ public class AccountService {
 
     }
 
+    // 사용자 PK로 구매 내역, 판매 내역, 공동구매 내역, 위시리스트 개수 반환
+    public List<Integer> getMyPageList(int userId) {
+        return null;
+    }
+
     // 사용자 PK로 판매 내역 리스트 검색
     public List<PersonalItem> getSellItemList(int userId) {
         return null;
