@@ -69,10 +69,7 @@ public class SomsomItemController {
         }
         try {
             somsomItemService.updateItem(itemUpdateRequest);
-            return "member/modified";
-        } catch (NotMatchPasswordException ex) {
-            errors.rejectValue("currentPassword", "invalidPassword");
-            return SOMSOM_UPDATE_FORM;
+            return "";
         } catch (ItemNotFoundException ex) {
             return ITEM_NOT_FOUND;
         }
