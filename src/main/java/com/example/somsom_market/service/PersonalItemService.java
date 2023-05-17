@@ -1,7 +1,6 @@
 package com.example.somsom_market.service;
 
-import com.example.somsom_market.controller.ItemRegistRequest;
-import com.example.somsom_market.controller.ItemUpdateRequest;
+import com.example.somsom_market.controller.PersonalItem.PersonalItemRequest;
 import com.example.somsom_market.domain.PersonalItem;
 
 import java.util.List;
@@ -22,12 +21,12 @@ public class PersonalItemService {
     }
 
     // 새로운 personalItem 생성
-    public PersonalItem registerNewItem(ItemRegistRequest itemRegistReq) {
+    public PersonalItem registerNewItem(PersonalItemRequest itemRegistReq) {
         return null;
     }
 
     // 아이템 게시글 수정
-    public PersonalItem updateItem(ItemRegistRequest itemRegistReq) {
+    public PersonalItem updateItem(PersonalItemRequest itemRegistReq) {
         return null;
     }
 
