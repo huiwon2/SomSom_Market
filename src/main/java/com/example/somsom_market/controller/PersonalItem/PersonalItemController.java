@@ -15,6 +15,7 @@ import javax.servlet.http.HttpServletRequest;
 
 @Controller
 @SessionAttributes("personalItem")
+/* 개인거래 게시글 등록, 수정, 삭제를 관리하는 컨트롤러 */
 public class PersonalItemController {
     private static final String PERSONAL_REGISTRATION_FORM = "personal/itemRegisterForm";
     private static final String PERSONAL_UPDATE_FORM = "personal/itemUpdateForm";

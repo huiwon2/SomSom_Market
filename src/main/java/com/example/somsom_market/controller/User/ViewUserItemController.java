@@ -20,6 +20,7 @@ import java.util.List;
 @Controller
 @RequestMapping("/user/myPage")
 @SessionAttributes("userSession")
+/* 마이페이지 */
 public class ViewUserItemController {
     private static final String VIEW = "user/myPage";
     private static final String SELL_PERSONAL = "user/myPage/sell/personalList";
@@ -32,12 +33,12 @@ public class ViewUserItemController {
         this.accountService = accountService;
     }
 
+    // 구매 내역, 판매 내역, 공동구매 내역, 위시리스트 개수 보여주는 페이지
     @GetMapping
     public String view(HttpServletRequest request, Model model) {
         UserSession userSession = (UserSession) WebUtils.getSessionAttribute(request, "userSession");
         Account account = userSession.getAccount();
 
-        // 구매 내역, 판매 내역, 공동구매 내역, 위시리스트 개수 보여주기 위함
         List<Integer> myPageList = accountService.getMyPageList(account.getUserId());
 
         model.addAttribute("myPageList", myPageList);
@@ -45,7 +46,8 @@ public class ViewUserItemController {
         return VIEW;
     }
 
-    @GetMapping("/sell/personal") // 사용자 판매 내역 (개인)
+    // 사용자 판매 내역 (개인)
+    @GetMapping("/sell/personal")
     public ModelAndView viewSellList(HttpServletRequest request) {
         UserSession userSession = (UserSession) WebUtils.getSessionAttribute(request, "userSession");
         Account account = userSession.getAccount();
@@ -58,7 +60,8 @@ public class ViewUserItemController {
         return mav;
     }
 
-    @GetMapping("/sell/group") // 사용자 공동구매 판매 내역
+    // 사용자 공동구매 판매 내역
+    @GetMapping("/sell/group")
     public ModelAndView viewSellGroupList(HttpServletRequest request) {
         UserSession userSession = (UserSession) WebUtils.getSessionAttribute(request, "userSession");
         Account account = userSession.getAccount();
@@ -71,7 +74,8 @@ public class ViewUserItemController {
         return mav;
     }
 
-    @GetMapping("/order") // 사용자 구매 내역
+    // 사용자 구매 내역
+    @GetMapping("/order")
     public ModelAndView viewOrderList(HttpServletRequest request) {
         UserSession userSession = (UserSession) WebUtils.getSessionAttribute(request, "userSession");
         Account account = userSession.getAccount();

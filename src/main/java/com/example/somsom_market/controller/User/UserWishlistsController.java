@@ -17,6 +17,7 @@ import java.util.List;
 @Controller
 @RequestMapping("/user/myPage/wishlist")
 @SessionAttributes("userSession")
+/* 사용자 위시리스트 */
 public class UserWishlistsController {
     private static final String VIEW = "user/myPage/wishlistList";
 
