@@ -15,6 +15,7 @@ import javax.servlet.http.HttpSession;
 @Controller
 @RequestMapping("/user/register")
 @SessionAttributes({"memReq", "userSession"})
+/* 회원가입 */
 public class RegisterUserController {
 
     private static final String USER_REGISTRATION_FORM = "user/registerForm";

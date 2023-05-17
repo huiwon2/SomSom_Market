@@ -14,6 +14,7 @@ import javax.servlet.http.HttpServletRequest;
 @Controller
 @RequestMapping("/user/myPage")
 @SessionAttributes("userSession")
+/* 회원 수정 (수정, 비밀번호 변경, 회원 탈퇴) */
 public class UpdateUserController {
     private static final String USER_MYPAGE_FORM = "user/myPageUpdateForm";
     @Autowired
