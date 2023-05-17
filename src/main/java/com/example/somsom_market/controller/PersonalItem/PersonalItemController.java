@@ -26,17 +26,18 @@ public class PersonalItemController {
     }
 
     @ModelAttribute("personalItem")
-    public ItemRegistRequest formBackingObject (HttpServletRequest request) {
-        ItemRegistRequest itemRegistRequest = (ItemRegistRequest) request.getSession().getAttribute("personalItem");
+    public PersonalItemRequest formBackingObject (HttpServletRequest request) {
+        PersonalItemRequest itemRegistRequest = (PersonalItemRequest) request.getSession().getAttribute("personalItem");
         if (itemRegistRequest == null) {
-            itemRegistRequest = new ItemRegistRequest();
+            itemRegistRequest = new PersonalItemRequest();
+            itemRegistRequest.setStatus("거래가능");
         }
         return itemRegistRequest;
     }
 
     @PostMapping("/personal/register")
     public ModelAndView register(HttpServletRequest request,
-                                 @ModelAttribute("personalItem") ItemRegistRequest itemRegistReq,
+                                 @ModelAttribute("personalItem") PersonalItemRequest itemRegistReq,
                                  BindingResult result, SessionStatus status) {
         // 입력 값 검증 추후 수정
 
@@ -59,7 +60,7 @@ public class PersonalItemController {
 
     @PostMapping("/user/myPage/sell/personal/update")
     public ModelAndView update(HttpServletRequest request,
-                               @ModelAttribute("personalItem") ItemRegistRequest itemRegistReq,
+                               @ModelAttribute("personalItem") PersonalItemRequest itemRegistReq,
                                BindingResult result, SessionStatus status) {
 
         ModelAndView mav = new ModelAndView();
