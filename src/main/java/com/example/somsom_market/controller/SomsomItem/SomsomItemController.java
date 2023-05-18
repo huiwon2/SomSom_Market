@@ -46,7 +46,7 @@ public class SomsomItemController {
         }
         String itemId = SomsomItemService.registerNewItem(itemRegistRequest);
         model.addAttribute("itemId", itemId);
-        return "";
+        return "/";
     }
 //    Update(Service 설계 필요, 사용자 예외 설정 필요한지 판단 필요)
 //    form(Update method)
@@ -69,7 +69,7 @@ public class SomsomItemController {
         }
         try {
             somsomItemService.updateItem(itemUpdateRequest);
-            return "";
+            return "/";
         } catch (ItemNotFoundException ex) {
             return ITEM_NOT_FOUND;
         }
