@@ -2,9 +2,11 @@ package com.example.somsom_market.service;
 
 import com.example.somsom_market.controller.PersonalItem.PersonalItemRequest;
 import com.example.somsom_market.domain.PersonalItem;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+@Service
 public class PersonalItemService {
     // 실제 메소드 구현은 dao 개발 후에 진행
 
