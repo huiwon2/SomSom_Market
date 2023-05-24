@@ -1,9 +1,8 @@
 package com.example.somsom_market.service;
 
-import com.example.somsom_market.controller.ItemRegistRequest;
-import com.example.somsom_market.controller.ItemUpdateRequest;
+import com.example.somsom_market.controller.SomsomItem.ItemRegistRequest;
+import com.example.somsom_market.controller.SomsomItem.ItemUpdateRequest;
 import com.example.somsom_market.domain.SomsomItem;
-import com.example.somsom_market.model.ItemInfo;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.stereotype.Service;
