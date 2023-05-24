@@ -2,9 +2,11 @@ package com.example.somsom_market.service;
 
 import com.example.somsom_market.controller.User.UserRegistRequest;
 import com.example.somsom_market.domain.*;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+@Service
 public class AccountService {
     // 실제 메소드 구현은 추후에..
 
