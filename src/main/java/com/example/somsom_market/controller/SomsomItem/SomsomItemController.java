@@ -1,10 +1,7 @@
 package com.example.somsom_market.controller.SomsomItem;
 
 
-import com.example.somsom_market.controller.ItemRegistRequest;
-import com.example.somsom_market.controller.ItemUpdateRequest;
 import com.example.somsom_market.domain.SomsomItem;
-import com.example.somsom_market.model.ItemInfo;
 import com.example.somsom_market.service.SomsomItemService;
 import lombok.Setter;
 import org.springframework.beans.factory.annotation.Autowired;

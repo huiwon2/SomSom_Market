@@ -1,4 +1,4 @@
-package com.example.somsom_market.controller;
+package com.example.somsom_market.controller.SomsomItem;
 
 import lombok.Data;
 
