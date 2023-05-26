@@ -43,8 +43,9 @@ public class RegisterUserController {
         if (bindingResult.hasErrors()) {
             return USER_REGISTRATION_FORM;
         }
-        
-        Account account = accountService.insertAccount(memReq); // 계정 생성
+
+        accountService.insertAccount(memReq); // 계정 생성
+        Account account = accountService.getAccount(memReq.getId(), memReq.getPassword());
         UserSession userSession = new UserSession(account); // account를 세션에 저장
         session.setAttribute("userSession", userSession);
         // -> 따로 로그인하지 않아도 회원가입 완료하면 자동 로그인

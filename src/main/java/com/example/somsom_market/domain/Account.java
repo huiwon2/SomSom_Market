@@ -4,9 +4,7 @@ import com.sun.istack.NotNull;
 import lombok.*;
 import org.hibernate.annotations.Table;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.util.List;
 
 @Data
@@ -18,7 +16,10 @@ import java.util.List;
 @Table(appliesTo = "ACCOUNT")
 public class Account {
     @Id
-    @GeneratedValue
+    @SequenceGenerator(name = "USER_SEQ_GENERATOR",
+        sequenceName = "user_id_seq", initialValue = 1, allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE,
+        generator = "USER_SEQ_GENERATOR")
     private int userId;
     @NotNull
     private String userName;
@@ -29,6 +30,7 @@ public class Account {
     private String password;
     private String email;
     private String address;
+    private int zipcode;
     private String bankName;
     private String bankAccount;
     private String phone;

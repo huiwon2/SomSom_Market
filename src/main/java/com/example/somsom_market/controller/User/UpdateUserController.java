@@ -31,8 +31,8 @@ public class UpdateUserController {
 
             UserRegistRequest accountReq = new UserRegistRequest(
                     account.getUserName(), account.getNickName(), account.getId(),
-                    account.getEmail(), account.getAddress(), account.getBankName(),
-                    account.getBankAccount(), account.getPhone()
+                    account.getEmail(), account.getAddress(), account.getZipcode(),
+                    account.getBankName(), account.getBankAccount(), account.getPhone()
             );
 
             return accountReq;
@@ -64,7 +64,8 @@ public class UpdateUserController {
         account.setBankName(accountReq.getBankName());
         account.setBankAccount(accountReq.getBankAccount());
 
-        Account newAccount = accountService.updateAccount(account);
+        accountService.updateAccount(account);
+        Account newAccount = accountService.getAccount(account.getUserId());
         userSession.setAccount(newAccount);
 
         return "redirect:/" + "user/myPage";
