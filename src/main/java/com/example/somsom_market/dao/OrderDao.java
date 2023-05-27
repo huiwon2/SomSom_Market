@@ -2,15 +2,40 @@ package com.example.somsom_market.dao;
 
 import com.example.somsom_market.domain.Order;
 import org.springframework.dao.DataAccessException;
+import org.springframework.stereotype.Repository;
 
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+import javax.persistence.TypedQuery;
 import java.util.List;
 
-public interface OrderDao {
-    List<Order> getOrdersById(String id) throws DataAccessException;
+@Repository
+public class OrderDao {
 
-    Order getOrder(int orderId) throws DataAccessException;
+    @PersistenceContext
+    private EntityManager em;
 
-    void insertOrder(Order order) throws DataAccessException;
+    public void save(Order order) {
+        em.persist(order);
+    }
 
-    public Order removeOrder(int orderId);
+    public List<Order> getOrdersByUserId(String userId) throws DataAccessException {
+        TypedQuery<Order> query = em.createQuery(
+                "select order from Order order "
+                        + "where order.userId=?1", Order.class);
+        query.setParameter(1, userId);
+        return query.getResultList();
+    }
+
+    public Order getOrder(int orderId) throws DataAccessException {
+        return em.find(Order.class, orderId);
+    }
+
+    public void insertOrder(Order order) throws DataAccessException {
+
+    }
+
+    public void removeOrder(Order order) throws DataAccessException {
+
+    }
 }

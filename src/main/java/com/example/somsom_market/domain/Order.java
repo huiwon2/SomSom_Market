@@ -1,18 +1,37 @@
 package com.example.somsom_market.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
+
+import javax.persistence.*;
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
+@SuppressWarnings("serial")
 @Data
-public class Order {
-    private int orderId;
-    private String userName;
+@Table(name = "orders")
+public class Order implements Serializable {
+
+    @Id @GeneratedValue
+    private Long id;
+
+    private Long userId;
+
+    @Temporal(TemporalType.DATE)
     private String orderDate;
-    private String phoneNumber;
-    private String shipAddress;
-    private String shipState;
+
+    private String address;
+
+    private String zipcode;
+
+    @Enumerated(EnumType.STRING)
+    private OrderStatus status;
+
     private int totalPrice;
-    private int status;
-    private int itemType;
-    private Map<Integer, Integer> itemInfo;
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL)
+    private List<OrderItem> orderItems = new ArrayList<>();
 }

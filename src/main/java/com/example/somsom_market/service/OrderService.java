@@ -17,7 +17,7 @@ public class OrderService {
     }
 
     public List<Order> getOrderByUserId(String id) {
-        return orderDao.getOrdersById(id);
+        return orderDao.getOrdersByUserId(id);
     }
 
     public Order removeOrder(int orderId) {
