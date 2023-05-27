@@ -6,6 +6,8 @@ import org.hibernate.annotations.Table;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.PrimaryKeyJoinColumn;
+import java.io.Serializable;
 
 @Data
 @NoArgsConstructor
@@ -14,8 +16,9 @@ import javax.persistence.Id;
 @Builder
 @Entity
 @Table(appliesTo = "REVIEW")
-public class Review {
+public class Review implements Serializable {
 
+    @PrimaryKeyJoinColumn
     int userId;
     @Id
     @GeneratedValue

@@ -6,6 +6,7 @@ import org.hibernate.annotations.Table;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import java.io.Serializable;
 import java.util.Date;
 
 @Data
@@ -15,9 +16,10 @@ import java.util.Date;
 @Builder
 @Entity
 @Table(appliesTo = "GROUPITEM")
-public class GroupItem extends Item{
+public class GroupItem extends Item implements Serializable {
     @Id
     @GeneratedValue
+    private String itemId;
     private int sellerId;
     private int salesTarget;
     private int salesNow;
