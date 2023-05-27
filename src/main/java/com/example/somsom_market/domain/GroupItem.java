@@ -16,8 +16,7 @@ import java.util.Date;
 @Entity
 @Table(appliesTo = "GROUPITEM")
 public class GroupItem extends Item{
-    @Id
-    @GeneratedValue
+
     private int sellerId;
     private int salesTarget;
     private int salesNow;
