@@ -4,23 +4,18 @@ import com.example.somsom_market.controller.GroupItem.GroupItemRequest;
 import com.example.somsom_market.dao.AccountDao;
 import com.example.somsom_market.dao.GroupItemDao;
 import com.example.somsom_market.domain.GroupItem;
+import com.example.somsom_market.repository.GroupItemRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
-
+@Service
 public class GroupItemService {
-    /*Map<String, GroupItem> map = new HashMap<String, GroupItem>();
-
-    public Map<String, GroupItem> getGroupItemMap(){
-        map.put();
-    }*/
 
     @Autowired private GroupItemDao groupItemDao;
-
-    @Autowired private AccountDao accountDao;
-    public List<GroupItem> getGroupItemListBySellerId(String sellerId){
-        return groupItemDao.getSellGroupList(sellerId);
-    }
+    @Autowired
+    private GroupItemRepository groupItemRepository;
+    @Autowired private AccountDao accountDao
 
     public GroupItem searchItem(String itemId){
         return groupItemDao.getItem(itemId);
@@ -62,4 +57,8 @@ public class GroupItemService {
         groupItem.updateStatus(groupItem);
     }
 
+    //사용자가 판매하는 공동구매 리스트 보여주기
+    public List<GroupItem> showGroupItemList(int userId){
+        return groupItemRepository.findGroupItemsBySellerIdOrderByStartDate(userId);
+    }
 }

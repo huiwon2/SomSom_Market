@@ -1,8 +1,10 @@
 package com.example.somsom_market.controller.GroupItem;
 
+import com.example.somsom_market.domain.GroupItem;
 import com.example.somsom_market.service.GroupItemService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.bind.support.SessionStatus;
@@ -10,6 +12,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import java.util.List;
 import java.util.Map;
 
 @Controller
@@ -106,5 +109,13 @@ public class GroupItemController {
         ModelAndView mav = new ModelAndView("/item/" + itemId);
         //...모집현황 조회 페이지를 따로 만드나..? 아니면 그냥 item 상세 페이지 반환?
         return mav;
+    }
+
+    @RequestMapping("/user/myPage/sell/groupList")
+    public ModelAndView showMyGroupList(@RequestParam("userId")int userId){
+        List<GroupItem> list = groupService.showGroupItemList(userId);
+        
+
+
     }
 }
