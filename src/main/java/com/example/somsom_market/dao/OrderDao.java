@@ -19,7 +19,7 @@ public class OrderDao {
         em.persist(order);
     }
 
-    public List<Order> getOrdersByUserId(String userId) throws DataAccessException {
+    public List<Order> getOrdersByUserId(long userId) throws DataAccessException {
         TypedQuery<Order> query = em.createQuery(
                 "select order from Order order "
                         + "where order.userId=?1", Order.class);
@@ -27,7 +27,7 @@ public class OrderDao {
         return query.getResultList();
     }
 
-    public Order getOrder(int orderId) throws DataAccessException {
+    public Order getOrder(long orderId) throws DataAccessException {
         return em.find(Order.class, orderId);
     }
 
@@ -35,7 +35,7 @@ public class OrderDao {
 
     }
 
-    public void removeOrder(Order order) throws DataAccessException {
+    public void cancelOrder(long orderId) throws DataAccessException {
 
     }
 }

@@ -1,6 +1,7 @@
 package com.example.somsom_market.controller.Order;
 
 import com.example.somsom_market.domain.Order;
+import com.example.somsom_market.service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -17,8 +18,9 @@ import java.util.List;
 @Controller
 @SessionAttributes("order")
 public class OrderController {
-//    @Autowired
-//    private OrderService orderService;
+    @Autowired
+    private OrderService orderService;
+
     private static final String ORDER = "/order";
     private static final String ORDER_PAYMENT = "/order/payment";
     private static final String ORDER_COMPLETE = "/order/complete";
@@ -58,14 +60,9 @@ public class OrderController {
             Date orderDate = new Date();
             SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy.MM.dd HH:mm:ss");
 
-            order.setUserName(orderRequest.getUserName());
+            // TODO: 2023/05/27 데이터 매핑
             order.setOrderDate(simpleDateFormat.format(orderDate));
-            order.setPhoneNumber(orderRequest.getPhoneNumber());
-            order.setShipAddress(orderRequest.getShipAddress());
-            order.setShipState("0");
             order.setTotalPrice(orderRequest.getTotalPrice());
-            order.setStatus(0);
-            order.setItemType(0); // TODO: 타입 구분 로직 필요
 
             // Order 객체를 세션에 저장
             model.addAttribute("order", order);
@@ -90,4 +87,9 @@ public class OrderController {
         return MAIN;
     }
 
+    @PostMapping("/{orderId}/cancel") // TODO: 2023/05/27  마이페이지에서 접근
+    public String cancelOrder(@PathVariable("orderId") Long orderId) {
+        orderService.cancelOrder(orderId);
+        return "redirect:/"; // TODO: 2023/05/27 마이페이지로 리다이렉트
+    }
 }

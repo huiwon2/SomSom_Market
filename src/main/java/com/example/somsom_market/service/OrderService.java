@@ -9,18 +9,20 @@ import java.util.List;
 
 @Service
 public class OrderService {
+
     @Autowired
     private OrderDao orderDao;
 
-    public Order getOrderInfo(int orderId) {
+    public Order getOrder(long orderId) {
         return orderDao.getOrder(orderId);
     }
 
-    public List<Order> getOrderByUserId(String id) {
+    public List<Order> getOrderByUserId(long id) {
         return orderDao.getOrdersByUserId(id);
     }
 
-    public Order removeOrder(int orderId) {
-        return orderDao.removeOrder(orderId);
+    public long cancelOrder(long orderId) {
+        orderDao.cancelOrder(orderId);
+        return orderId;
     }
 }
