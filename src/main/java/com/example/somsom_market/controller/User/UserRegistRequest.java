@@ -1,8 +1,9 @@
 package com.example.somsom_market.controller.User;
 
 import lombok.Getter;
+import lombok.ToString;
 
-@Getter
+@Getter @ToString
 public class UserRegistRequest {
     private String userName;
     private String nickName;
@@ -11,6 +12,7 @@ public class UserRegistRequest {
     private String passwordCheck;
     private String email;
     private String address;
+    private int zipcode;
     private String bankName;
     private String bankAccount;
     private String phoneNumber;
@@ -19,13 +21,14 @@ public class UserRegistRequest {
     }
 
     public UserRegistRequest(String userName, String nickName, String id,
-                             String email, String address, String bankName,
+                             String email, String address, int zipcode, String bankName,
                              String bankAccount, String phoneNumber) {
         this.userName = userName;
         this.nickName = nickName;
         this.id = id;
         this.email = email;
         this.address = address;
+        this.zipcode = zipcode;
         this.bankName = bankName;
         this.bankAccount = bankAccount;
         this.phoneNumber = phoneNumber;
@@ -39,21 +42,5 @@ public class UserRegistRequest {
 
     public boolean hasPassword() {
         return password != null && password.trim().length() > 0;
-    }
-
-    @Override
-    public String toString() {
-        return "UserRegistRequest{" +
-                "userName='" + userName + '\'' +
-                ", nickName='" + nickName + '\'' +
-                ", id='" + id + '\'' +
-                ", password='" + password + '\'' +
-                ", confirmPassword='" + passwordCheck + '\'' +
-                ", email='" + email + '\'' +
-                ", address='" + address + '\'' +
-                ", bankName='" + bankName + '\'' +
-                ", bankAccount='" + bankAccount + '\'' +
-                ", phoneNumber='" + phoneNumber + '\'' +
-                '}';
     }
 }

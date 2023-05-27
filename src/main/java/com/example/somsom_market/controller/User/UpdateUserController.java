@@ -14,6 +14,7 @@ import javax.servlet.http.HttpServletRequest;
 @Controller
 @RequestMapping("/user/myPage")
 @SessionAttributes("userSession")
+/* 회원 수정 (수정, 비밀번호 변경, 회원 탈퇴) */
 public class UpdateUserController {
     private static final String USER_MYPAGE_FORM = "user/myPageUpdateForm";
     @Autowired
@@ -30,8 +31,8 @@ public class UpdateUserController {
 
             UserRegistRequest accountReq = new UserRegistRequest(
                     account.getUserName(), account.getNickName(), account.getId(),
-                    account.getEmail(), account.getAddress(), account.getBankName(),
-                    account.getBankAccount(), account.getPhone()
+                    account.getEmail(), account.getAddress(), account.getZipcode(),
+                    account.getBankName(), account.getBankAccount(), account.getPhone()
             );
 
             return accountReq;
@@ -63,19 +64,41 @@ public class UpdateUserController {
         account.setBankName(accountReq.getBankName());
         account.setBankAccount(accountReq.getBankAccount());
 
-        Account newAccount = accountService.updateAccount(account);
+        accountService.updateAccount(account);
+        Account newAccount = accountService.getAccount(account.getUserId());
         userSession.setAccount(newAccount);
 
         return "redirect:/" + "user/myPage";
     }
 
-//    @PostMapping("/update/password")
-//    public String updatePassword() {
-//
-//    }
+    @PostMapping("/update/password")
+    public String updatePassword( HttpServletRequest request,
+                                  @RequestParam("currentPassword") String currentPassword,
+                                  @RequestParam("newPassword") String newPassword,
+                                  @RequestParam("newPasswordCheck") String newPasswordCheck) {
 
-//    @PostMapping("/delete")
-//    public String delete() {
-//
-//    }
+        UserSession userSession = (UserSession) WebUtils.getSessionAttribute(request, "userSession");
+        Account account = userSession.getAccount();
+
+        if (account.getPassword().equals(currentPassword)) { // 현재 비밀번호 틀릴 경우
+            return "redirect:/" + "user/myPage"; // 추후 수정
+        }
+
+        if (newPassword.equals(newPasswordCheck)) { // 새 비밀번호와 비밀번호 확인이 다를 경우
+            return "redirect:/" + "user/myPage"; // 추후 수정
+        }
+
+        accountService.updatePassword(account.getUserId(), newPassword);
+
+        return "redirect:/" + "user/myPage";
+    }
+
+    @PostMapping("/delete")
+    public String delete(HttpServletRequest request) {
+        UserSession userSession = (UserSession) WebUtils.getSessionAttribute(request, "userSession");
+        Account account = userSession.getAccount();
+        accountService.deleteAccount(account);
+
+        return "redirect:/" + "/main";
+    }
 }

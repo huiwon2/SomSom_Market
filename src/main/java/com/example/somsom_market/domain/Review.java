@@ -6,8 +6,8 @@ import org.hibernate.annotations.Table;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.PrimaryKeyJoinColumn;
 import java.io.Serializable;
-import java.util.Date;
 
 @Data
 @NoArgsConstructor
@@ -15,15 +15,15 @@ import java.util.Date;
 @RequiredArgsConstructor
 @Builder
 @Entity
-@Table(appliesTo = "GROUPITEM")
-public class GroupItem extends Item implements Serializable {
+@Table(appliesTo = "REVIEW")
+public class Review implements Serializable {
+
+    @PrimaryKeyJoinColumn
+    int userId;
     @Id
     @GeneratedValue
-    private String itemId;
-    private int sellerId;
-    private int salesTarget;
-    private int salesNow;
-    private Date startDate;
-    private Date endDate;
-    private int status;
+    int reviewId;
+    String orderItemId;
+    String description;
+    float score;
 }

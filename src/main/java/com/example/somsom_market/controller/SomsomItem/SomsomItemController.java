@@ -1,10 +1,7 @@
 package com.example.somsom_market.controller.SomsomItem;
 
 
-import com.example.somsom_market.controller.ItemRegistRequest;
-import com.example.somsom_market.controller.ItemUpdateRequest;
 import com.example.somsom_market.domain.SomsomItem;
-import com.example.somsom_market.model.ItemInfo;
 import com.example.somsom_market.service.SomsomItemService;
 import lombok.Setter;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -46,7 +43,7 @@ public class SomsomItemController {
         }
         String itemId = SomsomItemService.registerNewItem(itemRegistRequest);
         model.addAttribute("itemId", itemId);
-        return "";
+        return "/";
     }
 //    Update(Service 설계 필요, 사용자 예외 설정 필요한지 판단 필요)
 //    form(Update method)
@@ -69,10 +66,7 @@ public class SomsomItemController {
         }
         try {
             somsomItemService.updateItem(itemUpdateRequest);
-            return "member/modified";
-        } catch (NotMatchPasswordException ex) {
-            errors.rejectValue("currentPassword", "invalidPassword");
-            return SOMSOM_UPDATE_FORM;
+            return "/";
         } catch (ItemNotFoundException ex) {
             return ITEM_NOT_FOUND;
         }
