@@ -26,8 +26,8 @@ public class AccountService {
     }
 
     // 사용자 PK로 계정 검색
-    public Account getAccount(int userId) {
-        Optional<Account> account = accountRepository.findById(userId);
+    public Account getAccount(String id) {
+        Optional<Account> account = accountRepository.findById(id);
         if (account.isPresent()) return account.get();
         return null;
     }
@@ -40,7 +40,7 @@ public class AccountService {
     }
 
     // 새로운 계정 추가 후 다시 Account 반환 → 바로 로그인
-    public void insertAccount(UserRegistRequest memReq) {
+    public Account insertAccount(UserRegistRequest memReq) {
         Account account = new Account();
         account.setUserName(memReq.getUserName());
         account.setNickName(memReq.getNickName());
@@ -54,16 +54,25 @@ public class AccountService {
         account.setPhone(memReq.getPhoneNumber());
 
         accountDao.insertAccount(account);
+
+        return account;
+    }
+
+    // 아이디 존재하는지 확인
+    public boolean isIdExist(String id) {
+        Optional<Account> account = accountRepository.findById(id);
+        if (account.isPresent()) return true;
+        return false;
     }
 
     // 회원 정보 수정 후 다시 Account 반환
-    public void updateAccount(Account account) {
-        accountDao.updateAccount(account);
+    public Account updateAccount(Account account) {
+        return accountDao.updateAccount(account);
     }
 
     // 회원 정보 비밀번호 변경
-    public void updatePassword(int userId, String password) {
-        accountDao.updatePassword(userId, password);
+    public void updatePassword(String id, String password) {
+        accountDao.updatePassword(id, password);
     }
 
     // 회원 삭제
@@ -72,52 +81,52 @@ public class AccountService {
     }
 
     // 사용자 PK로 구매 내역, 판매 내역, 공동구매 내역, 위시리스트 개수 반환
-    public List<Integer> getMyPageList(int userId) {
-        return null;
+    public int[] getMyPageList(String id) {
+        return new int[] {1, 0, 0, 2}; // 추후 수정!!
     }
 
     // 사용자 PK로 판매 내역 리스트 검색
-    public List<PersonalItem> getSellItemList(int userId) {
+    public List<PersonalItem> getSellItemList(String id) {
         return null;
     }
 
     // 사용자 PK로 공동구매 판매 내역 리스트 검색
-    public List<GroupItem> getSellGroupList(int userId) {
+    public List<GroupItem> getSellGroupList(String id) {
         return null;
     }
 
     // 사용자 PK로 구매 내역 리스트 검색
-    public List<Order> getOrderList(int userId) {
+    public List<Order> getOrderList(String id) {
         return null;
     }
 
     // 구매 취소
-    public void cancelOrder(int userId, int orderId) {
+    public void cancelOrder(String id, long orderId) {
 
     }
 
     // 사용자 PK로 개인 판매 위시리스트 검색
-    public List<PersonalItem> getPersonalWishlist(int userId) {
+    public List<PersonalItem> getPersonalWishlist(String id) {
         return null;
     }
 
     // 사용자 PK로 공동구매 위시리스트 검색
-    public List<GroupItem> getGroupWishlist(int userId) {
+    public List<GroupItem> getGroupWishlist(String id) {
         return null;
     }
 
     // 사용자 PK로 학교 굿즈 위시리스트 검색
-    public List<SomsomItem> getSomsomWishlist(int userId) {
+    public List<SomsomItem> getSomsomWishlist(String id) {
         return null;
     }
 
     // 해당 사용자에 해당 아이템 위시리스트 추가
-    public void addWishlist(int userId, int itemId) {
+    public void addWishlist(String id, long itemId) {
 
     }
 
     // 해당 사용자에 해당 아이템 위시리스트 삭제
-    public void cancelWishlist(int userId, int itemId) {
+    public void cancelWishlist(String id, long itemId) {
 
     }
 
