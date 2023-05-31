@@ -1,6 +1,7 @@
 package com.example.somsom_market.controller.User;
 
 import com.example.somsom_market.domain.Account;
+import com.example.somsom_market.service.AccountFormValidator;
 import com.example.somsom_market.service.AccountService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -10,17 +11,25 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.WebUtils;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
 
 @Controller
-@RequestMapping("/user/myPage")
+@RequestMapping("/user/myPage/update")
 @SessionAttributes("userSession")
 /* 회원 수정 (수정, 비밀번호 변경, 회원 탈퇴) */
 public class UpdateUserController {
     private static final String USER_MYPAGE_FORM = "user/myPageUpdateForm";
+
     @Autowired
     private AccountService accountService;
     public void setAccountService(AccountService accountService) {
         this.accountService = accountService;
+    }
+
+    @Autowired
+    private AccountFormValidator validator;
+    public void setValidator(AccountFormValidator validator) {
+        this.validator = validator;
     }
 
     @ModelAttribute("accountReq")
@@ -40,19 +49,18 @@ public class UpdateUserController {
         return new UserRegistRequest();
     }
 
-
     @GetMapping
     public String showForm() {
         return USER_MYPAGE_FORM;
     }
 
-    @PostMapping("/update")
+    @PostMapping
     public String update(HttpServletRequest request,
-                         @ModelAttribute("accountReq") UserRegistRequest accountReq,
+                         @Valid @ModelAttribute("accountReq") UserRegistRequest accountReq,
                          BindingResult result) {
-        // 닉네임, 전화번호, 이메일, 주소, 은행명, 계좌번호 변경 가능
+        // 이름, 닉네임, 전화번호, 이메일, 주소, 은행명, 계좌번호 변경 가능
 
-        // 유효성 검사 -> 추후 수정
+        validator.validate(accountReq, result);
 
         UserSession userSession = (UserSession) WebUtils.getSessionAttribute(request, "userSession");
 
@@ -61,17 +69,17 @@ public class UpdateUserController {
         account.setPhone(accountReq.getPhoneNumber());
         account.setEmail(accountReq.getEmail());
         account.setAddress(accountReq.getAddress());
+        account.setZipcode(accountReq.getZipcode());
         account.setBankName(accountReq.getBankName());
         account.setBankAccount(accountReq.getBankAccount());
 
-        accountService.updateAccount(account);
-        Account newAccount = accountService.getAccount(account.getUserId());
+        Account newAccount = accountService.updateAccount(account);
         userSession.setAccount(newAccount);
 
         return "redirect:/" + "user/myPage";
     }
 
-    @PostMapping("/update/password")
+    @PostMapping("/password")
     public String updatePassword( HttpServletRequest request,
                                   @RequestParam("currentPassword") String currentPassword,
                                   @RequestParam("newPassword") String newPassword,
@@ -88,17 +96,21 @@ public class UpdateUserController {
             return "redirect:/" + "user/myPage"; // 추후 수정
         }
 
-        accountService.updatePassword(account.getUserId(), newPassword);
+        accountService.updatePassword(account.getId(), newPassword);
 
         return "redirect:/" + "user/myPage";
     }
 
-    @PostMapping("/delete")
+    @GetMapping("/delete")
     public String delete(HttpServletRequest request) {
         UserSession userSession = (UserSession) WebUtils.getSessionAttribute(request, "userSession");
         Account account = userSession.getAccount();
         accountService.deleteAccount(account);
 
-        return "redirect:/" + "/main";
+        return "redirect:/" + "user/logout";
+    }
+
+    private static boolean isLoggedIn(UserSession userSession) {
+        return (userSession != null);
     }
 }
