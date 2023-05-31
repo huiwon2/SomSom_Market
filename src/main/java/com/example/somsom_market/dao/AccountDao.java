@@ -16,20 +16,21 @@ public class AccountDao {
     private EntityManager em;
 
     @Transactional
-    public void insertAccount(Account account) throws DataAccessException {
+    public Account insertAccount(Account account) throws DataAccessException {
         em.persist(account);
+        return account;
     }
 
     @Transactional
-    public void updateAccount(Account account) throws DataAccessException {
-        em.merge(account);
+    public Account updateAccount(Account account) throws DataAccessException {
+        return em.merge(account);
     }
 
     @Transactional
-    public void updatePassword(int userId, String password) throws DataAccessException {
+    public void updatePassword(String id, String password) throws DataAccessException {
         Query query = em.createQuery(
-                "UPDATE Account a SET a.password = :password WHERE a.user_id = :userId");
-        query.setParameter("userId", userId);
+                "UPDATE Account a SET a.password = :password WHERE a.id = :id");
+        query.setParameter("id", id);
         query.setParameter("password", password);
         query.executeUpdate();
     }
