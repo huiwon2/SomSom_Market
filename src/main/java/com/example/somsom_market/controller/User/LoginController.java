@@ -32,7 +32,7 @@ public class LoginController {
 
         Account account = accountService.getAccount(id, password);
         if (account == null) {
-            return new ModelAndView("Error", "message",
+            return new ModelAndView("redirect:loginForm", "message",
                     "아이디 또는 패스워드가 잘못되었습니다.");
         } else {
             UserSession userSession = new UserSession(account);
