@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Somsom Market</title>
+</head>
+<body>
+  <div th:unless="${userSession?.account}">
+    <a th:href="@{/user/register}">
+      <input type="button" value="회원가입"></a>
+    <a th:href="@{/user/loginForm}">
+      <input type="button" value="로그인"></a>
+  </div>
+  <div th:if="${userSession?.account}">
+    <a><span th:text="${userSession?.account.nickName}"></span>님, 환영합니다!</a>
+    <a th:href="@{/user/logout}">
+      <input type="button" value="로그아웃"></a>
+    <a th:href="@{/user/myPage}">
+      <input type="button" value="마이페이지"></a>
+  </div>
+</body>
+</html>
