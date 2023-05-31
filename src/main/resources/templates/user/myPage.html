@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>마이페이지</title>
+</head>
+<body>
+<div th:insert="~{header}"></div>
+
+<span th:text="${userSession?.account.nickName}"></span>의 마이페이지
+<a th:href="@{/user/myPage/update}"> <input type="button" value="회원정보 수정"></a>
+
+<br><br>
+
+구매내역 : <span th:text="${myPageList[0]}"></span>
+<br>
+판매내역 : <span th:text="${myPageList[1]}"></span>
+<br>
+공동구매 내역 : <span th:text="${myPageList[2]}"></span>
+<br>
+위시리스트 : <span th:text="${myPageList[3]}"></span>
+</body>
+</html>
