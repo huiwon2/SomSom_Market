@@ -1,8 +1,11 @@
 package com.example.somsom_market.controller.SomsomItem;
 
 
+import com.example.somsom_market.dao.SomsomItemDao;
 import com.example.somsom_market.domain.SomsomItem;
 import com.example.somsom_market.service.SomsomItemService;
+import lombok.Data;
+import lombok.Getter;
 import lombok.Setter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -16,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.validation.Valid;
 @Controller
+@Data
 public class SomsomItemController {
 //    mvc설계 보고 경로 채우기
     private static final String SOMSOM_REGISTRATION_FORM = "/somsomItem/somsomItemRegister";
@@ -23,8 +27,12 @@ public class SomsomItemController {
     private static final String ITEM_NOT_FOUND = "";
 
     @Autowired
-    @Setter
     private SomsomItemService somsomItemService;
+    @Autowired
+    private SomsomItemDao somsomItemDao;
+
+    private SomsomItem somsomItem;
+
 
 //    Register
 //    form(register method)
@@ -41,7 +49,7 @@ public class SomsomItemController {
         if (bindingResult.hasErrors()) {
             return SOMSOM_REGISTRATION_FORM;
         }
-        String itemId = SomsomItemService.registerNewItem(itemRegistRequest);
+        long itemId = somsomItem.getId();
         model.addAttribute("itemId", itemId);
         return "/";
     }
@@ -49,7 +57,7 @@ public class SomsomItemController {
 //    form(Update method)
     @RequestMapping(method = RequestMethod.GET)
     public String form(ItemUpdateRequest itemUpdateRequest, @RequestParam("itemId")String itemId) {
-        SomsomItem itemInfo = somsomItemService.getSomsomItemInfo(itemId);
+        SomsomItem itemInfo = somsomItemService.getSomsomItem(itemId);
         if(itemInfo == null){
             return ITEM_NOT_FOUND;
         }
@@ -65,7 +73,7 @@ public class SomsomItemController {
             return SOMSOM_UPDATE_FORM;
         }
         try {
-            somsomItemService.updateItem(itemUpdateRequest);
+            somsomItemService.updateSomsomItem(itemUpdateRequest);
             return "/";
         } catch (ItemNotFoundException ex) {
             return ITEM_NOT_FOUND;
