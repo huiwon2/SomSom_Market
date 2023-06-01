@@ -3,10 +3,44 @@
 <head>
     <meta charset="UTF-8">
     <title>아이템 등록</title>
+    <style>
+        table {
+            border-collapse: collapse;
+            width: 100%;
+        }
+
+        th, td {
+            border: 1px solid black;
+            padding: 8px;
+        }
+
+        th {
+            text-align: left;
+        }
+    </style>
 </head>
-<body>
-<form>
-  
-</form>
+<table>
+    <tr>
+        <th>상품명</th>
+        <td><input type="text" name="title" th:placeholder="상품명을 입력해주세요" /></td>
+    </tr>
+    <tr>
+        <th>대표 이미지</th>
+        <td><input type="file" /></td>
+    </tr>
+    <tr>
+        <th>가격</th>
+        <td><input type="text" name="price" th:placeholder="가격을 입력해주세요" /></td>
+    </tr>
+    <tr>
+        <th>상품 설명</th>
+        <td><input type="file" /></td>
+    </tr>
+    <tr>
+        <th>상세 정보</th>
+        <td><input type="file" /></td>
+    </tr>
+</table>
+
 </body>
 </html>
