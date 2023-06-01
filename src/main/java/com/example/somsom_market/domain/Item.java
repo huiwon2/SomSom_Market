@@ -17,6 +17,8 @@ public class Item {
     private String title;
     private int price;
     private String description;
-//    private List<String> imageUrl;
+    @ElementCollection
+    private List<String> imageUrl;
+
     private int wishCount;
 }
