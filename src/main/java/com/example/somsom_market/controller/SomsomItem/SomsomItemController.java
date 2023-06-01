@@ -18,7 +18,7 @@ import javax.validation.Valid;
 @Controller
 public class SomsomItemController {
 //    mvc설계 보고 경로 채우기
-    private static final String SOMSOM_REGISTRATION_FORM = "";
+    private static final String SOMSOM_REGISTRATION_FORM = "/somsomItem/somsomItemRegister";
     private static final String SOMSOM_UPDATE_FORM = "";
     private static final String ITEM_NOT_FOUND = "";
 
