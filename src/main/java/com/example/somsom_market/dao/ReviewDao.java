@@ -1,6 +1,7 @@
 package com.example.somsom_market.dao;
 
 import com.example.somsom_market.domain.Review;
+import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
@@ -14,25 +15,22 @@ public class ReviewDao {
 
     //리뷰 추가
     @Transactional
-    public int addNewReview(Review review){
+    public long addNewReview(Review review){
         em.persist(review);
         return review.getReviewId();
     }
 
     //리뷰 수정
     @Transactional
-    public int updateReview(Review review){
+    public long updateReview(Review review) throws IllegalArgumentException{
         em.merge(review);
         return review.getReviewId();
     }
 
     //리뷰 삭제
     @Transactional
-    public void deleteReview(int reviewId){
+    public void deleteReview(long reviewId){
         Review review = em.find(Review.class, reviewId);
-        if(review == null){
-            throw new ReviewNotFoundException(); //create exceptio
-        }
         em.remove(em.merge(review));
     }
 }

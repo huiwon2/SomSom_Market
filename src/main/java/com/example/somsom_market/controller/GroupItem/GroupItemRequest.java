@@ -13,7 +13,7 @@ public class GroupItemRequest {
     private List<String> imageUrl;
     private int wishCount;
 
-    private String sellerId;
+    private int sellerId;
     private int salesTarget;
     private int salesNow;
 
@@ -22,7 +22,7 @@ public class GroupItemRequest {
     @DateTimeFormat(pattern="yyyy/MM/dd")
     private Date endDate;
 
-    private int status;
+    private String status;
 
     public int getItemId() {
         return itemId;
@@ -72,11 +72,11 @@ public class GroupItemRequest {
         this.wishCount = wishCount;
     }
 
-    public String getSellerId() {
+    public int getSellerId() {
         return sellerId;
     }
 
-    public void setSellerId(String sellerId) {
+    public void setSellerId(int sellerId) {
         this.sellerId = sellerId;
     }
 
@@ -112,11 +112,11 @@ public class GroupItemRequest {
         this.endDate = endDate;
     }
 
-    public int getStatus() {
+    public String getStatus() {
         return status;
     }
 
-    public void setStatus(int status) {
+    public void setStatus(String status) {
         this.status = status;
     }
 }

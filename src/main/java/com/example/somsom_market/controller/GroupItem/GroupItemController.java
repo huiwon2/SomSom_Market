@@ -1,6 +1,7 @@
 package com.example.somsom_market.controller.GroupItem;
 
 import com.example.somsom_market.domain.GroupItem;
+import com.example.somsom_market.repository.GroupItemRepository;
 import com.example.somsom_market.service.GroupItemService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -20,9 +21,8 @@ import java.util.Map;
 public class GroupItemController {
     @Autowired
     private GroupItemService groupService;
-    public void setGroupItemService(GroupItemService g){
-        this.groupService = g;
-    }
+    @Autowired
+    private GroupItemRepository groupItemRepository;
 
     @ModelAttribute("groupItem")
     public GroupItemRequest formBackingObject(HttpServletRequest request){
@@ -61,10 +61,10 @@ public class GroupItemController {
         int userId = (int) session.getAttribute("userId");
 
         // comm 데이터 처리 ( 공동 구매 아이템 생성)
-        String itemId = groupService.registerNewGroupItem(comm, userId);
+        long itemId = groupService.registerNewGroupItem(comm, userId);
         mav.setViewName("/item/" + itemId); // view name : /item/{itemId}
 
-        map.put(itemId, comm);
+        map.put(String.valueOf(itemId), comm);
         mav.addObject("groupItem", comm);
         mav.addObject("groupItemMap", map);
         status.setComplete();
@@ -87,7 +87,7 @@ public class GroupItemController {
         int userId = (int) session.getAttribute("userId");
 
         // comm 데이터 처리 ( 공동 구매 아이템 수정)
-		String itemId = groupService.updateGroupItem(comm, userId);
+		long itemId = groupService.updateGroupItem(comm, userId);
         mav.setViewName("/item/" + itemId); // view name : /item/{itemId}
         mav.addObject("groupItem", comm);
         status.setComplete(); // session 종료 ("groupItem" 객체 참조가 삭제됨)
@@ -98,24 +98,25 @@ public class GroupItemController {
     public String delete(@RequestParam("itemId") String itemId,
                          @ModelAttribute("groupItemList") Map<Integer, GroupItemRequest> map) throws Exception{
         //아이템 삭제
-        groupService.deleteGroupItem(itemId);
+        groupService.deleteGroupItem(Long.parseLong(itemId));
         map.remove(itemId);
 
         return "user/myPage/sell/groupList";
     }
 
     @RequestMapping("/user/myPage/sell/group/status") // 모집현황 조회
-    public ModelAndView checkRecruitStatus(@RequestParam("itemId") int itemId){
+    public ModelAndView checkRecruitStatus(@RequestParam("itemId") long itemId){
         ModelAndView mav = new ModelAndView("/item/" + itemId);
         //...모집현황 조회 페이지를 따로 만드나..? 아니면 그냥 item 상세 페이지 반환?
         return mav;
     }
 
     @RequestMapping("/user/myPage/sell/groupList")
-    public ModelAndView showMyGroupList(@RequestParam("userId")int userId){
+    public ModelAndView showMyGroupList(@RequestParam("userId")int userId) {
         List<GroupItem> list = groupService.showGroupItemList(userId);
-        
-
-
+        ModelAndView mav = new ModelAndView("user/myPage/sell/groupList");
+        mav.addObject("myGroupItemList", list);
+        return mav;
     }
+
 }
