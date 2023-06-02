@@ -31,6 +31,10 @@ public class CartItem {
         cartItem.setCount(amount);
         return cartItem;
     }
+//    개수 증가
+    public void addCount(int count){
+        this.count += count;
+    }
 
 
 
