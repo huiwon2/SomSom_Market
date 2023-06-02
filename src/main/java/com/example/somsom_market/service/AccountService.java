@@ -100,35 +100,4 @@ public class AccountService {
         return null;
     }
 
-    // 구매 취소
-    public void cancelOrder(String id, long orderId) {
-
-    }
-
-    // 사용자 PK로 개인 판매 위시리스트 검색
-    public List<PersonalItem> getPersonalWishlist(String id) {
-        return null;
-    }
-
-    // 사용자 PK로 공동구매 위시리스트 검색
-    public List<GroupItem> getGroupWishlist(String id) {
-        return null;
-    }
-
-    // 사용자 PK로 학교 굿즈 위시리스트 검색
-    public List<SomsomItem> getSomsomWishlist(String id) {
-        return null;
-    }
-
-    // 해당 사용자에 해당 아이템 위시리스트 추가
-    public void addWishlist(String id, long itemId) {
-
-    }
-
-    // 해당 사용자에 해당 아이템 위시리스트 삭제
-    public void cancelWishlist(String id, long itemId) {
-
-    }
-
-
 }
