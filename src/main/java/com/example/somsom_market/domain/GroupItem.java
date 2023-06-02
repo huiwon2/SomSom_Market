@@ -3,9 +3,7 @@ package com.example.somsom_market.domain;
 import lombok.*;
 import org.hibernate.annotations.Table;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
 
@@ -15,15 +13,31 @@ import java.util.Date;
 @RequiredArgsConstructor
 @Builder
 @Entity
-@Table(appliesTo = "GROUPITEM")
+@Table(appliesTo = "ITEM")
+@DiscriminatorValue(value="GROUP")
 public class GroupItem extends Item implements Serializable {
     @Id
     @GeneratedValue
-    private String itemId;
-    private int sellerId;
-    private int salesTarget;
-    private int salesNow;
-    private Date startDate;
-    private Date endDate;
-    private int status;
+    @Column(name="item_id")
+    private long itemId;
+
+    //@ManyToOne
+    //@JoinColumn(name="seller", referencedColumnName="id")
+    //private Account user; //1 : N(0..*) , many side
+    @Column(name="seller_id")
+    private int sellerId; // userId
+
+    private int category_id;
+
+    @Column(name="sales_target")
+    private int salesTarget; //공구 목표액
+    @Column(name="sales_now")
+    private int salesNow; //현재 판매액
+    @Column(name="start_date")
+    private Date startDate; //공구 시작일
+    @Column(name="end_date")
+    private Date endDate; //공구 마감일
+    private String status; //INSTOCK, SOLDOUT
+
+    private String dtype; //GROUP - this is discriminator column
 }

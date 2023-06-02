@@ -2,9 +2,9 @@ package com.example.somsom_market.controller.Review;
 
 public class ReviewRequest {
     private int userId;
-    private int orderItemId;
+    private long orderItemId;
     private String description;
-    private float score;
+    private double score;
 
     public int getUserId() {
         return userId;
@@ -14,11 +14,11 @@ public class ReviewRequest {
         this.userId = userId;
     }
 
-    public int getOrderItemId() {
+    public long getOrderItemId() {
         return orderItemId;
     }
 
-    public void setOrderItemId(int orderItemId) {
+    public void setOrderItemId(long orderItemId) {
         this.orderItemId = orderItemId;
     }
 
@@ -30,11 +30,11 @@ public class ReviewRequest {
         this.description = description;
     }
 
-    public float getScore() {
+    public double getScore() {
         return score;
     }
 
-    public void setScore(float score) {
+    public void setScore(double score) {
         this.score = score;
     }
 }
