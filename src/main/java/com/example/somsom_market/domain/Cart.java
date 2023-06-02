@@ -18,20 +18,21 @@ public class Cart {
     @Generated
     @Id
     private long cart_id;
+
     @OneToOne(fetch = FetchType.EAGER)
     @JoinColumn(name="user_id")
     @NotNull
-    private long user_id;
+    private Account account;
     private long count;
     @OneToMany(mappedBy = "cart")
     private List<CartItem> cartItems = new ArrayList<>();
     @NotNull
     private int total_quantity;
 
-    public static Cart createCart(long user_id){
+    public static Cart createCart(Account account){
         Cart cart = new Cart();
         cart.setCount(0);
-        cart.setUser_id(user_id);
+        cart.setAccount(account);
         return cart;
     }
 

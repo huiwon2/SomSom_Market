@@ -73,7 +73,7 @@ public class SomsomItemController {
             return SOMSOM_UPDATE_FORM;
         }
         try {
-            somsomItemService.updateSomsomItem(itemUpdateRequest);
+            somsomItemService.updateItem(somsomItem, somsomItem.getId());
             return "/";
         } catch (ItemNotFoundException ex) {
             return ITEM_NOT_FOUND;
