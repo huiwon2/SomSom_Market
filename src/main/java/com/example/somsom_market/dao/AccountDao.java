@@ -8,6 +8,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import javax.transaction.Transactional;
+import java.util.List;
 
 @Repository
 public class AccountDao {
@@ -44,5 +45,20 @@ public class AccountDao {
             // Persistence Context 영역에 영속상태로 유지하고 remove 함.
             em.remove(em.merge(account));
         }
+    }
+
+    public Account findOne(Long id) {
+        return em.find(Account.class, id);
+    }
+
+    public List<Account> findAll() {
+        return em.createQuery("select a from Account a", Account.class)
+                .getResultList();
+    }
+
+    public List<Account> findByName(String userId) {
+        return em.createQuery("select a from Account a where a.userId = :userId", Account.class)
+                .setParameter("userId", userId)
+                .getResultList();
     }
 }

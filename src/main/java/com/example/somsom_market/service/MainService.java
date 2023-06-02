@@ -22,17 +22,18 @@ public class MainService {
     }
 
     // 아이템 상세 정보 조회
-    public Item getItemDetail(String itemId) {
+    public Item getItemDetail(long itemId) {
         return null;
     }
 
     // 상품 title 검색
-    public List<Item> searchItem(String query) {
-        return null;
-    }
+//    public List<Item> searchItem(String query) {
+//        return null;
+//    }
 
     // type에 해당하는 상품 title 검색, 카테고리 조회
-    public List<Item> searchItemWithType(String query, String type) {
+    public List<Item> searchItemByQuery(String query, String type) {
+
         return null;
     }
 }
