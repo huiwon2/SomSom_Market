@@ -23,8 +23,8 @@ import java.util.List;
 /* 마이페이지 */
 public class ViewUserItemController {
     private static final String VIEW = "user/myPage";
-    private static final String SELL_PERSONAL = "user/myPage/sell/personalList";
-    private static final String SELL_GROUP = "user/myPage/sell/groupList";
+    private static final String SELL_PERSONAL = "user/myPage/personalList";
+    private static final String SELL_GROUP = "user/myPage/groupList";
     private static final String ORDER = "user/myPage/orderList";
 
     @Autowired
@@ -39,7 +39,7 @@ public class ViewUserItemController {
         UserSession userSession = (UserSession) WebUtils.getSessionAttribute(request, "userSession");
         Account account = userSession.getAccount();
 
-        List<Integer> myPageList = accountService.getMyPageList(account.getUserId());
+        int[] myPageList = accountService.getMyPageList(account.getId());
 
         model.addAttribute("myPageList", myPageList);
 
@@ -52,7 +52,7 @@ public class ViewUserItemController {
         UserSession userSession = (UserSession) WebUtils.getSessionAttribute(request, "userSession");
         Account account = userSession.getAccount();
 
-        List<PersonalItem> userPersonalSellList = accountService.getSellItemList(account.getUserId());
+        List<PersonalItem> userPersonalSellList = accountService.getSellItemList(account.getId());
 
         ModelAndView mav = new ModelAndView(SELL_PERSONAL);
         mav.addObject("userPersonalSellList", userPersonalSellList);
@@ -66,7 +66,7 @@ public class ViewUserItemController {
         UserSession userSession = (UserSession) WebUtils.getSessionAttribute(request, "userSession");
         Account account = userSession.getAccount();
 
-        List<GroupItem> userGroupSellList = accountService.getSellGroupList(account.getUserId());
+        List<GroupItem> userGroupSellList = accountService.getSellGroupList(account.getId());
 
         ModelAndView mav = new ModelAndView(SELL_GROUP);
         mav.addObject("userGroupSellList", userGroupSellList);
@@ -80,7 +80,7 @@ public class ViewUserItemController {
         UserSession userSession = (UserSession) WebUtils.getSessionAttribute(request, "userSession");
         Account account = userSession.getAccount();
 
-        List<Order> userOrderList = accountService.getOrderList(account.getUserId());
+        List<Order> userOrderList = accountService.getOrderList(account.getId());
 
         ModelAndView mav = new ModelAndView(ORDER);
         mav.addObject("userOrderList", userOrderList);
