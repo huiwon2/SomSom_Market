@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>개인 판매 내역</title>
+</head>
+<body>
+<div th:insert="~{header}"></div>
+
+<h2>판매 내역</h2>
+
+<table>
+  <tr th:each="item : ${userPersonalSellList}">
+    <td>
+      <span th:text="${item.title}"></span>
+      <span th:text="${item.price}"></span>
+    </td>
+  </tr>
+</table>
+
+</body>
+</html>
