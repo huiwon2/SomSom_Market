@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>아이템 등록</title>
+    <style>
+        .container {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+        }
+
+        table {
+            border-collapse: collapse;
+            width: 50%;
+            margin-bottom: 20px;
+        }
+
+        th, td {
+            border: 1px solid black;
+            padding: 8px;
+        }
+
+        th {
+            text-align: left;
+        }
+
+        .button-container {
+            transform: rotate(-45deg);
+        }
+
+        .button-container button {
+            width: 150px;
+            height: 40px;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            cursor: pointer;
+        }
+    </style>
+
+</head>
+<body>
+<div class="container">
+    <table>
+        <tr>
+            <th>상품명</th>
+            <td><input type="text" name="title" th:placeholder="상품명을 입력해주세요" /></td>
+        </tr>
+        <tr>
+            <th>대표 이미지</th>
+            <td><input type="file" /></td>
+        </tr>
+        <tr>
+            <th>가격</th>
+            <td><input type="text" name="price" th:placeholder="가격을 입력해주세요" /></td>
+        </tr>
+        <tr>
+            <th>상세 정보</th>
+            <td><input type="file" /></td>
+        </tr>
+    </table>
+
+    <button>게시글 등록</button>
+</div>
+
+</body>
+</html>

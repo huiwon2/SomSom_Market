@@ -4,7 +4,11 @@ import com.example.somsom_market.controller.SomsomItem.ItemRegistRequest;
 import com.example.somsom_market.controller.SomsomItem.ItemUpdateRequest;
 import com.example.somsom_market.dao.SomsomItemDao;
 import com.example.somsom_market.domain.SomsomItem;
+import com.example.somsom_market.repository.SomsomItemRepository;
+import com.fasterxml.jackson.annotation.JacksonAnnotationsInside;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -13,34 +17,40 @@ import java.util.*;
 
 @Getter
 @Setter
+@NoArgsConstructor
+@AllArgsConstructor
 @Service
 public class SomsomItemService {
-    private int nextitemId;
-    private Map<String, SomsomItem> somsomItem = new HashMap<String, SomsomItem>();
     @Autowired
-    SomsomItemDao somsomItemDao;
-    public SomsomItemService() {
-    }
-    public List<SomsomItem> getItemInfo() {
-        return new ArrayList<SomsomItem>(somsomItem.values());
-    }
+    private SomsomItemRepository somsomItemRepository;
+    @Autowired
+    private SomsomItemDao somsomItemDao;
 
-    public SomsomItem getSomsomItemInfo(String memberId) {
-        return somsomItem.get(memberId);
+//   아이템 검색
+    public SomsomItem getSomsomItem(String id){
+        Optional<SomsomItem> somsomItem = somsomItemRepository.findById(id);
+        if(somsomItem.isPresent()) {
+            return somsomItem.get();
+        }
+        return null;
     }
-
-    public SomsomItem registerSomsomItem(ItemRegistRequest regReq) {
+//  게시글 등록
+    public SomsomItem insertSomsomItem(ItemRegistRequest regReq) {
         SomsomItem somsomItem = new SomsomItem();
         somsomItem.setTitle(regReq.getTitle());
         somsomItem.setPrice(regReq.getPrice());
         somsomItem.setDescription(regReq.getDescription());
         somsomItem.setImageUrl(Collections.singletonList(regReq.getImageUrl()));
 
+        somsomItemDao.insertSomsomItem(somsomItem);
+        return somsomItem;
     }
-    public static String registerNewItem(ItemRegistRequest itemRegistRequest){
-        return "";
+//    게시글 수정
+    public static void updateSomsomItem(ItemUpdateRequest itemUpdateRequest){
+
     }
-    public static void updateItem(ItemUpdateRequest itemUpdateRequest){
+//    게시글 삭제
+    public static void deleteSomsomItem(){
 
     }
 

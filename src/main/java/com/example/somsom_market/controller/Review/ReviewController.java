@@ -41,13 +41,13 @@ public class ReviewController {
         if(result.hasErrors()){
             return ReviewForm;
         }
-        int reviewId = reviewService.registerNewReview(reviewRequest);
+        long reviewId = reviewService.registerNewReview(reviewRequest);
         model.addAttribute("reviewId", reviewId);
         status.setComplete();
         return Registered;
     }
     @RequestMapping("/review/delete")
-    public String reviewDelete(@RequestParam("reviewId") int reviewId){
+    public String reviewDelete(@RequestParam("reviewId") long reviewId){
         reviewService.deleteReview(reviewId);
         return Mypage;
     }

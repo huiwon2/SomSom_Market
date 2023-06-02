@@ -31,12 +31,12 @@ public class ReviewService {
     }
 
     //리뷰 추가
-    public int registerNewReview(ReviewRequest req){
+    public long registerNewReview(ReviewRequest req){
         return reviewDao.addNewReview(reqToReview(req));
     }
 
     //리뷰 수정
-    public int updateReview(ReviewRequest req){
+    public long updateReview(ReviewRequest req){
         return reviewDao.updateReview(reqToReview(req));
     }
 

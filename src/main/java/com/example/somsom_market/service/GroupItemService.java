@@ -15,9 +15,10 @@ public class GroupItemService {
     @Autowired private GroupItemDao groupItemDao;
     @Autowired
     private GroupItemRepository groupItemRepository;
-    @Autowired private AccountDao accountDao
+    @Autowired
+    private AccountDao accountDao;
 
-    public GroupItem searchItem(String itemId){
+    public GroupItem searchItem(long itemId){
         return groupItemDao.getItem(itemId);
     }
 
@@ -38,27 +39,32 @@ public class GroupItemService {
     }
 
     //게시글 추가 후 itemId 반환
-    public String registerNewGroupItem(GroupItemRequest req, int userId){
+    public long registerNewGroupItem(GroupItemRequest req, int userId){
         return groupItemDao.insertGroupItem(reqToGroupItem(req, userId));
     }
 
     //게시글 수정 후 itemId 반환
-    public String updateGroupItem(GroupItemRequest req, int userId){
+    public long updateGroupItem(GroupItemRequest req, int userId){
        return groupItemDao.updateGroupItem(reqToGroupItem(req, userId));
     }
 
     //게시글 삭제
-    public void deleteGroupItem(String itemId){
+    public void deleteGroupItem(long itemId){
         groupItemDao.deleteGroupItem(itemId);
     }
 
     //공동구매 진행 상황 업데이트
     public void updateStatus(GroupItem groupItem){
-        groupItem.updateStatus(groupItem);
+        groupItemDao.updateStatus(groupItem);
     }
 
     //사용자가 판매하는 공동구매 리스트 보여주기
     public List<GroupItem> showGroupItemList(int userId){
         return groupItemRepository.findGroupItemsBySellerIdOrderByStartDate(userId);
+    }
+
+    //모든 공동구매 리스트 보여주기
+    public List<GroupItem> showAllGroupItemList(){
+        return groupItemDao.findAllGroupItem();
     }
 }

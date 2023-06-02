@@ -3,10 +3,7 @@ package com.example.somsom_market.domain;
 import lombok.*;
 import org.hibernate.annotations.Table;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.PrimaryKeyJoinColumn;
+import javax.persistence.*;
 import java.io.Serializable;
 
 @Data
@@ -18,12 +15,15 @@ import java.io.Serializable;
 @Table(appliesTo = "REVIEW")
 public class Review implements Serializable {
 
-    @PrimaryKeyJoinColumn
-    int userId;
+    private int userId;
+
+    @Column(name="order_Item_id")
+    private long orderItemId;
+
     @Id
     @GeneratedValue
-    int reviewId;
-    String orderItemId;
-    String description;
-    float score;
+    private long reviewId;
+
+    private String description;
+    private double score;
 }

@@ -5,36 +5,47 @@ import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
+import javax.swing.*;
 import javax.transaction.Transactional;
+import java.util.List;
+
 @Repository
 public class GroupItemDao extends ItemDao{
     @PersistenceContext
     private EntityManager em;
     @Transactional
-    public GroupItem getItem(String itemId){
+    public GroupItem getItem(long itemId){
         GroupItem groupItem = em.find(GroupItem.class, itemId);
         return groupItem;
     }
     @Transactional
-    public String insertGroupItem(GroupItem groupItem){
+    public long insertGroupItem(GroupItem groupItem){
         em.persist(groupItem);
-        String itemId = groupItem.getItemId();
+        long itemId = groupItem.getItemId();
         return itemId;
     }
     @Transactional
-    public String updateGroupItem(GroupItem groupItem){
+    public long updateGroupItem(GroupItem groupItem){
         em.merge(groupItem);
-        String itemId = groupItem.getItemId();
+        long itemId = groupItem.getItemId();
         return itemId;
     }
     @Transactional
-    public void deleteGroupItem(String itemId){
+    public void deleteGroupItem(long itemId){
         GroupItem groupItem = em.find(GroupItem.class, itemId);
-        if(em.contains(groupItem)){
-            em.remove(groupItem);
-        }else {
-            em.remove(em.merge(groupItem));
-        }
+        em.remove(em.merge(groupItem));
     }
 
+    @Transactional
+    public void updateStatus(GroupItem groupItem){
+        em.merge(groupItem);
+    }
+
+    @Transactional
+    public List<GroupItem> findAllGroupItem(){
+        Query query = em.createQuery("SELECT g FROM GroupItem g ORDER BY g.endDate DESC");
+        List<GroupItem> groupItems = query.getResultList();
+        return groupItems;
+    }
 }
