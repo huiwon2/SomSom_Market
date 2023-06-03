@@ -3,8 +3,9 @@ package com.example.somsom_market.domain;
 import lombok.*;
 import org.hibernate.annotations.Table;
 
-import javax.persistence.DiscriminatorValue;
-import javax.persistence.Entity;
+import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @DiscriminatorValue("SOMSOM")
@@ -12,8 +13,8 @@ import javax.persistence.Entity;
 public class SomsomItem extends Item {
 
     private int stockQuantity;
-
-
+    @OneToMany(mappedBy = "item")
+    private List<CartItem> cartItemList = new ArrayList<>();
     //==비즈니스 로직==//
     /**
      * stock 증가
