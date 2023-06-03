@@ -1,10 +1,7 @@
 package com.example.somsom_market.service;
 
 import com.example.somsom_market.dao.CartDao;
-import com.example.somsom_market.domain.Account;
-import com.example.somsom_market.domain.Cart;
-import com.example.somsom_market.domain.CartItem;
-import com.example.somsom_market.domain.Item;
+import com.example.somsom_market.domain.*;
 import com.example.somsom_market.repository.AccountRepository;
 import com.example.somsom_market.repository.CartItemRepository;
 import com.example.somsom_market.repository.CartRepository;
@@ -31,8 +28,8 @@ public class CartService {
             cart = Cart.createCart(account);
             cartRepository.save(cart);
         }
-        Item item = somsomItemRepository.findById(newItem.getId());
-        CartItem cartItem = cartItemRepository.findByCartIdAndItemId(cart.getCart_id(), item.getId());
+        Optional<SomsomItem> item = somsomItemRepository.findById(newItem.getId());
+        CartItem cartItem = cartItemRepository.findByCartIdAndItemId(cart.getCart_id(), item.get().getId());
 //        장바구니에 아이템 없을 때
         if(cartItem == null){
             cartItem = CartItem.createCartItem(cart, item, amount);

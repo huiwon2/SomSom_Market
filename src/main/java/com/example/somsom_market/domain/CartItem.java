@@ -3,6 +3,7 @@ package com.example.somsom_market.domain;
 import lombok.*;
 
 import javax.persistence.*;
+import java.util.Optional;
 
 @Builder
 @NoArgsConstructor
@@ -24,7 +25,7 @@ public class CartItem {
 //    개수
     private int count;
 
-    public static CartItem createCartItem(Cart cart, Item item, int amount){
+    public static CartItem createCartItem(Cart cart, Optional<SomsomItem> item, int amount){
         CartItem cartItem = new CartItem();
         cartItem.setCart_id(cart);
         cartItem.setItem(item);
