@@ -28,7 +28,7 @@ public class CartItem {
     public static CartItem createCartItem(Cart cart, Optional<SomsomItem> item, int amount){
         CartItem cartItem = new CartItem();
         cartItem.setCart_id(cart);
-        cartItem.setItem(item);
+        cartItem.setItem(item.get());
         cartItem.setCount(amount);
         return cartItem;
     }
