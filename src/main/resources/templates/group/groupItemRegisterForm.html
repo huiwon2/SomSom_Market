@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <!-- 글꼴 -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Do Hyeon">
+    <title>공동구매 아이템 등록</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Do Hyeon', serif;
+        }
+        .main{
+            width: 600px;
+            margin: auto;
+        }
+
+        div {
+            position: relative;
+            width: 500px;
+            margin-left: 50px;
+            margin-top: 50px;
+        }
+
+        input, textarea {
+            font-size: 15px;
+            color: #6f263d;
+            width: 500px;
+            border: none;
+            border-bottom: solid #aaaaaa 1px;
+            padding-bottom: 10px;
+            padding-left: 10px;
+            position: relative;
+            background: none;
+            z-index: 5;
+        }
+
+        input::placeholder { color: #aaaaaa; }
+        input:focus { outline: none; }
+        textarea::placeholder { color: #aaaaaa; }
+        textarea:focus { outline: none; }
+
+        span {
+            display: block;
+            position: absolute;
+            bottom: 0;
+            left: 0%;
+            background-color: #6f263d;
+            width: 0;
+            height: 2px;
+            border-radius: 2px;
+            transition: 0.5s;
+        }
+
+        label{
+            position: absolute;
+            color: #aaa;
+            left: 10px;
+            font-size: 20px;
+            bottom: 8px;
+            transition: all .2s;
+        }
+
+        input:focus ~ label, input:valid ~ label, textarea:focus ~ label, textarea:valid ~ label {
+            font-size: 16px;
+            bottom: 40px;
+            color: #666;
+            font-weight: bold;
+        }
+
+        input:focus ~ span, input:valid ~ span, textarea:focus ~ span, textarea:valid ~ span{
+            width: 100%;
+        }
+        textarea{
+            resize: none;
+            height: 90px;
+            border: none;
+            max-height: 1000px;
+        }
+        .btn {
+            padding: 0.9rem 1.8rem;
+            font-size: 16px;
+            font-weight: 700;
+            color: #aaa;
+            border: 3px solid #6f263d;
+            cursor: pointer;
+            position: relative;
+            background-color: transparent;
+            text-decoration: none;
+            overflow: hidden;
+            z-index: 1;
+            font-family: inherit;
+            text-align: center;
+            margin: auto;
+            display: block;
+        }
+
+        .btn::before {
+            content: "";
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: #6f263d;
+            transform: translateX(-100%);
+            transition: all .3s;
+            z-index: -1;
+        }
+
+        .btn:hover::before {
+            transform: translateX(0);
+        }
+        .btn:hover{
+            color:azure;
+        }
+    </style>
+    <script>
+        document.getElementById("now").value = new Date().toDateInputValue();
+    </script>
+</head>
+<body>
+<form action="/group/register" th:object="${groupItemRequest}" method="post">
+    <div class="main">
+        <div>
+            <input type="text" name="groupItem.title" required>
+            <label>제목</label>
+            <span></span>
+        </div>
+        <div>
+            <input type="text" name="productName" required>
+            <label>상품명</label>
+            <span></span>
+        </div>
+        <div>
+            <input type="text" name="price" required>
+            <label>가격</label>
+            <span></span>
+        </div>
+        <div>
+            <input type="date" id="now" name="endDate" required>
+            <label>마감일</label>
+            <span></span>
+        </div>
+        <div>
+
+            <span></span>
+        </div>
+        <div>
+            <input type="text" name="salesTarget" required>
+            <label>목표액</label>
+            <span></span>
+        </div>
+        <div>
+            <input type="file" name="img">
+            <label>이미지</label>
+            <span></span>
+        </div>
+        <div>
+            <textarea name="description" oninput='this.style.height = ""; this.style.height = this.scrollHeight + "px"' placeholder="내용을 입력하세요."></textarea>
+            <span></span>
+        </div>
+        <div><button type="submit" class="btn">submit</button></div>
+
+    </div>
+</form>
+</body>
+</html>
