@@ -15,9 +15,13 @@ public abstract class Item {
     private long id;
 
     private String title;
-    private int price;
     private String description;
+    private int price;
+    private int wishCount;
 
-    @OneToOne
+    @Enumerated(EnumType.STRING)
+    private ItemStatus status;
+
+    @ElementCollection
     private List<String> imageUrl;
 }

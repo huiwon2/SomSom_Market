@@ -7,19 +7,16 @@ import javax.persistence.*;
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import static javax.persistence.FetchType.LAZY;
 
 
 @Entity
 @Table(name = "orders")
-@Getter @Setter
-@NoArgsConstructor(access = AccessLevel.PROTECTED) //기본생성자 사용 불가
-public class Order {
+@Data
+//@NoArgsConstructor(access = AccessLevel.PROTECTED) //기본생성자 사용 불가
+public class Order implements Serializable{
 
     @Id @GeneratedValue
     @Column(name = "order_id")
@@ -30,9 +27,8 @@ public class Order {
     private Account account;
 
     private LocalDate orderDate;
-
+    private String name;
     private String address;
-
     private String zipcode;
 
     @Enumerated(EnumType.STRING)
@@ -66,6 +62,37 @@ public class Order {
         order.setStatus(OrderStatus.PROCESSING);
         order.setOrderDate(LocalDate.now());
         return order;
+    }
+
+    // TODO: 2023/06/04 카트 아이템 바탕으로 주문 생성하는 로직 필요
+    public void initOrder(Account account, Cart cart) {
+//        setAccount(account);
+//        orderDate.setOrderDate(LocalDate.now());
+//
+//        setName(account.getUserName());
+//        shipToLastName = account.getLastName();
+//        shippingAddress = account.getAddress();
+//
+//        billToFirstName = account.getFirstName();
+//        billToLastName = account.getLastName();
+//        billingAddress = new Address(account.getAddress());
+//
+//        totalPrice = cart.getSubTotal();
+//
+//        creditCard = "999 9999 9999 9999";
+//        expiryDate = "12/03";
+//        cardType = "Visa";
+//        courier = "UPS";
+//        locale = "CA";
+//        status = "P";
+//        timestamp = orderDate;
+//
+//        this.lineItems = new ArrayList<LineItem>();
+//        Iterator<CartItem> i = cart.getAllCartItems();
+//        while (i.hasNext()) {
+//            CartItem cartItem = (CartItem) i.next();
+//            addLineItem(cartItem);
+//        }
     }
 
     //==비즈니스 로직==//

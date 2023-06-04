@@ -1,7 +1,9 @@
 package com.example.somsom_market.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import lombok.AccessLevel;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 
@@ -9,13 +11,15 @@ import static javax.persistence.FetchType.LAZY;
 
 @Entity
 @Data
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class OrderItem {
     @Id @GeneratedValue
+    @Column(name = "order_item_id")
     private Long id;
 
     @ManyToOne(fetch = LAZY)
     @JoinColumn(name = "item_id")
-    private Item item;
+    private SomsomItem item;
 
     @JsonIgnore
     @ManyToOne(fetch = LAZY)
@@ -26,12 +30,11 @@ public class OrderItem {
     private int quantity;
 
     //==생성 메서드==//
-    public static OrderItem createOrderItem(Item item, int orderPrice, int quantity) {
+    public static OrderItem createOrderItem(SomsomItem item, int orderPrice, int quantity) {
         OrderItem orderItem = new OrderItem();
         orderItem.setItem(item);
         orderItem.setOrderPrice(orderPrice);
         orderItem.setQuantity(quantity);
-        // TODO: 2023/05/27 개인거래의 경우 item status 품절로 변경하는 로직
         return orderItem;
     }
 
