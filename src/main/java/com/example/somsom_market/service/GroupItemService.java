@@ -4,6 +4,7 @@ import com.example.somsom_market.controller.GroupItem.GroupItemRequest;
 import com.example.somsom_market.dao.AccountDao;
 import com.example.somsom_market.dao.GroupItemDao;
 import com.example.somsom_market.domain.GroupItem;
+import com.example.somsom_market.domain.ItemStatus;
 import com.example.somsom_market.repository.GroupItemRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -28,7 +29,7 @@ public class GroupItemService {
         //itemId = AutoGenerate
         GroupItem tmp = new GroupItem();
         tmp.setSellerId(userId);
-        tmp.setStatus(req.getStatus());
+        tmp.setStatus(ItemStatus.INSTOCK);
         tmp.setSalesNow(req.getSalesNow());
         tmp.setEndDate(req.getEndDate());
         tmp.setStartDate(req.getStartDate());

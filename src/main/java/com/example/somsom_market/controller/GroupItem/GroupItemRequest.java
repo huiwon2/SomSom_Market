@@ -1,6 +1,5 @@
 package com.example.somsom_market.controller.GroupItem;
 
-import com.example.somsom_market.domain.ItemStatus;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.util.Date;
@@ -110,7 +109,7 @@ public class GroupItemRequest {
     }
 
     public void setEndDate(Date endDate) {
-        this.endDate = endDate정;
+        this.endDate = endDate;
     }
 
     public String getStatus() {
