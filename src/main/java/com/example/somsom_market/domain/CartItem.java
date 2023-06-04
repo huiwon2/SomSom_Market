@@ -8,7 +8,7 @@ import java.util.Optional;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Data
+@Getter @Setter
 @Entity
 public class CartItem {
     @Id

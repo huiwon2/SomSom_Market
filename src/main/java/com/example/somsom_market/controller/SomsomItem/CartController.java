@@ -13,12 +13,12 @@ import org.springframework.web.bind.annotation.PostMapping;
 @Controller
 public class CartController {
     AccountService accountService;
-    SomsomItemService somsomItemService
+    SomsomItemService somsomItemService;
 //    장바구니에 물건 담기
-    @PostMapping("/user/cart/{id}/{item_id}")
-    public String addCartItem(@PathVariable("id") String id, @PathVariable("item_id") long itemId, int amount){
-        Account account = accountService.getAccount(id);
-        Item item = somsomItemService.
-    }
+//    @PostMapping("/user/cart/{id}/{item_id}")
+//    public String addCartItem(@PathVariable("id") String id, @PathVariable("item_id") long itemId, int amount){
+//        Account account = accountService.getAccount(id);
+//        Item item = somsomItemService.
+//    }
 
 }

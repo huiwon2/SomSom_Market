@@ -85,7 +85,7 @@ public class PersonalItemController {
         personalItemRequest.setTitle(personalItem.getTitle());
         personalItemRequest.setPrice(personalItem.getPrice());
         personalItemRequest.setDescription(personalItem.getDescription());
-        personalItemRequest.setStatus(personalItem.getStatus());
+        personalItemRequest.setStatus(String.valueOf(personalItem.getStatus()));
 
 
         mav.setViewName(PERSONAL_REGISTRATION_FORM);

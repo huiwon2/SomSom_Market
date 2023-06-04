@@ -39,7 +39,7 @@ public class UpdateUserController {
             Account account = userSession.getAccount();
 
             UserRegistRequest accountReq = new UserRegistRequest(
-                    account.getUserName(), account.getNickName(), account.getId(),
+                    account.getName(), account.getNickName(), account.getId(),
                     account.getEmail(), account.getAddress(), account.getZipcode(),
                     account.getBankName(), account.getBankAccount(), account.getPhone()
             );

@@ -1,18 +1,13 @@
 package com.example.somsom_market.domain;
 
 import lombok.*;
-import org.hibernate.annotations.Table;
 
 import javax.persistence.*;
 import java.io.Serializable;
 
-@Data
-@NoArgsConstructor
-@AllArgsConstructor
+@Getter @Setter
 @RequiredArgsConstructor
-@Builder
 @Entity
-@Table(appliesTo = "REVIEW")
 public class Review implements Serializable {
 
     private String userId;

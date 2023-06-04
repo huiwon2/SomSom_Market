@@ -2,6 +2,7 @@ package com.example.somsom_market.service;
 
 import com.example.somsom_market.controller.PersonalItem.PersonalItemRequest;
 import com.example.somsom_market.dao.PersonalItemDao;
+import com.example.somsom_market.domain.ItemStatus;
 import com.example.somsom_market.domain.PersonalItem;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -32,9 +33,9 @@ public class PersonalItemService {
         item.setTitle(itemRegistReq.getTitle());
         item.setPrice(itemRegistReq.getPrice());
         item.setDescription(itemRegistReq.getDescription());
-        item.setStatus(itemRegistReq.getStatus());
+        item.setStatus(ItemStatus.valueOf(itemRegistReq.getStatus()));
         item.setSellerId(userId);
-        item.setCategory_id(2);
+//        item.setCategory_id(2);
 
         PersonalItem personalItem = personalItemDao.insertItem(item);
 

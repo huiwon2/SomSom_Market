@@ -14,11 +14,11 @@ public class ItemDao {
     private final EntityManager em;
 
     public void save(Item item) {
-        if (item.getId() == null) {
+//        if (item.getId() == null) {
             em.persist(item);
-        } else {
-            em.merge(item);
-        }
+//        } else {
+//            em.merge(item);
+//        }
     }
 
     public Item findOne(Long id) {
