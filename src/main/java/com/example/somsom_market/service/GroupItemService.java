@@ -8,6 +8,8 @@ import com.example.somsom_market.repository.GroupItemRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 @Service
 public class GroupItemService {
@@ -22,7 +24,7 @@ public class GroupItemService {
         return groupItemDao.getItem(itemId);
     }
 
-    private static GroupItem reqToGroupItem(GroupItemRequest req, int userId){
+    private static GroupItem reqToGroupItem(GroupItemRequest req, String userId){
         //itemId = AutoGenerate
         GroupItem tmp = new GroupItem();
         tmp.setSellerId(userId);
@@ -39,12 +41,12 @@ public class GroupItemService {
     }
 
     //게시글 추가 후 itemId 반환
-    public long registerNewGroupItem(GroupItemRequest req, int userId){
+    public long registerNewGroupItem(GroupItemRequest req, String userId){
         return groupItemDao.insertGroupItem(reqToGroupItem(req, userId));
     }
 
     //게시글 수정 후 itemId 반환
-    public long updateGroupItem(GroupItemRequest req, int userId){
+    public long updateGroupItem(GroupItemRequest req, String userId){
        return groupItemDao.updateGroupItem(reqToGroupItem(req, userId));
     }
 
@@ -59,12 +61,28 @@ public class GroupItemService {
     }
 
     //사용자가 판매하는 공동구매 리스트 보여주기
-    public List<GroupItem> showGroupItemList(int userId){
+    public List<GroupItem> showGroupItemList(String userId){
         return groupItemRepository.findGroupItemsBySellerIdOrderByStartDate(userId);
     }
 
     //모든 공동구매 리스트 보여주기
     public List<GroupItem> showAllGroupItemList(){
         return groupItemDao.findAllGroupItem();
+    }
+
+    //목표 금액이 모이면 관리자가 상태 바꾸고, 마감 기한 전까지 모이지 않으면 주문 취소하기
+    public void changeStatus(GroupItem groupItem){
+        long itemId = groupItem.getId();
+        int totalOrdersPrice = groupItemDao.getTotalPriceOfGroupItemOrders(groupItem.getId());
+        int salesTarget = groupItem.getSalesTarget();
+        Date endDate = groupItem.getEndDate();
+        Calendar cal = Calendar.getInstance();
+        Date today = cal.getTime();
+        if(totalOrdersPrice >= salesTarget && endDate.compareTo(today) >= 0){
+            groupItemDao.updateStatusToSoldOut(itemId);
+        }
+        if(totalOrdersPrice < salesTarget && endDate.compareTo(today) < 0){
+            groupItemDao.cancelGroupItemOrders(itemId);
+        }
     }
 }

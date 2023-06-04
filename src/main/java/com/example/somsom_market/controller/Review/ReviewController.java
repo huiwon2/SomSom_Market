@@ -1,6 +1,7 @@
 package com.example.somsom_market.controller.Review;
 
 import com.example.somsom_market.service.ReviewService;
+import org.hibernate.Session;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -37,7 +38,7 @@ public class ReviewController {
     }
     @PostMapping("/review/register")
     public String reviewRegister(@ModelAttribute("reviewItem") ReviewRequest reviewRequest, BindingResult result, Model model, SessionStatus status){
-        new ReviewFormValidator.validate(reviewRequest, result);
+        //new ReviewFormValidator.validate(reviewRequest, result);
         if(result.hasErrors()){
             return ReviewForm;
         }
@@ -49,6 +50,18 @@ public class ReviewController {
     @RequestMapping("/review/delete")
     public String reviewDelete(@RequestParam("reviewId") long reviewId){
         reviewService.deleteReview(reviewId);
+        return Mypage;
+    }
+
+    @RequestMapping("/review/update")
+    public String reviewUpdate(@ModelAttribute("reviewItem") ReviewRequest reviewRequest,
+                               BindingResult result, Model model,
+                               SessionStatus status){
+        //new ReviewFormValidator.validate(reviewRequest, result);
+        if(result.hasErrors()){
+            return ReviewForm;
+        }
+        long reviewId = reviewService.updateReview(reviewRequest);
         return Mypage;
     }
 

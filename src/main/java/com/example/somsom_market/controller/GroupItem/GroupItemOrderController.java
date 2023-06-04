@@ -1,5 +1,8 @@
 package com.example.somsom_market.controller.GroupItem;
 
+import com.example.somsom_market.domain.GroupItem;
+import com.example.somsom_market.service.GroupItemService;
+import com.example.somsom_market.service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -13,20 +16,13 @@ import javax.servlet.http.HttpSession;
 @Controller
 public class GroupItemOrderController {
     @Autowired
-    private OrderService orderService;
-
-    @RequestMapping("/group/item/{itemId}") //공동구매 아이템 주문
-    public String order(HttpSession session, @ModelAttribute("orderSubmitRequest") OrderSubmitRequest req, @PathVariable int itemId, Model model){ // 결제 시스템 쪽에서 validate 할거임 // 이렇게 세션에서 받아오던가
-        int orderId = orderService.submitOrder(req);
-        List<Order> orderList = orderService.getOrders(); // 수정 필요
-        model.addAttribute("orderList");
-        return "/user/myPage/orderList";
-    }
-
-    @RequestMapping("/user/myPage/order/cancel")
-    public String cancelOrder(@RequestParam("itemId") int itemId, Model model){
+    private GroupItemService groupService;
+    @RequestMapping("")
+    public String changeStatusByManager(@RequestParam("itemId") int itemId, Model model){
+        GroupItem groupItem = groupService.searchItem(itemId);
+        groupService.changeStatus(groupItem);
         //수정 필요
-        model.addAttribute("orderList", list);
+        //  model.addAttribute("orderList", list);
         return "/user/myPage/orderList";
     }
 }

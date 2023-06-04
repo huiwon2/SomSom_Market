@@ -1,16 +1,17 @@
 package com.example.somsom_market.controller.Review;
 
 public class ReviewRequest {
-    private int userId;
+
+    private String userId;
     private long orderItemId;
     private String description;
     private double score;
 
-    public int getUserId() {
+    public String getUserId() {
         return userId;
     }
 
-    public void setUserId(int userId) {
+    public void setUserId(String userId) {
         this.userId = userId;
     }
 

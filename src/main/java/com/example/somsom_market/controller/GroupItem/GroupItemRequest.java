@@ -6,14 +6,14 @@ import java.util.Date;
 import java.util.List;
 
 public class GroupItemRequest {
-    private int itemId;
+    private long itemId;
     private String title;
     private int price;
     private String description;
     private List<String> imageUrl;
     private int wishCount;
 
-    private int sellerId;
+    private String sellerId;
     private int salesTarget;
     private int salesNow;
 
@@ -24,11 +24,11 @@ public class GroupItemRequest {
 
     private String status;
 
-    public int getItemId() {
+    public long getItemId() {
         return itemId;
     }
 
-    public void setItemId(int itemId) {
+    public void setItemId(long itemId) {
         this.itemId = itemId;
     }
 
@@ -72,11 +72,11 @@ public class GroupItemRequest {
         this.wishCount = wishCount;
     }
 
-    public int getSellerId() {
+    public String getSellerId() {
         return sellerId;
     }
 
-    public void setSellerId(int sellerId) {
+    public void setSellerId(String sellerId) {
         this.sellerId = sellerId;
     }
 
