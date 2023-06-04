@@ -35,7 +35,7 @@ public class Account {
     // private List<Integer> wishItem;
 
     @JsonIgnore
-    @OneToMany(mappedBy = "member")
+    @OneToMany(mappedBy = "account")
     private List<Order> orders = new ArrayList<>();
 
 }

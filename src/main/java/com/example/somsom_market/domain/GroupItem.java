@@ -12,7 +12,6 @@ import java.util.Date;
 @RequiredArgsConstructor
 @Builder
 @Entity
-@Table(appliesTo = "ITEM")
 @DiscriminatorValue(value="GROUP")
 public class GroupItem extends Item implements Serializable {
 
