@@ -13,7 +13,6 @@ public class SomsomItem extends Item {
 
     private int stockQuantity;
 
-
     //==비즈니스 로직==//
     /**
      * stock 증가

@@ -1,16 +1,11 @@
 package com.example.somsom_market.service;
 
 import com.example.somsom_market.dao.AccountDao;
-import com.example.somsom_market.dao.ItemDao;
 import com.example.somsom_market.dao.OrderDao;
-import com.example.somsom_market.domain.Account;
-import com.example.somsom_market.domain.Item;
-import com.example.somsom_market.domain.Order;
-import com.example.somsom_market.domain.OrderItem;
-import com.example.somsom_market.repository.AccountRepository;
-import com.example.somsom_market.repository.OrderRepository;
+import com.example.somsom_market.dao.SomsomItemDao;
+import com.example.somsom_market.domain.*;
+import com.example.somsom_market.repository.OrderSearch;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -23,7 +18,7 @@ public class OrderService {
 
     private final OrderDao orderDao;
     private final AccountDao accountDao;
-    private final ItemDao itemDao;
+    private final SomsomItemDao somsomItemDao;
 
     /**
      * 주문
@@ -33,21 +28,16 @@ public class OrderService {
 
         //엔티티 조회
         Account account = accountDao.findOne(memberId);
-        Item item = itemDao.findOne(itemId);
-
-        //배송정보 생성
-        Delivery delivery = new Delivery();
-        delivery.setAddress(member.getAddress());
-        delivery.setStatus(DeliveryStatus.READY);
+        SomsomItem item = somsomItemDao.findOne(itemId);
 
         //주문상품 생성
         OrderItem orderItem = OrderItem.createOrderItem(item, item.getPrice(), count);
 
         //주문 생성
-        Order order = Order.createOrder(member, delivery, orderItem);
+        Order order = Order.createOrder(account, orderItem);
 
         //주문 저장
-        orderRepository.save(order);
+        orderDao.save(order);
 
         return order.getId();
     }
@@ -58,13 +48,13 @@ public class OrderService {
     @Transactional
     public void cancelOrder(Long orderId) {
         //주문 엔티티 조회
-        Order order = orderRepository.findOne(orderId);
+        Order order = orderDao.findOne(orderId);
         //주문 취소
         order.cancel();
     }
 
     //검색
     public List<Order> findOrders(OrderSearch orderSearch) {
-        return orderRepository.findAllByString(orderSearch);
+        return orderDao.findAllByString(orderSearch);
     }
 }

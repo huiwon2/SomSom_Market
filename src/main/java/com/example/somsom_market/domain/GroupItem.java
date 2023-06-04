@@ -16,10 +16,6 @@ import java.util.Date;
 @Table(appliesTo = "ITEM")
 @DiscriminatorValue(value="GROUP")
 public class GroupItem extends Item implements Serializable {
-    @Id
-    @GeneratedValue
-    @Column(name="item_id")
-    private long itemId;
 
     //@ManyToOne
     //@JoinColumn(name="seller", referencedColumnName="id")

@@ -17,7 +17,7 @@ import static javax.persistence.FetchType.LAZY;
 
 @Entity
 @Table(name = "orders")
-@Getter @Setter
+@Data
 @NoArgsConstructor(access = AccessLevel.PROTECTED) //기본생성자 사용 불가
 public class Order {
 

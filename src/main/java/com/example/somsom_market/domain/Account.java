@@ -1,9 +1,12 @@
 package com.example.somsom_market.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.sun.istack.NotNull;
 import lombok.*;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Data
 @NoArgsConstructor
@@ -33,5 +36,9 @@ public class Account {
     private String phone;
 //    수정 필요
     // private List<Integer> wishItem;
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "member")
+    private List<Order> orders = new ArrayList<>();
 
 }
