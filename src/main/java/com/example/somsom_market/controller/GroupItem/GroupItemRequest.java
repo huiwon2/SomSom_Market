@@ -110,7 +110,7 @@ public class GroupItemRequest {
     }
 
     public void setEndDate(Date endDate) {
-        this.endDate = endDate;
+        this.endDate = endDate정;
     }
 
     public String getStatus() {
