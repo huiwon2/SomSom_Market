@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>개인 거래 상세페이지</title>
+</head>
+<body>
+<div th:insert="~{header}"></div>
+
+<h2><span th:text="${personalItem.title}"></span></h2><br>
+<span th:text="${personalItem.price}"></span><br>
+<textarea th:value="${personalItem.description}" th:text="${personalItem.description}"></textarea><br>
+<span th:text="${personalItem.status}"></span><br>
+<span th:text="${seller.nickName}"></span>
+
+<div th:if="${userSession.account.id} == ${seller.id}">
+    <a th:href="@{/user/myPage/sell/personal/update}">
+        <input type="button" value="수정"></a>
+    <a th:href="@{/user/myPage/sell/personal/delete}">
+        <input type="button" value="삭제"></a>
+</div>
+
+</body>
+</html>

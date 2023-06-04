@@ -3,16 +3,19 @@ package com.example.somsom_market.domain;
 import lombok.*;
 import org.hibernate.annotations.Table;
 
+import javax.persistence.Column;
+import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@RequiredArgsConstructor
-@Builder
+//@Builder
 @Entity
-@Table(appliesTo = "PERSONALITEM")
+@DiscriminatorValue(value="PERSONAL")
 public class PersonalItem extends Item{
+    @Column(name="seller_id")
     private String sellerId;
-    private int status;
+    private int category_id;
+    private String status;
 }
