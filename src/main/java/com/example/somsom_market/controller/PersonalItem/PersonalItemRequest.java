@@ -9,6 +9,6 @@ public class PersonalItemRequest {
     private String title;
     private int price;
     private String description;
-    private List<String> imageUrl;
+    // private List<String> imageUrl;
     private String status; // 거래가능 / 거래중 / 거래완료
 }
