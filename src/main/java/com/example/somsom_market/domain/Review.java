@@ -15,7 +15,7 @@ import java.io.Serializable;
 @Table(appliesTo = "REVIEW")
 public class Review implements Serializable {
 
-    private int userId;
+    private String userId;
 
     @Column(name="order_Item_id")
     private long orderItemId;

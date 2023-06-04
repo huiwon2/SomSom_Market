@@ -11,7 +11,7 @@ import javax.transaction.Transactional;
 import java.util.List;
 
 @Repository
-public class GroupItemDao extends ItemDao{
+public class GroupItemDao{
     @PersistenceContext
     private EntityManager em;
     @Transactional
@@ -22,13 +22,13 @@ public class GroupItemDao extends ItemDao{
     @Transactional
     public long insertGroupItem(GroupItem groupItem){
         em.persist(groupItem);
-        long itemId = groupItem.getItemId();
+        long itemId = groupItem.getId();
         return itemId;
     }
     @Transactional
     public long updateGroupItem(GroupItem groupItem){
         em.merge(groupItem);
-        long itemId = groupItem.getItemId();
+        long itemId = groupItem.getId();
         return itemId;
     }
     @Transactional
@@ -48,4 +48,32 @@ public class GroupItemDao extends ItemDao{
         List<GroupItem> groupItems = query.getResultList();
         return groupItems;
     }
+
+    @Transactional
+    public int getTotalPriceOfGroupItemOrders(long itemId){
+        Query query = em.createNativeQuery("SELECT SUM(o.ORDER_PRICE) FROM ORDER_ITEM o JOIN ITEM i WHERE o.ITEM_ID = ?");
+        query.setParameter(1, itemId);
+        return (int) query.getSingleResult();
+    }
+
+    @Transactional
+    public int cancelGroupItemOrders(long itemId){
+        Query query = em.createQuery("DELETE OrderItem o WHERE o.id = :itemId");
+        query.setParameter("itemId", itemId);
+        int deletedCnt = query.executeUpdate();
+        return deletedCnt;
+    }
+
+    @Transactional
+    public int updateStatusToSoldOut(long itemId){
+        Query query = em.createQuery("UPDATE GroupItem g SET g.status = :status WHERE g.id = :itemId");
+        query.setParameter("status","SOLDOUT");
+        query.setParameter("itemId", itemId);
+        int updateCnt = query.executeUpdate();
+        return updateCnt;
+    }
+
+    //public int changeOrderStatus(long itemId){
+
+    //}
 }

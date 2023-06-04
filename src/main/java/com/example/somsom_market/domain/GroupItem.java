@@ -21,7 +21,7 @@ public class GroupItem extends Item implements Serializable {
     //@JoinColumn(name="seller", referencedColumnName="id")
     //private Account user; //1 : N(0..*) , many side
     @Column(name="seller_id")
-    private int sellerId; // userId
+    private String sellerId; // userId
 
     private int category_id;
 

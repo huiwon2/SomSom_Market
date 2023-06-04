@@ -13,6 +13,7 @@ import lombok.Setter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.swing.text.html.Option;
 import java.util.*;
 
 @Getter
@@ -21,13 +22,13 @@ import java.util.*;
 @AllArgsConstructor
 @Service
 public class SomsomItemService {
-    @Autowired
-    private SomsomItemRepository somsomItemRepository;
+
+    private static SomsomItemRepository somsomItemRepository;
     @Autowired
     private SomsomItemDao somsomItemDao;
 
 //   아이템 검색
-    public SomsomItem getSomsomItem(String id){
+    public SomsomItem getSomsomItem(long id){
         Optional<SomsomItem> somsomItem = somsomItemRepository.findById(id);
         if(somsomItem.isPresent()) {
             return somsomItem.get();
@@ -46,12 +47,31 @@ public class SomsomItemService {
         return somsomItem;
     }
 //    게시글 수정
-    public static void updateSomsomItem(ItemUpdateRequest itemUpdateRequest){
-
+    public static void updateItem(SomsomItem somsomItem, long id){
+        SomsomItem update = somsomItemRepository.findItemById(id);
+        update.setTitle(somsomItem.getTitle());
+        update.setDescription(somsomItem.getDescription());
+        update.setPrice(somsomItem.getPrice());
+        update.setImageUrl(somsomItem.getImageUrl());
+        somsomItemRepository.save(update);
     }
 //    게시글 삭제
-    public static void deleteSomsomItem(){
+    public static void deleteSomsomItem(long id){
+        somsomItemRepository.deleteById(id);
+    }
+//    상품 등록
+    public void saveItem(SomsomItem item) {
 
+        somsomItemRepository.save(item); }
+//    읽기
+    public Optional<SomsomItem> itemView(long id) { return somsomItemRepository.findById(id); }
+//    전체 리스트 읽기
+    public List<SomsomItem> allItemView(){
+        return somsomItemRepository.findAll();
+    }
+//    상품 삭제
+    public void itemDelete(long id){
+        somsomItemRepository.deleteById(id);
     }
 
 }

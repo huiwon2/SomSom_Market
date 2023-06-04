@@ -41,7 +41,7 @@ public class ReviewService {
     }
 
     //리뷰 삭제
-    public void deleteReview(int reviewId){
+    public void deleteReview(long reviewId){
         reviewDao.deleteReview(reviewId);
     }
 }
