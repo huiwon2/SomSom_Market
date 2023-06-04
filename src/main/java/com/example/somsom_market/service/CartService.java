@@ -29,7 +29,7 @@ public class CartService {
             cartRepository.save(cart);
         }
         Optional<SomsomItem> item = somsomItemRepository.findById(newItem.getId());
-        CartItem cartItem = cartItemRepository.findByCartIdAndItemId(cart.getCart_id(), item.get().getId());
+        CartItem cartItem = cartItemRepository.findByCartIdAndItemId(cart.getId(), item.get().getId());
 //        장바구니에 아이템 없을 때
         if(cartItem == null){
             cartItem = CartItem.createCartItem(cart, item, amount);
@@ -38,7 +38,7 @@ public class CartService {
 //        아이템 있을 때 수량 증가
         else{
             CartItem updated = cartItem;
-            updated.setCart_id(cartItem.getCart_id());
+            updated.setCart(cartItem.getCart());
             updated.setItem(cartItem.getItem());
             updated.addCount(amount);
             updated.setCount(updated.getCount());

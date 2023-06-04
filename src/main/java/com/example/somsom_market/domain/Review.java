@@ -12,12 +12,11 @@ public class Review implements Serializable {
 
     private String userId;
 
-    @Column(name="order_Item_id")
-    private long orderItemId;
+    private Long orderItemId;
 
     @Id
     @GeneratedValue
-    private long reviewId;
+    private Long reviewId;
 
     private String description;
     private double score;

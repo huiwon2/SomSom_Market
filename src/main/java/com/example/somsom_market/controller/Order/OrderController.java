@@ -151,10 +151,10 @@ public class OrderController {
         return "/order/complete";
     }
 
-    @GetMapping("/main")
-    public String backToMain() {
-        return "/main";
-    }
+//    @GetMapping("/order/main")
+//    public String backToMain() {
+//        return "/main";
+//    }
 
     @PostMapping("/{orderId}/cancel") // TODO: 2023/05/27  마이페이지에서 접근
     public String cancelOrder(@PathVariable("orderId") Long orderId) {

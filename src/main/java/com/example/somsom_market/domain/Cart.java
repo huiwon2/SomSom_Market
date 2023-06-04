@@ -10,18 +10,20 @@ import java.util.List;
 @NoArgsConstructor
 @Getter @Setter
 @Entity
-@Table(name="CART")
 public class Cart {
     @Generated
     @Id
-    private long cart_id;
+    @Column(name = "cart_id")
+    private Long id;
 
     @OneToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name="user_id")
+    @JoinColumn(name="account_id")
     @NotNull
     private Account account;
+
     private long count;
-    @OneToMany(mappedBy = "cart_id")
+
+    @OneToMany(mappedBy = "cart")
     private List<CartItem> cartItems = new ArrayList<>();
     @NotNull
     private int total_quantity;
