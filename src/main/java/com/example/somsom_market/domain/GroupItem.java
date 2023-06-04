@@ -7,8 +7,7 @@ import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
 
-@Data
-@NoArgsConstructor
+@Getter @Setter
 @AllArgsConstructor
 @RequiredArgsConstructor
 @Builder
@@ -23,8 +22,6 @@ public class GroupItem extends Item implements Serializable {
     @Column(name="seller_id")
     private String sellerId; // userId
 
-    private int category_id;
-
     @Column(name="sales_target")
     private int salesTarget; //공구 목표액
     @Column(name="sales_now")
@@ -33,7 +30,4 @@ public class GroupItem extends Item implements Serializable {
     private Date startDate; //공구 시작일
     @Column(name="end_date")
     private Date endDate; //공구 마감일
-    private String status; //INSTOCK, SOLDOUT
-
-    private String dtype; //GROUP - this is discriminator column
 }

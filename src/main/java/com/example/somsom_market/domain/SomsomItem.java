@@ -9,7 +9,7 @@ import java.util.List;
 
 @Entity
 @DiscriminatorValue("SOMSOM")
-@Data
+@Getter @Setter
 public class SomsomItem extends Item {
 
     private int stockQuantity;

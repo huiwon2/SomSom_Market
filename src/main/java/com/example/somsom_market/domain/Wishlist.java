@@ -4,11 +4,8 @@ import lombok.*;
 
 import javax.persistence.*;
 
-@Data
-@NoArgsConstructor
-@AllArgsConstructor
 @RequiredArgsConstructor
-@Builder
+@Getter @Setter
 @Entity
 @Table(name="WISHLIST")
 public class Wishlist {

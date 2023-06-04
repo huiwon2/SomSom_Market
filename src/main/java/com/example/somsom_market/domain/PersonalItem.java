@@ -7,7 +7,7 @@ import javax.persistence.Column;
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 
-@Data
+@Getter @Setter
 @NoArgsConstructor
 @AllArgsConstructor
 //@Builder
@@ -16,6 +16,4 @@ import javax.persistence.Entity;
 public class PersonalItem extends Item{
     @Column(name="seller_id")
     private String sellerId;
-    private int category_id;
-    private String status;
 }

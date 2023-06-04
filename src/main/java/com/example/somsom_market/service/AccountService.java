@@ -42,7 +42,7 @@ public class AccountService {
     // 새로운 계정 추가 후 다시 Account 반환 → 바로 로그인
     public Account insertAccount(UserRegistRequest memReq) {
         Account account = new Account();
-        account.setUserName(memReq.getUserName());
+        account.setName(memReq.getUserName());
         account.setNickName(memReq.getNickName());
         account.setId(memReq.getId());
         account.setPassword(memReq.getPassword());
