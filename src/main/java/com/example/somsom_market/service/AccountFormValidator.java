@@ -2,10 +2,12 @@ package com.example.somsom_market.service;
 
 import com.example.somsom_market.controller.User.UserRegistRequest;
 import com.example.somsom_market.domain.Account;
+import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;
 import org.springframework.validation.ValidationUtils;
 import org.springframework.validation.Validator;
 
+@Component
 public class AccountFormValidator implements Validator {
     public boolean supports(Class<?> clazz) {
         return Account.class.isAssignableFrom(clazz);

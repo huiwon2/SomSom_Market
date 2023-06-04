@@ -13,10 +13,12 @@ import java.util.Optional;
 public class CartItem {
     @Id
     @GeneratedValue
-    private long cartItem_id;
+    @Column(name = "cart_item_id")
+    private Long id;
+
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name="cart_id")
-    private Cart cart_id;
+    private Cart cart;
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name="item_id")
@@ -27,7 +29,7 @@ public class CartItem {
 
     public static CartItem createCartItem(Cart cart, Optional<SomsomItem> item, int amount){
         CartItem cartItem = new CartItem();
-        cartItem.setCart_id(cart);
+        cartItem.setCart(cart);
         cartItem.setItem(item.get());
         cartItem.setCount(amount);
         return cartItem;

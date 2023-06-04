@@ -29,9 +29,9 @@ public class RegisterUserController {
     }
 
     @Autowired
-    private AccountFormValidator validator;
-    public void setValidator(AccountFormValidator validator) {
-        this.validator = validator;
+    private AccountFormValidator accountFormValidator;
+    public void setAccountFormValidator(AccountFormValidator accountFormValidator) {
+        this.accountFormValidator = accountFormValidator;
     }
 
     @ModelAttribute("memReq")
@@ -77,7 +77,7 @@ public class RegisterUserController {
     public String submit(HttpSession session,
                          @Valid @ModelAttribute("memReq") UserRegistRequest memReq,
                          BindingResult bindingResult, Model model) {
-        validator.validate(memReq, bindingResult);
+        accountFormValidator.validate(memReq, bindingResult);
 
         if (bindingResult.hasErrors()) {
             return USER_REGISTRATION_FORM;
