@@ -59,9 +59,9 @@ public class GroupItemService {
     }
 
     //사용자가 판매하는 공동구매 리스트 보여주기
-    public List<GroupItem> showGroupItemList(int userId){
-        return groupItemRepository.findGroupItemsBySellerIdOrderByStartDate(userId);
-    }
+//    public List<GroupItem> showGroupItemList(int userId){
+//        return groupItemRepository.findGroupItemsBySellerIdOrderByStartDate(userId);
+//    }
 
     //모든 공동구매 리스트 보여주기
     public List<GroupItem> showAllGroupItemList(){

@@ -17,6 +17,7 @@ public abstract class Item {
     private String title;
     private String description;
     private int price;
+    private int wishCount;
 
     @Enumerated(EnumType.STRING)
     private ItemStatus status;

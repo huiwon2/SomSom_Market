@@ -1,5 +1,6 @@
 package com.example.somsom_market.domain;
 
+import com.example.somsom_market.exception.NotEnoughStockException;
 import lombok.*;
 import org.hibernate.annotations.Table;
 
@@ -27,7 +28,7 @@ public class SomsomItem extends Item {
     public void removeStock(int quantity) {
         int restStock = this.stockQuantity - quantity;
         if (restStock < 0) {
-            //throw new NotEnoughStockException("need more stock");
+            throw new NotEnoughStockException("need more stock");
         }
         this.stockQuantity = restStock;
     }
