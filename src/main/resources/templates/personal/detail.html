@@ -11,13 +11,15 @@
 <span th:text="${personalItem.price}"></span><br>
 <textarea th:value="${personalItem.description}" th:text="${personalItem.description}"></textarea><br>
 <span th:text="${personalItem.status}"></span><br>
-<span th:text="${seller.nickName}"></span>
+<span th:text="${personalItem.nickName}"></span>
 
-<div th:if="${userSession.account.id} == ${seller.id}">
-    <a th:href="@{/user/myPage/sell/personal/update}">
-        <input type="button" value="수정"></a>
-    <a th:href="@{/user/myPage/sell/personal/delete}">
-        <input type="button" value="삭제"></a>
+<div th:if="${userSession?.account}">
+    <div th:if="${userSession.account.id} == ${personalItem.sellerId}">
+        <a th:href="@{/user/myPage/sell/personal/update(itemId=${personalItem.id})}">
+            <input type="button" value="수정"></a>
+        <a th:href="@{/user/myPage/sell/personal/delete(itemId=${personalItem.id})}">
+            <input type="button" value="삭제"></a>
+    </div>
 </div>
 
 </body>
