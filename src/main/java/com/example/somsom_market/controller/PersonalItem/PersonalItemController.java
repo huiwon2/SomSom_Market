@@ -7,6 +7,7 @@ import com.example.somsom_market.service.AccountService;
 import com.example.somsom_market.service.PersonalItemService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.bind.support.SessionStatus;
@@ -14,6 +15,7 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.util.WebUtils;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.List;
 
 @Controller
 @SessionAttributes("userSession")
@@ -27,12 +29,6 @@ public class PersonalItemController {
     private PersonalItemService personalItemService;
     public void setPersonalItemService(PersonalItemService personalItemService) {
         this.personalItemService = personalItemService;
-    }
-
-    @Autowired
-    private AccountService accountService;
-    public void setAccountService(AccountService accountService) {
-        this.accountService = accountService;
     }
 
     @GetMapping("/personal/register")
@@ -52,7 +48,7 @@ public class PersonalItemController {
     }
 
     @PostMapping("/personal/register")
-    public ModelAndView register(HttpServletRequest request,
+    public String register(HttpServletRequest request,
                                  @ModelAttribute("personalItem") PersonalItemRequest itemRegistReq,
                                  BindingResult result) {
         // 입력 값 검증 추후 수정
@@ -60,33 +56,37 @@ public class PersonalItemController {
         UserSession userSession = (UserSession) WebUtils.getSessionAttribute(request, "userSession");
         Account account = userSession.getAccount();
 
-        ModelAndView mav = new ModelAndView();
-
         if (result.hasErrors()) {
-            mav.setViewName(PERSONAL_REGISTRATION_FORM);
-            return mav;
+            return PERSONAL_REGISTRATION_FORM;
         }
 
         PersonalItem personalItem = personalItemService.registerNewItem(itemRegistReq, account.getId());
-        mav.setViewName(PERSONAL_DETAIL_VIEW);
-        mav.addObject("personalItem", personalItem);
-        mav.addObject("seller", account);
 
-        return mav;
+        return "redirect:/personal/detail/" + personalItem.getId(); // 추후 수정
+        // "redirect:/item/" + personalItem.getId();
     }
 
     @GetMapping("/user/myPage/sell/personal/update")
-    public ModelAndView showUpdateForm(HttpServletRequest request, @RequestParam("itemId") int itemId) {
+    public ModelAndView showUpdateForm(HttpServletRequest request,
+                                       @RequestParam("itemId") long itemId) {
         ModelAndView mav = new ModelAndView();
 
         PersonalItem personalItem = personalItemService.searchItem(itemId);
+
         PersonalItemRequest personalItemRequest = new PersonalItemRequest();
 
+        personalItemRequest.setItemId(personalItem.getId());
+        personalItemRequest.setSellerId(personalItem.getSellerId());
         personalItemRequest.setTitle(personalItem.getTitle());
         personalItemRequest.setPrice(personalItem.getPrice());
         personalItemRequest.setDescription(personalItem.getDescription());
-        personalItemRequest.setStatus(String.valueOf(personalItem.getStatus()));
-
+        if (personalItem.getStatus().toString().equals("INSTOCK")) {
+            personalItemRequest.setStatus("거래가능");
+        } else if (personalItem.getStatus().toString().equals("ING")) {
+            personalItemRequest.setStatus("거래중");
+        } else {
+            personalItemRequest.setStatus("거래완료");
+        }
 
         mav.setViewName(PERSONAL_REGISTRATION_FORM);
         mav.addObject("statusString", new String[] {"거래가능", "거래중", "거래완료"});
@@ -96,34 +96,54 @@ public class PersonalItemController {
     }
 
     @PostMapping("/user/myPage/sell/personal/update")
-    public ModelAndView update(HttpServletRequest request,
+    public String update(HttpServletRequest request,
                                @ModelAttribute("personalItem") PersonalItemRequest itemRegistReq,
                                BindingResult result) {
-
-        UserSession userSession = (UserSession) WebUtils.getSessionAttribute(request, "userSession");
-        Account account = userSession.getAccount();
-
-        ModelAndView mav = new ModelAndView();
+        // 입력 값 검증 추후 수정
 
         if (result.hasErrors()) {
-            mav.setViewName(PERSONAL_REGISTRATION_FORM);
-            return mav;
+            return PERSONAL_REGISTRATION_FORM;
         }
 
         PersonalItem personalItem = personalItemService.updateItem(itemRegistReq);
-        mav.setViewName(PERSONAL_DETAIL_VIEW);
-        mav.addObject("personalItem", personalItem);
-        mav.addObject("seller", account);
 
-        return mav;
+        return "redirect:/personal/detail/" + personalItem.getId(); // 추후 수정
+        // "redirect:/item/" + personalItem.getId();
     }
 
     @RequestMapping("/user/myPage/sell/personal/delete")
     public String delete(HttpServletRequest request,
-                         @RequestParam("itemId") int itemId) {
+                         @RequestParam("itemId") long itemId) {
 
         personalItemService.deleteItem(itemId);
 
-        return "personal";
+        return "personal/list"; // 추후 수정
+    }
+
+
+
+
+    // 여기서부턴 추후 삭제 (확인해보기 위해 추가함)
+
+    // 개인 거래 게시글 리스트
+    @GetMapping("/personal/list")
+    public String showList(HttpServletRequest request, Model model) {
+
+        List<PersonalItem> personalItemList = personalItemService.personalItemList();
+
+        model.addAttribute("personalItemList", personalItemList);
+
+        return "personal/list";
+    }
+
+    // 개인 거래 게시글 상세 뷰
+    @RequestMapping("/personal/detail/{itemId}")
+    public String showPersonalDetail(HttpServletRequest request,
+                                     @PathVariable("itemId") long itemId, Model model) {
+        PersonalItem personalItem = personalItemService.searchItem(itemId);
+
+        model.addAttribute("personalItem", personalItem);
+
+        return PERSONAL_DETAIL_VIEW;
     }
 }

@@ -7,7 +7,7 @@
 <body>
 <div th:insert="~{header}"></div>
 
-<form role="form" th:object="${personalItem}" th:action="@{/personal/register}" method="post">
+<form role="form" id="frm" th:object="${personalItem}" method="post">
 
   <div class="form-group">
     <label th:for="title">제목</label>
@@ -40,7 +40,24 @@
   </div>
   <br>
 
-  <input type="submit" class="btn" onClick="" value="게시글 등록">
+  <script th:inline="javascript">
+    var register = /*[[ @{/personal/register} ]]*/;
+    $("#register").on("click", function(){
+      $("#frm").attr("action", register);
+    });
+    var update = /*[[ @{/user/myPage/sell/personal/update} ]]*/;
+    $("#update").on("click", function(){
+      $("#frm").attr("action", update);
+    });
+  </script>
+
+  <div th:if="${personalItem.itemId} &gt; 0">
+    <input type="submit" id="update" class="btn" onClick="" value="게시글 등록">
+  </div>
+  <div th:if="${personalItem.itemId} &lt; 1">
+    <input type="submit" id="register" class="btn" onClick="" value="게시글 등록">
+  </div>
+
 </form>
 
 </body>
