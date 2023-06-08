@@ -50,7 +50,6 @@ public class SomsomItemController {
         somsomItemService.saveItem(somsomItem);
         return "/main";
     }
-//    Update(Service 설계 필요, 사용자 예외 설정 필요한지 판단 필요)
 //    form(Update method)
     @GetMapping("somsomItem/update/{item_id}")
     public String form(ItemUpdateRequest itemUpdateRequest, @RequestParam("itemId")Long itemId, Model model) {
@@ -80,7 +79,7 @@ public class SomsomItemController {
 //    솜솜아이템 리스트
 
 //    상세 페이지
-    @GetMapping("/somsomItem/somsomItemview/{item_id}")
+    @GetMapping("somsomItem/somsomItemview/{item_id}")
     public String itemView(Model model, @PathVariable("itemId")Long itemId){
         model.addAttribute("somsomItmem", somsomItemService.itemView(itemId));
 
