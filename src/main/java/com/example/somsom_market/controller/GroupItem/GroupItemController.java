@@ -68,7 +68,7 @@ public class GroupItemController {
         String userId = (String) session.getAttribute("userId");
 
         // comm 데이터 처리 ( 공동 구매 아이템 생성)
-        long itemId = groupService.registerNewGroupItem(comm, userId);
+        Long itemId = groupService.registerNewGroupItem(comm, userId);
         mav.setViewName("/item/" + itemId); // view name : /item/{itemId}
         //map.put(String.valueOf(itemId), comm);
         comm.setSellerId(userId);
@@ -97,7 +97,7 @@ public class GroupItemController {
         String userId = (String)session.getAttribute("userId");
 
         // comm 데이터 처리 ( 공동 구매 아이템 수정)
-		long itemId = groupService.updateGroupItem(comm, userId);
+        Long itemId = groupService.updateGroupItem(comm, userId);
         mav.setViewName("/item/" + itemId); // view name : /item/{itemId}
         mav.addObject("groupItem", comm);
         status.setComplete(); // session 종료 ("groupItem" 객체 참조가 삭제됨)
@@ -105,7 +105,7 @@ public class GroupItemController {
     }
 
     @RequestMapping("/group/delete")
-    public String delete(@RequestParam("itemId") long itemId) throws Exception{
+    public String delete(@RequestParam("itemId") Long itemId) throws Exception{
         //아이템 삭제
         groupService.deleteGroupItem(itemId);
         //map.remove(itemId);
@@ -114,7 +114,7 @@ public class GroupItemController {
     }
 
     @RequestMapping("/group/status") // 모집현황 조회
-    public ModelAndView checkRecruitStatus(@RequestParam("itemId") long itemId){
+    public ModelAndView checkRecruitStatus(@RequestParam("itemId") Long itemId){
         ModelAndView mav = new ModelAndView("/item/" + itemId);
         //...모집현황 조회 페이지를 따로 만드나..? 아니면 그냥 item 상세 페이지 반환?
         return mav;

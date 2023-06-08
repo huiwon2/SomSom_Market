@@ -15,24 +15,24 @@ public class GroupItemDao{
     @PersistenceContext
     private EntityManager em;
     @Transactional
-    public GroupItem getItem(long itemId){
+    public GroupItem getItem(Long itemId){
         GroupItem groupItem = em.find(GroupItem.class, itemId);
         return groupItem;
     }
     @Transactional
-    public long insertGroupItem(GroupItem groupItem){
+    public Long insertGroupItem(GroupItem groupItem){
         em.persist(groupItem);
-        long itemId = groupItem.getId();
+        Long itemId = groupItem.getId();
         return itemId;
     }
     @Transactional
-    public long updateGroupItem(GroupItem groupItem){
+    public Long updateGroupItem(GroupItem groupItem){
         em.merge(groupItem);
         long itemId = groupItem.getId();
         return itemId;
     }
     @Transactional
-    public void deleteGroupItem(long itemId){
+    public void deleteGroupItem(Long itemId){
         GroupItem groupItem = em.find(GroupItem.class, itemId);
         em.remove(em.merge(groupItem));
     }
@@ -50,7 +50,7 @@ public class GroupItemDao{
     }
 
     @Transactional
-    public int getTotalPriceOfGroupItemOrders(long itemId){
+    public int getTotalPriceOfGroupItemOrders(Long itemId){
         Query query = em.createNativeQuery("SELECT SUM(o.ORDER_PRICE) FROM ORDER_ITEM o JOIN ITEM i WHERE o.ITEM_ID = ?");
         query.setParameter(1, itemId);
         return (int) query.getSingleResult();

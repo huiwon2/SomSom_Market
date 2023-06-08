@@ -36,7 +36,7 @@ public class GroupItemService {
         tmp.setDescription(req.getDescription());
         tmp.setPrice(req.getPrice());
         tmp.setTitle(req.getTitle());
-        tmp.setImageUrl(req.getImageUrl());
+//        tmp.setImageUrl(req.getImageUrl());
         tmp.setWishCount(req.getWishCount());
         return tmp;
     }

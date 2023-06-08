@@ -1,0 +1,79 @@
+<!--예제 헤더-->
+
+<!--<!DOCTYPE html>-->
+<!--<html xmlns:th="http://www.thymeleaf.org">-->
+<!--<head th:fragment="header">-->
+<!--    &lt;!&ndash; Required meta tags &ndash;&gt;-->
+<!--    <meta charset="utf-8">-->
+<!--    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">-->
+
+<!--    &lt;!&ndash; Bootstrap CSS &ndash;&gt;-->
+<!--    <link rel="stylesheet" href="/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">-->
+<!--    &lt;!&ndash; Custom styles for this template &ndash;&gt;-->
+<!--    <link href="/css/jumbotron-narrow.css" rel="stylesheet">-->
+
+<!--    <title>솜솜마켓</title>-->
+<!--</head>-->
+
+
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:fragment="header">
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <!-- Custom styles for this template -->
+    <link href="/css/jumbotron-narrow.css" rel="stylesheet">
+
+    <title>솜솜마켓</title>
+
+    <div th:unless="${userSession?.account}">
+        <a th:href="@{/user/register}">
+            <input type="button" value="회원가입"></a>
+        <a th:href="@{/user/loginForm}">
+            <input type="button" value="로그인"></a>
+    </div>
+    <div th:if="${userSession?.account}">
+        <a><span th:text="${userSession?.account.nickName}"></span>님, 환영합니다!</a>
+        <a th:href="@{/user/logout}">
+            <input type="button" value="로그아웃"></a>
+        <a th:href="@{/user/myPage}">
+            <input type="button" value="마이페이지"></a>
+    </div>
+
+    <br>
+
+    <a th:href="@{/templates/items/personal/list}">장터</a>
+</head>
+
+<!--구현한 헤더-->
+
+<!--<!DOCTYPE html>-->
+<!--<html xmlns:th="http://www.thymeleaf.org">-->
+<!--<head>-->
+<!--    <meta charset="UTF-8">-->
+<!--    <title>Somsom Market</title>-->
+<!--</head>-->
+<!--<body>-->
+<!--<div th:unless="${userSession?.account}">-->
+<!--    <a th:href="@{/user/register}">-->
+<!--        <input type="button" value="회원가입"></a>-->
+<!--    <a th:href="@{/user/loginForm}">-->
+<!--        <input type="button" value="로그인"></a>-->
+<!--</div>-->
+<!--<div th:if="${userSession?.account}">-->
+<!--    <a><span th:text="${userSession?.account.nickName}"></span>님, 환영합니다!</a>-->
+<!--    <a th:href="@{/user/logout}">-->
+<!--        <input type="button" value="로그아웃"></a>-->
+<!--    <a th:href="@{/user/myPage}">-->
+<!--        <input type="button" value="마이페이지"></a>-->
+<!--</div>-->
+
+<!--<br>-->
+
+<!--<a th:href="@{/personal/list}">장터</a>-->
+<!--</body>-->
+<!--</html>-->

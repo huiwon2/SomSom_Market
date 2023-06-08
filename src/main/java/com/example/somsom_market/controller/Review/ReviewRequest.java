@@ -3,7 +3,7 @@ package com.example.somsom_market.controller.Review;
 public class ReviewRequest {
 
     private String userId;
-    private long orderItemId;
+    private Long orderItemId;
     private String description;
     private double score;
 
@@ -15,11 +15,11 @@ public class ReviewRequest {
         this.userId = userId;
     }
 
-    public long getOrderItemId() {
+    public Long getOrderItemId() {
         return orderItemId;
     }
 
-    public void setOrderItemId(long orderItemId) {
+    public void setOrderItemId(Long orderItemId) {
         this.orderItemId = orderItemId;
     }
 

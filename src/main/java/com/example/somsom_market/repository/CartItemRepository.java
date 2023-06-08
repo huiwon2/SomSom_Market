@@ -6,5 +6,5 @@ import com.example.somsom_market.domain.GroupItem;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface CartItemRepository extends JpaRepository<CartItem, Long> {
-    CartItem findByCartIdAndItemId(long cart_id, long item_id);
+    CartItem findByCartIdAndItemId(Long cart_id, Long item_id);
 }
