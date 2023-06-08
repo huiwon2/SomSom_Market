@@ -8,5 +8,5 @@ public class ItemRegistRequest {
     private String title;
     private int price;
     private String description;
-    private String imageUrl;
+//    private String imageUrl;
 }
