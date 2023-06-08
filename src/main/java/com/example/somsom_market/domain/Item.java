@@ -25,4 +25,7 @@ public abstract class Item {
 
     @Enumerated(EnumType.STRING)
     private ItemStatus status;
+
+    private String imgName;
+    private String imgPath;
 }

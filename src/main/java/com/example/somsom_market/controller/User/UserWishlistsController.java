@@ -52,7 +52,7 @@ public class UserWishlistsController {
     @ResponseBody
     @PostMapping("/add")
     public void add(HttpServletRequest request,
-                    @RequestParam("itemId") int itemId) {
+                    @RequestParam("itemId") Long itemId) {
         UserSession userSession = (UserSession) WebUtils.getSessionAttribute(request, "userSession");
         Account account = userSession.getAccount();
 
@@ -62,7 +62,7 @@ public class UserWishlistsController {
     @ResponseBody
     @PostMapping("/delete")
     public void cancel(HttpServletRequest request,
-                    @RequestParam("itemId") int itemId) {
+                    @RequestParam("itemId") Long itemId) {
         UserSession userSession = (UserSession) WebUtils.getSessionAttribute(request, "userSession");
         Account account = userSession.getAccount();
 

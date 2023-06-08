@@ -18,7 +18,7 @@ public class GroupItemOrderController {
     @Autowired
     private GroupItemService groupService;
     @RequestMapping("")
-    public String changeStatusByManager(@RequestParam("itemId") int itemId, Model model){
+    public String changeStatusByManager(@RequestParam("itemId") Long itemId, Model model){
         GroupItem groupItem = groupService.searchItem(itemId);
         groupService.changeStatus(groupItem);
         //수정 필요

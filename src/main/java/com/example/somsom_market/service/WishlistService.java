@@ -21,12 +21,12 @@ public class WishlistService {
     }
 
     // 해당 사용자에 해당 아이템 위시리스트 추가
-    public void addWishlist(String id, long itemId) {
+    public void addWishlist(String id, Long itemId) {
 
     }
 
     // 해당 사용자에 해당 아이템 위시리스트 삭제
-    public void cancelWishlist(String id, long itemId) {
+    public void cancelWishlist(String id, Long itemId) {
 
     }
 }

@@ -36,6 +36,7 @@ dependencies {
 	implementation 'com.oracle.database.ha:simplefan:19.3.0.0'
 	implementation 'com.oracle.database.ha:ons:19.3.0.0'
 	compileOnly 'org.projectlombok:lombok'
+	compileOnly "org.springframework.boot:spring-boot-devtools"
 	developmentOnly 'org.springframework.boot:spring-boot-devtools'
 	runtimeOnly 'com.h2database:h2'
 	runtimeOnly 'com.oracle.database.jdbc:ojdbc8'

@@ -12,7 +12,6 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @RequiredArgsConstructor
-@Builder
 @Entity
 public class Account {
     @Id @Column(name = "account_id")

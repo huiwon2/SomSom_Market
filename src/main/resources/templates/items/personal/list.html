@@ -7,13 +7,13 @@
 <body>
 <div th:insert="~{header}"></div>
 
-<a th:href="@{/personal/register}">
+<a th:href="@{/templates/items/personal/register}">
     <input type="button" value="게시글 등록"></a>
 
 <table>
     <tr th:each="item : ${personalItemList}">
         <td>
-            <a th:href="@{/personal/detail/{itemId}(itemId = ${item.id})}">
+            <a th:href="@{/templates/items/personal/detail/{itemId}(itemId = ${item.id})}">
                 <span th:text="${item.title}"></span>
             </a>
         </td>
