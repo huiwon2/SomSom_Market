@@ -15,6 +15,11 @@ public class SomsomItem extends Item {
     private int stockQuantity;
     @OneToMany(mappedBy = "item")
     private List<CartItem> cartItemList = new ArrayList<>();
+
+    @Column(name = "img_name")
+    private String imgName;
+    @Column(name = "img_path")
+    private String imgPath;
     //==비즈니스 로직==//
     /**
      * stock 증가
@@ -33,4 +38,6 @@ public class SomsomItem extends Item {
         }
         this.stockQuantity = restStock;
     }
+
+
 }
