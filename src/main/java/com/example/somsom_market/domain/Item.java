@@ -10,10 +10,11 @@ import java.util.List;
 @Entity
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @DiscriminatorColumn(name = "dtype")
+@SequenceGenerator(name="SEQ_ITEM", sequenceName="ITEM_ID_SEQ", allocationSize=1)
 @Getter
 @Setter
 public abstract class Item {
-    @Id @GeneratedValue
+    @Id @GeneratedValue(strategy=GenerationType.SEQUENCE, generator="SEQ_ITEM")
     @Column(name = "item_id")
     private Long id;
 
@@ -24,7 +25,4 @@ public abstract class Item {
 
     @Enumerated(EnumType.STRING)
     private ItemStatus status;
-
-    @ElementCollection
-    private List<String> imageUrl;
 }
