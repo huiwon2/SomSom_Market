@@ -32,12 +32,12 @@ public class SomsomItemController {
 
 //    Register
 //    form(register method)
-    @GetMapping("/somsomItem/somsomItemRegister")
+    @GetMapping("somsomItem/somsomItemRegister")
     public String form() {
         return SOMSOM_REGISTRATION_FORM;
     }
 
-    @PostMapping("/somsomItem/somsomItemRegister/product")
+    @PostMapping("somsomItem/somsomItemRegister/product")
     public String register(@Valid @ModelAttribute("registerReq") ItemRegistRequest itemRegistRequest,
                            BindingResult bindingResult,
                            Model model){
@@ -52,7 +52,7 @@ public class SomsomItemController {
     }
 //    Update(Service 설계 필요, 사용자 예외 설정 필요한지 판단 필요)
 //    form(Update method)
-    @GetMapping("/somsomItem/update/{item_id}")
+    @GetMapping("somsomItem/update/{item_id}")
     public String form(ItemUpdateRequest itemUpdateRequest, @RequestParam("itemId")Long itemId, Model model) {
         SomsomItem itemInfo = somsomItemService.getSomsomItem(itemId);
         if(itemInfo == null){
@@ -65,7 +65,7 @@ public class SomsomItemController {
         model.addAttribute("item", somsomItemService.itemView(itemId));
         return SOMSOM_UPDATE_FORM;
     }
-    @PostMapping("/somsomItem/update/product/{item_id}")
+    @PostMapping("somsomItem/update/product/{item_id}")
     public String update(@ModelAttribute("updateReq") ItemUpdateRequest itemUpdateRequest, Errors errors) {
         if (errors.hasErrors()) {
             return SOMSOM_UPDATE_FORM;
@@ -77,13 +77,14 @@ public class SomsomItemController {
             return ITEM_NOT_FOUND;
         }
     }
+//    솜솜아이템 리스트
 
 //    상세 페이지
     @GetMapping("/somsomItem/somsomItemview/{item_id}")
     public String itemView(Model model, @PathVariable("itemId")Long itemId){
         model.addAttribute("somsomItmem", somsomItemService.itemView(itemId));
 
-        return "/somsomItem/itemView";
+        return "somsomItem/itemView";
     }
 
 }
