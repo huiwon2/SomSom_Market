@@ -7,7 +7,7 @@ import java.util.Date;
 import java.util.List;
 
 public class GroupItemRequest {
-    private long itemId;
+    private Long itemId;
     private String title;
     private int price;
     private String description;
@@ -25,11 +25,11 @@ public class GroupItemRequest {
 
     private String status;
 
-    public long getItemId() {
+    public Long getItemId() {
         return itemId;
     }
 
-    public void setItemId(long itemId) {
+    public void setItemId(Long itemId) {
         this.itemId = itemId;
     }
 

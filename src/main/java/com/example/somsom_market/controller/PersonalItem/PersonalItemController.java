@@ -68,7 +68,7 @@ public class PersonalItemController {
 
     @GetMapping("/user/myPage/sell/personal/update")
     public ModelAndView showUpdateForm(HttpServletRequest request,
-                                       @RequestParam("itemId") long itemId) {
+                                       @RequestParam("itemId") Long itemId) {
         ModelAndView mav = new ModelAndView();
 
         PersonalItem personalItem = personalItemService.searchItem(itemId);
@@ -113,7 +113,7 @@ public class PersonalItemController {
 
     @RequestMapping("/user/myPage/sell/personal/delete")
     public String delete(HttpServletRequest request,
-                         @RequestParam("itemId") long itemId) {
+                         @RequestParam("itemId") Long itemId) {
 
         personalItemService.deleteItem(itemId);
 

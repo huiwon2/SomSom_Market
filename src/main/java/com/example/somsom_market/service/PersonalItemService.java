@@ -58,7 +58,7 @@ public class PersonalItemService {
     }
 
     // 아이템 게시글 삭제
-    public void deleteItem(long itemId) {
+    public void deleteItem(Long itemId) {
         PersonalItem personalItem = searchItem(itemId);
         personalItemDao.deleteItem(personalItem);
     }

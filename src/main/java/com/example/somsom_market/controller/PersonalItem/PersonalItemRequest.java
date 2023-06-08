@@ -6,7 +6,7 @@ import java.util.List;
 
 @Data
 public class PersonalItemRequest {
-    private long itemId;
+    private Long itemId;
     private String sellerId;
 
     private String title;

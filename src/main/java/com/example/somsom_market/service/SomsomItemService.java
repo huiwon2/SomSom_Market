@@ -41,7 +41,7 @@ public class SomsomItemService {
         somsomItem.setTitle(regReq.getTitle());
         somsomItem.setPrice(regReq.getPrice());
         somsomItem.setDescription(regReq.getDescription());
-        somsomItem.setImageUrl(Collections.singletonList(regReq.getImageUrl()));
+//        somsomItem.setImageUrl(Collections.singletonList(regReq.getImageUrl()));
 
         somsomItemDao.insertSomsomItem(somsomItem);
         return somsomItem;
@@ -52,7 +52,7 @@ public class SomsomItemService {
         update.setTitle(somsomItem.getTitle());
         update.setDescription(somsomItem.getDescription());
         update.setPrice(somsomItem.getPrice());
-        update.setImageUrl(somsomItem.getImageUrl());
+//        update.setImageUrl(somsomItem.getImageUrl());
         somsomItemRepository.save(update);
     }
 //    게시글 삭제
