@@ -26,7 +26,7 @@ import java.util.Date;
 import java.util.List;
 
 @Controller
-@SessionAttributes("order")
+@SessionAttributes({"userSession" ,"order"})
 @RequiredArgsConstructor
 public class OrderController {
 

@@ -5,7 +5,7 @@
     <title>개인 거래 게시글 등록</title>
 </head>
 <body>
-<div th:insert="~{header}"></div>
+<div th:replace="fragments/bodyHeader :: bodyHeader" />
 
 <form role="form" id="frm" th:object="${personalItem}" method="post">
 
@@ -54,7 +54,7 @@
   <div th:if="${personalItem.itemId} &gt; 0">
     <input type="submit" id="update" class="btn" onClick="" value="게시글 등록">
   </div>
-  <div th:if="${personalItem.itemId} &lt; 1">
+  <div th:if="${personalItem.itemId} == -1">
     <input type="submit" id="register" class="btn" onClick="" value="게시글 등록">
   </div>
 

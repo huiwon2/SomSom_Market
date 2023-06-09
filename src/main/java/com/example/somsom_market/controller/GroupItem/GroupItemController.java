@@ -20,7 +20,7 @@ import java.util.List;
 import java.util.Map;
 
 @Controller
-@SessionAttributes("groupItem")
+@SessionAttributes({"userSession", "groupItem"})
 public class GroupItemController {
     @Autowired
     private GroupItemService groupService;

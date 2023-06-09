@@ -12,6 +12,7 @@ import org.springframework.web.bind.support.SessionStatus;
 import javax.servlet.http.HttpServletRequest;
 
 @Controller
+@SessionAttributes("userSession")
 public class ReviewController {
     private ReviewService reviewService;
 
