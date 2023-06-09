@@ -3,8 +3,10 @@ package com.example.somsom_market.controller.PersonalItem;
 import com.example.somsom_market.controller.User.UserSession;
 import com.example.somsom_market.domain.Account;
 import com.example.somsom_market.domain.PersonalItem;
+import com.example.somsom_market.domain.Wishlist;
 import com.example.somsom_market.service.AccountService;
 import com.example.somsom_market.service.PersonalItemService;
+import com.example.somsom_market.service.WishlistService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -29,6 +31,12 @@ public class PersonalItemController {
     private PersonalItemService personalItemService;
     public void setPersonalItemService(PersonalItemService personalItemService) {
         this.personalItemService = personalItemService;
+    }
+
+    @Autowired
+    private WishlistService wishlistService;
+    public void setWishlistService(WishlistService wishlistService) {
+        this.wishlistService = wishlistService;
     }
 
     @GetMapping("/personal/register")
@@ -144,7 +152,19 @@ public class PersonalItemController {
                                      @PathVariable("itemId") long itemId, Model model) {
         PersonalItem personalItem = personalItemService.searchItem(itemId);
 
+        UserSession userSession = (UserSession) WebUtils.getSessionAttribute(request, "userSession");
+        int isExistWish = 0;
+
+        if (userSession != null) { // 로그인 사용자는 위시리스트 추가되어 있는지 아닌지 확인
+            Account account = userSession.getAccount();
+            Wishlist wishlist = wishlistService.getPersonalWishlistByAccountAndItem(account.getId(), itemId);
+            if (wishlist != null) { // 위시리스트에 추가되어 있으면
+                isExistWish = 1;
+            }
+        }
+
         model.addAttribute("personalItem", personalItem);
+        model.addAttribute("isExistWish", isExistWish);
 
         return PERSONAL_DETAIL_VIEW;
     }
