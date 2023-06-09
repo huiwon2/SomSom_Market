@@ -81,9 +81,7 @@ public class AccountService {
 
     // 아이디 존재하는지 확인
     public boolean isIdExist(String id) {
-        Optional<Account> account = accountRepository.findById(id);
-        if (account.isPresent()) return true;
-        return false;
+        return accountRepository.existsById(id);
     }
 
     // 회원 정보 수정 후 다시 Account 반환
