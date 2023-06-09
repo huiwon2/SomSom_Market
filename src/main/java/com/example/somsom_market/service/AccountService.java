@@ -4,6 +4,9 @@ import com.example.somsom_market.controller.User.UserRegistRequest;
 import com.example.somsom_market.dao.AccountDao;
 import com.example.somsom_market.domain.*;
 import com.example.somsom_market.repository.AccountRepository;
+import com.example.somsom_market.repository.GroupItemRepository;
+import com.example.somsom_market.repository.OrderRepository;
+import com.example.somsom_market.repository.PersonalItemRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -23,6 +26,24 @@ public class AccountService {
     private AccountDao accountDao;
     public void setAccountDao(AccountDao accountDao) {
         this.accountDao = accountDao;
+    }
+
+    @Autowired
+    private PersonalItemRepository personalItemRepository;
+    public void setPersonalItemRepository(PersonalItemRepository personalItemRepository) {
+        this.personalItemRepository = personalItemRepository;
+    }
+
+    @Autowired
+    private GroupItemRepository groupItemRepository;
+    public void setGroupItemRepository(GroupItemRepository groupItemRepository) {
+        this.groupItemRepository = groupItemRepository;
+    }
+
+    @Autowired
+    private OrderRepository orderRepository;
+    public void setOrderRepository(OrderRepository orderRepository) {
+        this.orderRepository = orderRepository;
     }
 
     // 사용자 PK로 계정 검색
@@ -82,17 +103,34 @@ public class AccountService {
 
     // 사용자 PK로 구매 내역, 판매 내역, 공동구매 내역, 위시리스트 개수 반환
     public int[] getMyPageList(String id) {
-        return new int[] {1, 0, 0, 2}; // 추후 수정!!
+        int[] myPageList = new int[] {0, 0, 0, 0};
+
+        List<Order> orderList = getOrderList(id);
+        if (orderList != null) {
+            myPageList[0] = orderList.size();
+        }
+        List<PersonalItem> personalList = getSellItemList(id);
+        if (personalList != null) {
+            myPageList[1] = personalList.size();
+        }
+        List<GroupItem> groupList = getSellGroupList(id);
+        if (groupList != null) {
+            myPageList[2] = groupList.size();
+        }
+
+        // 위시리스트 추후에..
+
+        return myPageList;
     }
 
     // 사용자 PK로 판매 내역 리스트 검색
     public List<PersonalItem> getSellItemList(String id) {
-        return null;
+        return personalItemRepository.findBySellerId(id);
     }
 
     // 사용자 PK로 공동구매 판매 내역 리스트 검색
     public List<GroupItem> getSellGroupList(String id) {
-        return null;
+        return groupItemRepository.findGroupItemsBySellerIdOrderByStartDate(id);
     }
 
     // 사용자 PK로 구매 내역 리스트 검색
