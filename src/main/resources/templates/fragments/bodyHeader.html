@@ -5,4 +5,22 @@
         <li><a href="/">Home</a></li>
     </ul>
     <a href="/"><h3 class="text-muted">솜솜마켓</h3></a>
+
+    <div th:unless="${userSession?.account}">
+        <a th:href="@{/user/register}">
+            <input type="button" value="회원가입"></a>
+        <a th:href="@{/user/loginForm}">
+            <input type="button" value="로그인"></a>
+    </div>
+    <div th:if="${userSession?.account}">
+        <a><span th:text="${userSession?.account.nickName}"></span>님, 환영합니다!</a>
+        <a th:href="@{/user/logout}">
+            <input type="button" value="로그아웃"></a>
+        <a th:href="@{/user/myPage}">
+            <input type="button" value="마이페이지"></a>
+    </div>
+
+    <br>
+
+    <a th:href="@{/personal/list}">장터</a>
 </div>
