@@ -12,7 +12,9 @@
 <table>
   <tr th:each="item : ${userPersonalSellList}">
     <td>
-      <span th:text="${item.title}"></span>
+        <a th:href="@{/personal/detail/{itemId}(itemId = ${item.id})}">
+            <span th:text="${item.title}"></span>
+        </a>
       <span th:text="${item.price}"></span>
     </td>
   </tr>
