@@ -89,7 +89,7 @@ public class RegisterUserController {
         model.addAttribute("userSession", userSession);
         // -> 따로 로그인하지 않아도 회원가입 완료하면 자동 로그인
 
-        return "redirect:/main"; // 메인화면으로 redirection
+        return "redirect:/"; // 메인화면으로 redirection
     }
 
     @PostMapping("/checkId")

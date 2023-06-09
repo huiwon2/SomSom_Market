@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>위시리스트 내역</title>
+</head>
+
+<style>
+.personal { display: block; }
+.group { display: none;	}
+</style>
+
+<script>
+$(document).ready(function($) {
+	// select 선택에 맞게 보여지는 div 변화 (근데 안돼서 수정 필요)
+    $('#selectBox').change(function() {
+        var result = $("select[name=selectBox]").val();
+
+        if (result == 'personal') {
+        	$('.group').hide();
+
+          	$('.personal').show();
+        } else {
+          	$('.personal').hide();
+
+          	$('.group').show();
+        }
+    });
+});
+</script>
+<body>
+<div th:replace="fragments/bodyHeader :: bodyHeader" />
+
+<h2>위시리스트</h2>
+
+<select id="selectBox" name="selectBox">
+  <option value="personal" selected="selected">개인간거래</option>
+  <option value="group">공동구매</option>
+</select><br><br>
+
+<div class="personal" id="personal">
+  <table>
+    <tr th:each="item : ${userWishlistPersonalItem}">
+      <td>
+        <span th:text="${item.title}"></span>
+        <span th:text="${item.price}"></span>
+      </td>
+    </tr>
+  </table>
+</div>
+
+<div class="group" id="group">
+  <table>
+    <tr th:each="item : ${userWishlistGroupItem}">
+      <td>
+        <span th:text="${item.title}"></span>
+        <span th:text="${item.price}"></span>
+      </td>
+    </tr>
+  </table>
+</div>
+</body>
+</html>
