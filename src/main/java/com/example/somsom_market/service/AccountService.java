@@ -3,10 +3,7 @@ package com.example.somsom_market.service;
 import com.example.somsom_market.controller.User.UserRegistRequest;
 import com.example.somsom_market.dao.AccountDao;
 import com.example.somsom_market.domain.*;
-import com.example.somsom_market.repository.AccountRepository;
-import com.example.somsom_market.repository.GroupItemRepository;
-import com.example.somsom_market.repository.OrderRepository;
-import com.example.somsom_market.repository.PersonalItemRepository;
+import com.example.somsom_market.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -44,6 +41,12 @@ public class AccountService {
     private OrderRepository orderRepository;
     public void setOrderRepository(OrderRepository orderRepository) {
         this.orderRepository = orderRepository;
+    }
+
+    @Autowired
+    private WishlistRepository wishlistRepository;
+    public void setWishlistRepository(WishlistRepository wishlistRepository) {
+        this.wishlistRepository = wishlistRepository;
     }
 
     // 사용자 PK로 계정 검색
@@ -115,8 +118,10 @@ public class AccountService {
         if (groupList != null) {
             myPageList[2] = groupList.size();
         }
-
-        // 위시리스트 추후에..
+        List<Wishlist> wishlist = wishlistRepository.findByAccountId(id);
+        if (wishlist != null) {
+            myPageList[3] = wishlist.size();
+        }
 
         return myPageList;
     }
