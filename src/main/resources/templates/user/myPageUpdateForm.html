@@ -14,7 +14,7 @@
 	}
 </script>
 <body>
-<div th:insert="~{header}"></div>
+<div th:replace="fragments/bodyHeader :: bodyHeader" />
 
 <form role="form" th:object="${accountReq}" th:action="@{/user/myPage/update}" method="post">
 

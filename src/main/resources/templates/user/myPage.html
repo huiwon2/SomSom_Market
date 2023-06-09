@@ -5,7 +5,7 @@
     <title>마이페이지</title>
 </head>
 <body>
-<div th:insert="~{header}"></div>
+<div th:replace="fragments/bodyHeader :: bodyHeader" />
 
 <span th:text="${userSession?.account.nickName}"></span>의 마이페이지
 <a th:href="@{/user/myPage/update}"> <input type="button" value="회원정보 수정"></a>
