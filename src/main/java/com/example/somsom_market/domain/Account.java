@@ -5,6 +5,7 @@ import com.sun.istack.NotNull;
 import lombok.*;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -13,7 +14,9 @@ import java.util.List;
 @AllArgsConstructor
 @RequiredArgsConstructor
 @Entity
-public class Account {
+@Table(name="ACCOUNT")
+@SuppressWarnings("serial")
+public class Account implements Serializable {
     @Id @Column(name = "account_id")
     private String id;
     @NotNull

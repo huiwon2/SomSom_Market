@@ -21,8 +21,8 @@ import java.util.List;
 @SessionAttributes("userSession")
 /* 개인거래 게시글 등록, 수정, 삭제를 관리하는 컨트롤러 */
 public class PersonalItemController {
-    private static final String PERSONAL_REGISTRATION_FORM = "personal/itemRegisterForm";
-    private static final String PERSONAL_DETAIL_VIEW = "personal/detail";
+    private static final String PERSONAL_REGISTRATION_FORM = "items/personal/itemRegisterForm";
+    private static final String PERSONAL_DETAIL_VIEW = "items/personal/detail";
     private static final String LOGIN_FORM = "user/loginForm";
 
     @Autowired
@@ -39,7 +39,9 @@ public class PersonalItemController {
         if (userSession != null) { // 로그인 되어 있으면
             mav.setViewName(PERSONAL_REGISTRATION_FORM);
             mav.addObject("statusString", new String[] {"거래가능", "거래중", "거래완료"});
-            mav.addObject("personalItem", new PersonalItemRequest());
+            PersonalItemRequest personalItem = new PersonalItemRequest();
+            personalItem.setItemId((long) -1);
+            mav.addObject("personalItem", personalItem);
             return mav;
         } else {
             mav.setViewName(LOGIN_FORM);
@@ -117,7 +119,7 @@ public class PersonalItemController {
 
         personalItemService.deleteItem(itemId);
 
-        return "personal/list"; // 추후 수정
+        return "redirect:/personal/list"; // 추후 수정
     }
 
 
@@ -133,7 +135,7 @@ public class PersonalItemController {
 
         model.addAttribute("personalItemList", personalItemList);
 
-        return "personal/list";
+        return "items/personal/list";
     }
 
     // 개인 거래 게시글 상세 뷰

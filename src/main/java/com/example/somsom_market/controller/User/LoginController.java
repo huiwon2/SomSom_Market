@@ -41,7 +41,7 @@ public class LoginController {
             if (forwardAction != null)
                 return new ModelAndView("redirect:" + forwardAction);
             else
-                return new ModelAndView("redirect:" + "/main");
+                return new ModelAndView("redirect:" + "/");
         }
     }
 }
