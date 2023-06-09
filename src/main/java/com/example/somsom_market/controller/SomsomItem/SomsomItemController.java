@@ -20,7 +20,7 @@ import javax.validation.Valid;
 @NoArgsConstructor
 public class SomsomItemController {
 //    mvc설계 보고 경로 채우기
-    private static final String SOMSOM_REGISTRATION_FORM = "/somsomItem/somsomItemRegister";
+    private static final String SOMSOM_REGISTRATION_FORM = "items/somsom/somsomItemRegister";
     private static final String SOMSOM_UPDATE_FORM = "/somsomItem/somsomItemUpdate";
     private static final String ITEM_NOT_FOUND = "";
 

@@ -33,7 +33,7 @@ public class MainController {
     public String getAllItems(Model model) {
         List<Item> items = mainService.getAllItems();
         model.addAttribute("items", items);
-        return "home";
+        return "items/somsom/somsomItemList";
     }
 
     @GetMapping("/search")
