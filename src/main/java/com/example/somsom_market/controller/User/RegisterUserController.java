@@ -92,13 +92,9 @@ public class RegisterUserController {
         return "redirect:/"; // 메인화면으로 redirection
     }
 
-    @GetMapping("/checkId")
+    @PostMapping("/checkId")
     @ResponseBody
-    public boolean checkId(@RequestBody String id) {
-        Account account = accountService.getAccount(id);
-        if (account != null) { // 이미 있는 아이디
-            return true;
-        }
-        return false; // 없는 아이디 (사용 가능한 아이디)
+    public boolean checkId(@RequestParam String id) {
+        return accountService.isIdExist(id);
     }
 }
