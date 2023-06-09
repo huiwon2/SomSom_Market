@@ -12,8 +12,10 @@
 <table>
   <tr th:each="item : ${userGroupSellList}">
     <td>
-      <span th:text="${item.title}"></span>
-      <span th:text="${item.price}"></span>
+        <a th:href="@{/personal/detail/{itemId}(itemId = ${item.id})}"> <!-- 경로 수정 필요 -->
+            <span th:text="${item.title}"></span>
+        </a>
+        <span th:text="${item.price}"></span>
     </td>
   </tr>
 </table>
