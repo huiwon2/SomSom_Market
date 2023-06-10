@@ -12,7 +12,6 @@
   <div class="form-group">
     <label th:for="title">제목</label>
     <input type="text" th:field="*{title}" class="form-control" placeholder="제목을 입력해주세요">
-    <!--<p th:if="${#fields.hasErrors('userName')}" th:errors="*{userName}"></p>-->
   </div>
   <br>
 
@@ -28,8 +27,7 @@
 
   <div class="form-group">
     <label th:for="price">가격</label>
-    <input type="text" th:field="*{price}" class="form-control" placeholder="가격을 입력해주세요">
-
+    <input type="number" th:field="*{price}" class="form-control" placeholder="가격을 입력해주세요">
   </div>
   <br>
 
@@ -48,7 +46,6 @@
   <div class="form-group">
     <label th:for="description">내용</label>
     <textarea th:field="*{description}" rows="15" cols="30" placeholder="내용을 입력해주세요"/>
-
   </div>
   <br>
 
