@@ -60,7 +60,7 @@ public class PersonalItemController {
     @PostMapping("/personal/register")
     public String register(HttpServletRequest request,
                                  @ModelAttribute("personalItem") PersonalItemRequest itemRegistReq,
-                                 BindingResult result) {
+                                 BindingResult result) throws Exception {
         // 입력 값 검증 추후 수정
 
         UserSession userSession = (UserSession) WebUtils.getSessionAttribute(request, "userSession");
@@ -85,8 +85,13 @@ public class PersonalItemController {
 
         PersonalItemRequest personalItemRequest = new PersonalItemRequest();
 
+        // 기존에 저장해둘 내용
         personalItemRequest.setItemId(personalItem.getId());
         personalItemRequest.setSellerId(personalItem.getSellerId());
+        personalItemRequest.setImgName(personalItem.getImgName());
+        personalItemRequest.setImgPath(personalItem.getImgPath());
+
+        // 변경 가능한 필드
         personalItemRequest.setTitle(personalItem.getTitle());
         personalItemRequest.setPrice(personalItem.getPrice());
         personalItemRequest.setDescription(personalItem.getDescription());
