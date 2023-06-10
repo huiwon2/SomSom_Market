@@ -14,9 +14,11 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.bind.support.SessionStatus;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.web.util.WebUtils;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
 import java.util.List;
 
 @Controller
@@ -59,15 +61,13 @@ public class PersonalItemController {
 
     @PostMapping("/personal/register")
     public String register(HttpServletRequest request,
-                                 @ModelAttribute("personalItem") PersonalItemRequest itemRegistReq,
-                                 BindingResult result) throws Exception {
-        // 입력 값 검증 추후 수정
-
+                                 @Valid @ModelAttribute("personalItem") PersonalItemRequest itemRegistReq,
+                                 BindingResult result, Model model) throws Exception {
         UserSession userSession = (UserSession) WebUtils.getSessionAttribute(request, "userSession");
         Account account = userSession.getAccount();
 
         if (result.hasErrors()) {
-            return PERSONAL_REGISTRATION_FORM;
+            return "redirect:/personal/register";
         }
 
         PersonalItem personalItem = personalItemService.registerNewItem(itemRegistReq, account.getId());
@@ -112,12 +112,11 @@ public class PersonalItemController {
 
     @PostMapping("/user/myPage/sell/personal/update")
     public String update(HttpServletRequest request,
-                               @ModelAttribute("personalItem") PersonalItemRequest itemRegistReq,
-                               BindingResult result) {
-        // 입력 값 검증 추후 수정
-
+                         @Valid @ModelAttribute("personalItem") PersonalItemRequest itemRegistReq,
+                         BindingResult result, RedirectAttributes redirectAttributes) {
         if (result.hasErrors()) {
-            return PERSONAL_REGISTRATION_FORM;
+            redirectAttributes.addAttribute("itemId", itemRegistReq.getItemId());
+            return "redirect:/user/myPage/sell/personal/update";
         }
 
         PersonalItem personalItem = personalItemService.updateItem(itemRegistReq);
