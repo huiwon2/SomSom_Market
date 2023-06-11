@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/header :: header">
+    <meta charset="UTF-8">
+    <title>회원정보 수정</title>
+</head>
+<script>
+	function deleteAlert() {
+		if(confirm("정말로 탈퇴하시겠습니까?")){
+			return true;
+		}
+		else
+			return false;
+	}
+</script>
+<style>
+.modal {
+	display: none; /* Hidden by default */
+	position: fixed; /* Stay in place */
+	z-index: 1; /* Sit on top */
+	left: 0;
+	top: 0;
+	width: 100%;
+	height: 100%;
+	overflow: auto; /* Enable scroll if needed */
+	background-color: rgba(0,0,0,0.3); /* 검정색 투명도 조절 */
+}
+
+/* 모달 안에 들어갈 부분 css */
+.modal-content {
+	margin: 15% auto; /* 15% from the top and centered */
+	padding: 20px;
+	border: 1px solid;
+	vertical-align: middle;
+	width: 350px;
+	background-color: white;
+}
+
+.modal_close_btn {
+	position: absolute;
+	top: 235px;
+	right: 575px;
+}
+
+</style>
+<body>
+<script>
+    var pwck = 0;
+    // 팝업 Open 기능
+    function open_pop() {
+        const modal = document.getElementById("pwModal");
+        modal.style.display = "flex";
+    }
+    //팝업 Close 기능
+    function close_pop(flag) {
+        $('#currentPassword').val('');
+        $('#newPassword').val('');
+        $('#newPasswordCheck').val('');
+        $('#pwAlert').text("");
+        $("#confirm").show();
+        const modal = document.getElementById("pwModal");
+        modal.style.display = "none";
+        pwck = 0;
+    };
+
+    function confirmPassword() {
+        if ($("#newPassword").val() != $("#newPasswordCheck").val()) {
+            $("#confirm").show();
+            pwck = 0;
+        } else {
+            $("#confirm").hide();
+            pwck = 1;
+        }
+    }
+
+    function pwFormSubmit() {
+        if (pwck == 0) {
+            alert('비밀번호를 맞게 입력해주세요.');
+            return false;
+        } else {
+            var currentPw = $('#currentPassword').val();
+            var newPw = $('#newPassword').val();
+            $.ajax({
+                type : "POST",
+                url : "/user/myPage/update/password",
+                data : {"currentPassword":currentPw, "newPassword":newPw},
+                success : function(data) {
+                    if (data == true) {
+                        $('#pwAlert').text("*비밀번호가 변경되었습니다.");
+                        $('#currentPassword').val('');
+                        $('#newPassword').val('');
+                        $('#newPasswordCheck').val('');
+                        $("#confirm").show();
+                        pwck = 0;
+                    } else {
+                        $('#currentPassword').val('');
+                        $('#pwAlert').text("*현재 비밀번호가 틀렸습니다.");
+                    }
+                }
+            });
+        }
+    }
+</script>
+<div th:replace="fragments/bodyHeader :: bodyHeader" />
+
+
+<div class="form-group">
+    <input type="button" class="btn" onclick="open_pop();" value="비밀번호 수정하기">
+</div>
+<br>
+
+<div id="pwModal" class="modal">
+    <div class="modal-content">
+        <form id="pwFrm"  th:action="@{/user/myPage/update/password}" method="post">
+            <div>
+                <input type="password" id="currentPassword" name="currentPassword" placeholder="현재 비밀번호">
+            </div>
+            <br>
+            <div>
+                <input type="password" id="newPassword" name="newPassword" placeholder="변경할 비밀번호">
+            </div>
+            <br>
+            <div>
+                <input type="password" id="newPasswordCheck" name="newPasswordCheck"
+                       onChange="confirmPassword()" placeholder="변경할 비밀번호 확인">
+            </div>
+            <br>
+            <span id="confirm" style="color:red;">*비밀번호가 일치하지 않습니다.</span><br>
+            <span id="pwAlert" style="color:red;"></span><br>
+            <div>
+                <input type="button" onClick="pwFormSubmit()" value="변경하기">
+            </div>
+
+        </form>
+
+        <div class="modal_close_btn" onclick="close_pop();">
+            닫기
+        </div>
+    </div>
+</div>
+
+
+<form role="form" th:object="${accountReq}" th:action="@{/user/myPage/update}" method="post">
+
+    <div class="form-group">
+        <label th:for="userName">이름</label>
+        <input type="text" th:field="*{userName}" class="form-control" placeholder="이름을 입력해주세요"
+               th:class="${#fields.hasErrors('userName')}? 'form-control fieldError' : 'form-control'">
+        <p th:if="${#fields.hasErrors('userName')}" th:errors="*{userName}"></p>
+    </div>
+    <br>
+
+    <div class="form-group">
+        <label th:for="nickName">닉네임</label>
+        <input type="text" th:field="*{nickName}" class="form-control" placeholder="닉네임을 입력해주세요"
+               th:class="${#fields.hasErrors('nickName')}? 'form-control fieldError' : 'form-control'">
+        <p th:if="${#fields.hasErrors('nickName')}" th:errors="*{nickName}"></p>
+    </div>
+    <br>
+
+    <div class="form-group">
+        <label th:for="id">아이디</label>
+        <input type="text" id="id" th:field="${accountReq.id}"
+               class="form-control" placeholder="아이디를 입력해주세요" readonly>
+    </div>
+    <br>
+
+    <div class="form-group">
+        <label th:for="email">이메일</label>
+        <input type="text" th:field="*{email}" class="form-control" placeholder="이메일 주소를 입력해주세요"
+               th:class="${#fields.hasErrors('email')}? 'form-control fieldError' : 'form-control'">
+        <p th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></p>
+    </div>
+    <br>
+
+    <div class="form-group">
+        <label th:for="address">주소</label>
+        <input type="text" th:field="*{address}" class="form-control" placeholder="주소를 입력해주세요">
+    </div>
+
+    <div class="form-group">
+        <label th:for="zipcode">우편번호</label>
+        <input type="text" th:field="*{zipcode}" class="form-control" placeholder="우편번호(5자리)를 입력해주세요"
+               th:class="${#fields.hasErrors('zipcode')}? 'form-control fieldError' : 'form-control'">
+        <p th:if="${#fields.hasErrors('zipcode')}" th:errors="*{zipcode}"></p>
+    </div>
+    <br>
+
+    <div class="form-group">
+        <label th:for="bankName">은행명</label>
+        <input type="text" th:field="*{bankName}" class="form-control" placeholder="은행명을 입력해주세요">
+    </div>
+    <br>
+
+    <div class="form-group">
+        <label th:for="bankAccount">계좌번호</label>
+        <input type="text" th:field="*{bankAccount}" class="form-control" placeholder="계좌번호를 입력해주세요">
+    </div>
+    <br>
+
+    <div class="form-group">
+        <label th:for="phoneNumber">전화번호</label>
+        <input type="text" th:field="*{phoneNumber}" class="form-control"
+               placeholder="전화번호를 입력하세요. ex) 010-0000-0000"
+               th:class="${#fields.hasErrors('phoneNumber')}? 'form-control fieldError' : 'form-control'">
+        <p th:if="${#fields.hasErrors('phoneNumber')}" th:errors="*{phoneNumber}"></p>
+    </div>
+    <br>
+
+
+    <input type="submit" class="btn" onClick="" value="변경사항 저장">
+</form>
+
+    <a th:href="@{/user/myPage/update/delete}">
+        <input class="btn btn-danger" type="button" onClick="return deleteAlert();" value="회원 탈퇴"></a>
+</body>
+</html>
