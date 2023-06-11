@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/header :: header">
+    <meta charset="UTF-8">
+    <title>비밀번호 확인</title>
+</head>
+<body>
+<form th:action="@{/user/myPage/update/pwCheck}" method="post">
+  <div>
+    <input type="password" name="password" placeholder="비밀번호">
+  </div>
+  <br>
+  <div>
+    <input type="submit" value="확인">
+  </div>
+  <br>
+</form>
+</body>
+</html>

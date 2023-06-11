@@ -18,7 +18,8 @@ import javax.validation.Valid;
 @SessionAttributes("userSession")
 /* 회원 수정 (수정, 비밀번호 변경, 회원 탈퇴) */
 public class UpdateUserController {
-    private static final String USER_MYPAGE_FORM = "user/myPageUpdateForm";
+    private static final String USER_MYPAGE_FORM = "user/myPage/updateForm";
+    private static final String USER_PW_CHECK_FORM = "user/myPage/pwCheckForm";
 
     @Autowired
     private AccountService accountService;
@@ -47,6 +48,24 @@ public class UpdateUserController {
             return accountReq;
         }
         return new UserRegistRequest();
+    }
+
+    @GetMapping("/pwCheck")
+    public String showPwCheckForm() {
+        return USER_PW_CHECK_FORM;
+    }
+
+    @PostMapping("/pwCheck")
+    public String pwCheckSubmit(HttpServletRequest request,
+                                @RequestParam("password") String password) throws Exception {
+        UserSession userSession = (UserSession) WebUtils.getSessionAttribute(request, "userSession");
+        Account account = userSession.getAccount();
+
+        if (account.getPassword().equals(password)) { // 비밀번호가 같으면 마이페이지 수정 페이지로
+            return "redirect:/user/myPage/update";
+        } else { // 틀리면 다시
+            return USER_PW_CHECK_FORM;
+        }
     }
 
     @GetMapping
@@ -80,25 +99,25 @@ public class UpdateUserController {
     }
 
     @PostMapping("/password")
-    public String updatePassword( HttpServletRequest request,
+    @ResponseBody
+    public boolean updatePassword( HttpServletRequest request,
                                   @RequestParam("currentPassword") String currentPassword,
-                                  @RequestParam("newPassword") String newPassword,
-                                  @RequestParam("newPasswordCheck") String newPasswordCheck) {
+                                  @RequestParam("newPassword") String newPassword) {
 
         UserSession userSession = (UserSession) WebUtils.getSessionAttribute(request, "userSession");
         Account account = userSession.getAccount();
 
-        if (account.getPassword().equals(currentPassword)) { // 현재 비밀번호 틀릴 경우
-            return "redirect:/" + "user/myPage"; // 추후 수정
-        }
+        System.out.println(account.getPassword() + ", " + currentPassword + ", " + newPassword);
 
-        if (newPassword.equals(newPasswordCheck)) { // 새 비밀번호와 비밀번호 확인이 다를 경우
-            return "redirect:/" + "user/myPage"; // 추후 수정
+        if (!account.getPassword().equals(currentPassword)) { // 현재 비밀번호 틀릴 경우
+            return false; // 추후 수정
         }
 
         accountService.updatePassword(account.getId(), newPassword);
+        account.setPassword(newPassword);
+        userSession.setAccount(account);
 
-        return "redirect:/" + "user/myPage";
+        return true;
     }
 
     @GetMapping("/delete")
