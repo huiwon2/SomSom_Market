@@ -1,7 +1,7 @@
-package com.example.somsom_market.domain;
+package com.example.somsom_market.domain.item;
 
+import com.example.somsom_market.domain.item.Item;
 import lombok.*;
-import org.hibernate.annotations.Table;
 
 import javax.persistence.*;
 import java.io.Serializable;

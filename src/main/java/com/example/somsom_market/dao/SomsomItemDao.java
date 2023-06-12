@@ -1,6 +1,6 @@
 package com.example.somsom_market.dao;
 
-import com.example.somsom_market.domain.SomsomItem;
+import com.example.somsom_market.domain.item.SomsomItem;
 import lombok.Data;
 import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Repository;

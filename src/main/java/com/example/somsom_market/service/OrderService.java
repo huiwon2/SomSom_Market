@@ -4,6 +4,7 @@ import com.example.somsom_market.dao.AccountDao;
 import com.example.somsom_market.dao.OrderDao;
 import com.example.somsom_market.dao.SomsomItemDao;
 import com.example.somsom_market.domain.*;
+import com.example.somsom_market.domain.item.SomsomItem;
 import com.example.somsom_market.repository.OrderSearch;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -24,7 +25,7 @@ public class OrderService {
      * 주문
      */
     @Transactional
-    public Long order(Long memberId, Long itemId, int count) {
+    public Long order(String memberId, Long itemId, int count) {
 
         //엔티티 조회
         Account account = accountDao.findOne(memberId);

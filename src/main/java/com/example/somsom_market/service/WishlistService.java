@@ -1,7 +1,7 @@
 package com.example.somsom_market.service;
 
-import com.example.somsom_market.domain.GroupItem;
-import com.example.somsom_market.domain.PersonalItem;
+import com.example.somsom_market.domain.item.GroupItem;
+import com.example.somsom_market.domain.item.PersonalItem;
 import org.springframework.stereotype.Service;
 
 import java.util.List;

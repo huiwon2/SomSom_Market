@@ -1,12 +1,11 @@
 package com.example.somsom_market.dao;
 
-import com.example.somsom_market.domain.GroupItem;
+import com.example.somsom_market.domain.item.GroupItem;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
-import javax.swing.*;
 import javax.transaction.Transactional;
 import java.util.List;
 

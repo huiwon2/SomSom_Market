@@ -1,5 +1,6 @@
 package com.example.somsom_market.domain;
 
+import com.example.somsom_market.domain.item.SomsomItem;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
