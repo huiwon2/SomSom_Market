@@ -14,6 +14,7 @@
         <input type="password" name="password" placeholder="비밀번호">
     </div>
     <br>
+    <span th:text="${message}"></span><br><br>
     <div>
         <a th:href="@{/user/register}"><input type="button" value="회원가입"></a>
     </div>
@@ -22,6 +23,9 @@
         <input type="submit" value="로그인">
     </div>
     <br>
+    <div>
+        <a href="/user/findId">아이디 찾기</a>
+    </div>
 </form>
 </body>
 </html>
