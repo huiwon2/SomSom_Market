@@ -3,6 +3,7 @@ package com.example.somsom_market.service;
 import com.example.somsom_market.controller.SomsomItem.ItemRegistRequest;
 import com.example.somsom_market.controller.SomsomItem.ItemUpdateRequest;
 import com.example.somsom_market.dao.SomsomItemDao;
+import com.example.somsom_market.domain.PersonalItem;
 import com.example.somsom_market.domain.SomsomItem;
 import com.example.somsom_market.repository.SomsomItemRepository;
 import com.fasterxml.jackson.annotation.JacksonAnnotationsInside;
@@ -73,5 +74,11 @@ public class SomsomItemService {
     public void itemDelete(long id){
         somsomItemRepository.deleteById(id);
     }
+
+//    리스트
+    public List<SomsomItem> somsomItemList() {
+    List<SomsomItem> somsomItemList = somsomItemDao.findAll();
+    return somsomItemList;
+}
 
 }
