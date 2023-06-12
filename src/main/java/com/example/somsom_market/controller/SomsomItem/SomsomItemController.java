@@ -1,7 +1,10 @@
 package com.example.somsom_market.controller.SomsomItem;
 
 
+import com.example.somsom_market.controller.User.UserSession;
 import com.example.somsom_market.dao.SomsomItemDao;
+import com.example.somsom_market.domain.Account;
+import com.example.somsom_market.domain.PersonalItem;
 import com.example.somsom_market.domain.SomsomItem;
 import com.example.somsom_market.service.SomsomItemService;
 import lombok.*;
@@ -11,8 +14,12 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.util.WebUtils;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
+import java.util.List;
+
 @Controller
 @SessionAttributes("userSession")
 @Data
@@ -20,10 +27,10 @@ import javax.validation.Valid;
 @NoArgsConstructor
 public class SomsomItemController {
 //    mvc설계 보고 경로 채우기
-    private static final String SOMSOM_REGISTRATION_FORM = "/somsomItem/somsomItemRegister";
-    private static final String SOMSOM_UPDATE_FORM = "/somsomItem/somsomItemUpdate";
-    private static final String ITEM_NOT_FOUND = "";
-
+    private static final String SOMSOM_REGISTRATION_FORM = "/somsom/somsomItemRegister";
+    private static final String SOMSOM_UPDATE_FORM = "/somsom/somsomItemUpdate";
+    private static final String ITEM_NOT_FOUND = "/somsom/notFound";
+    private static final String ITEM_FORM = "/somsom/somsomItemList";
     private SomsomItemService  somsomItemService;
     @Autowired
     private SomsomItemDao somsomItemDao;
@@ -41,8 +48,13 @@ public class SomsomItemController {
     @PostMapping("somsomItem/somsomItemRegister/product")
     public String register(@Valid @ModelAttribute("registerReq") ItemRegistRequest itemRegistRequest,
                            BindingResult bindingResult,
-                           Model model){
+                           Model model, HttpServletRequest request){
+        UserSession userSession = (UserSession) WebUtils.getSessionAttribute(request, "userSession");
+        Account account = userSession.getAccount();
 
+        if(!isTrueAdmin(account)){
+            return ITEM_FORM;
+        }
         if (bindingResult.hasErrors()) {
             return SOMSOM_REGISTRATION_FORM;
         }
@@ -66,7 +78,12 @@ public class SomsomItemController {
         return SOMSOM_UPDATE_FORM;
     }
     @PostMapping("somsomItem/update/product/{item_id}")
-    public String update(@ModelAttribute("updateReq") ItemUpdateRequest itemUpdateRequest, Errors errors) {
+    public String update(@ModelAttribute("updateReq") ItemUpdateRequest itemUpdateRequest, Errors errors, HttpServletRequest request) {
+        UserSession userSession = (UserSession) WebUtils.getSessionAttribute(request, "userSession");
+        Account account = userSession.getAccount();
+        if(!isTrueAdmin(account)){
+            return ITEM_FORM;
+        }
         if (errors.hasErrors()) {
             return SOMSOM_UPDATE_FORM;
         }
@@ -78,13 +95,28 @@ public class SomsomItemController {
         }
     }
 //    솜솜아이템 리스트
+@GetMapping("/somsomItem/somsomItemList")
+public String showList(HttpServletRequest request, Model model) {
+
+    List<SomsomItem> somsomItemList = somsomItemService.somsomItemList();
+
+    model.addAttribute("personalItemList", somsomItemList);
+
+    return "items/somsom/somsomItemist";
+}
 
 //    상세 페이지
-    @GetMapping("somsomItem/somsomItemview/{item_id}")
+    @GetMapping("somsomItem/somsomDetail/{item_id}")
     public String itemView(Model model, @PathVariable("itemId")Long itemId){
         model.addAttribute("somsomItmem", somsomItemService.itemView(itemId));
 
-        return "somsomItem/itemView";
+        return "somsomItem/somsomDetail";
     }
-
+//     관리자 아이디 검증하기
+     private boolean isTrueAdmin(Account account){
+        if(account.getId().equals("admin")){
+            return true;
+        }
+        return false;
+     }
 }
