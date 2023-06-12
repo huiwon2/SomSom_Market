@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<head>
+<head th:replace="fragments/header :: header">
   <meta charset="UTF-8">
   <title>위시리스트 내역</title>
 </head>
@@ -9,10 +9,9 @@
 .personal { display: block; }
 .group { display: none;	}
 </style>
-
+<body>
 <script>
-$(document).ready(function($) {
-	// select 선택에 맞게 보여지는 div 변화 (근데 안돼서 수정 필요)
+  // select 선택에 맞게 보여지는 div 변화 (근데 안 먹힘...ㅠ)
     $('#selectBox').change(function() {
         var result = $("select[name=selectBox]").val();
 
@@ -26,9 +25,7 @@ $(document).ready(function($) {
           	$('.group').show();
         }
     });
-});
 </script>
-<body>
 <div th:replace="fragments/bodyHeader :: bodyHeader" />
 
 <h2>위시리스트</h2>

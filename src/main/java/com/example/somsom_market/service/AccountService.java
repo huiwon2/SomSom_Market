@@ -3,12 +3,7 @@ package com.example.somsom_market.service;
 import com.example.somsom_market.controller.User.UserRegistRequest;
 import com.example.somsom_market.dao.AccountDao;
 import com.example.somsom_market.domain.*;
-import com.example.somsom_market.domain.item.GroupItem;
-import com.example.somsom_market.domain.item.PersonalItem;
-import com.example.somsom_market.repository.AccountRepository;
-import com.example.somsom_market.repository.GroupItemRepository;
-import com.example.somsom_market.repository.OrderRepository;
-import com.example.somsom_market.repository.PersonalItemRepository;
+import com.example.somsom_market.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -48,6 +43,12 @@ public class AccountService {
         this.orderRepository = orderRepository;
     }
 
+    @Autowired
+    private WishlistRepository wishlistRepository;
+    public void setWishlistRepository(WishlistRepository wishlistRepository) {
+        this.wishlistRepository = wishlistRepository;
+    }
+
     // 사용자 PK로 계정 검색
     public Account getAccount(String id) {
         Optional<Account> account = accountRepository.findById(id);
@@ -60,6 +61,12 @@ public class AccountService {
         Optional<Account> account = accountRepository.findByIdAndPassword(id, password);
         if (account.isPresent()) return account.get();
         return null;
+    }
+
+    // 이메일 + 휴대폰 번호로 아이디 찾기
+    public List<Account> getIdByEmailAndPhone(String email, String phone) {
+        List<Account> accountList = accountRepository.findByEmailAndPhone(email, phone);
+        return accountList;
     }
 
     // 새로운 계정 추가 후 다시 Account 반환 → 바로 로그인
@@ -83,9 +90,7 @@ public class AccountService {
 
     // 아이디 존재하는지 확인
     public boolean isIdExist(String id) {
-        Optional<Account> account = accountRepository.findById(id);
-        if (account.isPresent()) return true;
-        return false;
+        return accountRepository.existsById(id);
     }
 
     // 회원 정보 수정 후 다시 Account 반환
@@ -119,8 +124,10 @@ public class AccountService {
         if (groupList != null) {
             myPageList[2] = groupList.size();
         }
-
-        // 위시리스트 추후에..
+        List<Wishlist> wishlist = wishlistRepository.findByAccountId(id);
+        if (wishlist != null) {
+            myPageList[3] = wishlist.size();
+        }
 
         return myPageList;
     }

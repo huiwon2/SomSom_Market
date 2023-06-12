@@ -2,17 +2,23 @@ package com.example.somsom_market.controller.PersonalItem;
 
 import com.example.somsom_market.controller.User.UserSession;
 import com.example.somsom_market.domain.Account;
-import com.example.somsom_market.domain.item.PersonalItem;
+import com.example.somsom_market.domain.PersonalItem;
+import com.example.somsom_market.domain.Wishlist;
+import com.example.somsom_market.service.AccountService;
 import com.example.somsom_market.service.PersonalItemService;
+import com.example.somsom_market.service.WishlistService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.support.SessionStatus;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.web.util.WebUtils;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
 import java.util.List;
 
 @Controller
@@ -27,6 +33,12 @@ public class PersonalItemController {
     private PersonalItemService personalItemService;
     public void setPersonalItemService(PersonalItemService personalItemService) {
         this.personalItemService = personalItemService;
+    }
+
+    @Autowired
+    private WishlistService wishlistService;
+    public void setWishlistService(WishlistService wishlistService) {
+        this.wishlistService = wishlistService;
     }
 
     @GetMapping("/personal/register")
@@ -49,15 +61,13 @@ public class PersonalItemController {
 
     @PostMapping("/personal/register")
     public String register(HttpServletRequest request,
-                                 @ModelAttribute("personalItem") PersonalItemRequest itemRegistReq,
-                                 BindingResult result) {
-        // 입력 값 검증 추후 수정
-
+                                 @Valid @ModelAttribute("personalItem") PersonalItemRequest itemRegistReq,
+                                 BindingResult result, Model model) throws Exception {
         UserSession userSession = (UserSession) WebUtils.getSessionAttribute(request, "userSession");
         Account account = userSession.getAccount();
 
         if (result.hasErrors()) {
-            return PERSONAL_REGISTRATION_FORM;
+            return "redirect:/personal/register";
         }
 
         PersonalItem personalItem = personalItemService.registerNewItem(itemRegistReq, account.getId());
@@ -75,8 +85,13 @@ public class PersonalItemController {
 
         PersonalItemRequest personalItemRequest = new PersonalItemRequest();
 
+        // 기존에 저장해둘 내용
         personalItemRequest.setItemId(personalItem.getId());
         personalItemRequest.setSellerId(personalItem.getSellerId());
+        personalItemRequest.setImgName(personalItem.getImgName());
+        personalItemRequest.setImgPath(personalItem.getImgPath());
+
+        // 변경 가능한 필드
         personalItemRequest.setTitle(personalItem.getTitle());
         personalItemRequest.setPrice(personalItem.getPrice());
         personalItemRequest.setDescription(personalItem.getDescription());
@@ -97,12 +112,11 @@ public class PersonalItemController {
 
     @PostMapping("/user/myPage/sell/personal/update")
     public String update(HttpServletRequest request,
-                               @ModelAttribute("personalItem") PersonalItemRequest itemRegistReq,
-                               BindingResult result) {
-        // 입력 값 검증 추후 수정
-
+                         @Valid @ModelAttribute("personalItem") PersonalItemRequest itemRegistReq,
+                         BindingResult result, RedirectAttributes redirectAttributes) {
         if (result.hasErrors()) {
-            return PERSONAL_REGISTRATION_FORM;
+            redirectAttributes.addAttribute("itemId", itemRegistReq.getItemId());
+            return "redirect:/user/myPage/sell/personal/update";
         }
 
         PersonalItem personalItem = personalItemService.updateItem(itemRegistReq);
@@ -142,7 +156,19 @@ public class PersonalItemController {
                                      @PathVariable("itemId") long itemId, Model model) {
         PersonalItem personalItem = personalItemService.searchItem(itemId);
 
+        UserSession userSession = (UserSession) WebUtils.getSessionAttribute(request, "userSession");
+        int isExistWish = 0;
+
+        if (userSession != null) { // 로그인 사용자는 위시리스트 추가되어 있는지 아닌지 확인
+            Account account = userSession.getAccount();
+            Wishlist wishlist = wishlistService.getPersonalWishlistByAccountAndItem(account.getId(), itemId);
+            if (wishlist != null) { // 위시리스트에 추가되어 있으면
+                isExistWish = 1;
+            }
+        }
+
         model.addAttribute("personalItem", personalItem);
+        model.addAttribute("isExistWish", isExistWish);
 
         return PERSONAL_DETAIL_VIEW;
     }

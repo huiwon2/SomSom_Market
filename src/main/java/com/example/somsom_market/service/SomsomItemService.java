@@ -1,9 +1,12 @@
 package com.example.somsom_market.service;
 
 import com.example.somsom_market.controller.SomsomItem.ItemRegistRequest;
+import com.example.somsom_market.controller.SomsomItem.ItemUpdateRequest;
 import com.example.somsom_market.dao.SomsomItemDao;
-import com.example.somsom_market.domain.item.SomsomItem;
+import com.example.somsom_market.domain.PersonalItem;
+import com.example.somsom_market.domain.SomsomItem;
 import com.example.somsom_market.repository.SomsomItemRepository;
+import com.fasterxml.jackson.annotation.JacksonAnnotationsInside;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -11,6 +14,7 @@ import lombok.Setter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.swing.text.html.Option;
 import java.util.*;
 
 @Getter
@@ -32,7 +36,6 @@ public class SomsomItemService {
         }
         return null;
     }
-
 //  게시글 등록
     public SomsomItem insertSomsomItem(ItemRegistRequest regReq) {
         SomsomItem somsomItem = new SomsomItem();
@@ -44,7 +47,6 @@ public class SomsomItemService {
         somsomItemDao.insertSomsomItem(somsomItem);
         return somsomItem;
     }
-
 //    게시글 수정
     public static void updateItem(SomsomItem somsomItem, long id){
         SomsomItem update = somsomItemRepository.findItemById(id);
@@ -54,29 +56,29 @@ public class SomsomItemService {
 //        update.setImageUrl(somsomItem.getImageUrl());
         somsomItemRepository.save(update);
     }
-
 //    게시글 삭제
     public static void deleteSomsomItem(long id){
         somsomItemRepository.deleteById(id);
     }
-
 //    상품 등록
     public void saveItem(SomsomItem item) {
-        somsomItemRepository.save(item);
-    }
 
+        somsomItemRepository.save(item); }
 //    읽기
-    public SomsomItem findOne(long id) { return somsomItemDao.findOne(id); }
-
+    public Optional<SomsomItem> itemView(long id) { return somsomItemRepository.findById(id); }
 //    전체 리스트 읽기
-    public List<SomsomItem> findItems(){
-
-        return somsomItemDao.findAll();
+    public List<SomsomItem> allItemView(){
+        return somsomItemRepository.findAll();
     }
-
 //    상품 삭제
-    public void deleteItem(long id){
+    public void itemDelete(long id){
         somsomItemRepository.deleteById(id);
     }
+
+//    리스트
+    public List<SomsomItem> somsomItemList() {
+    List<SomsomItem> somsomItemList = somsomItemDao.findAll();
+    return somsomItemList;
+}
 
 }
