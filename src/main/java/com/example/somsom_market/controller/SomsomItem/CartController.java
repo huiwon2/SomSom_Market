@@ -1,14 +1,8 @@
 package com.example.somsom_market.controller.SomsomItem;
 
-import com.example.somsom_market.domain.Account;
-import com.example.somsom_market.domain.Item;
-import com.example.somsom_market.repository.SomsomItemRepository;
 import com.example.somsom_market.service.AccountService;
 import com.example.somsom_market.service.SomsomItemService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.SessionAttributes;
 
 @Controller

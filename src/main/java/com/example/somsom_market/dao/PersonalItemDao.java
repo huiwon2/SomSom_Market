@@ -2,7 +2,7 @@ package com.example.somsom_market.dao;
 
 import com.example.somsom_market.controller.PersonalItem.PersonalItemRequest;
 import com.example.somsom_market.domain.ItemStatus;
-import com.example.somsom_market.domain.PersonalItem;
+import com.example.somsom_market.domain.item.PersonalItem;
 import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;

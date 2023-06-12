@@ -48,7 +48,7 @@ public class AccountDao {
         }
     }
 
-    public Account findOne(Long id) {
+    public Account findOne(String id) {
         return em.find(Account.class, id);
     }
 
@@ -57,9 +57,9 @@ public class AccountDao {
                 .getResultList();
     }
 
-    public List<Account> findByName(String userId) {
-        return em.createQuery("select a from Account a where a.userId = :userId", Account.class)
-                .setParameter("userId", userId)
+    public List<Account> findByName(String id) {
+        return em.createQuery("select a from Account a where a.id = :userId", Account.class)
+                .setParameter("userId", id)
                 .getResultList();
     }
 }

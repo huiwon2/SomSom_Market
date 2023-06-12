@@ -4,6 +4,7 @@ import com.example.somsom_market.controller.User.UserSession;
 import com.example.somsom_market.domain.Account;
 import com.example.somsom_market.domain.Cart;
 import com.example.somsom_market.domain.Order;
+import com.example.somsom_market.repository.OrderSearch;
 import com.example.somsom_market.service.AccountService;
 import com.example.somsom_market.service.OrderService;
 import com.example.somsom_market.service.OrderValidator;
@@ -17,6 +18,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.bind.support.SessionStatus;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.ModelAndViewDefiningException;
+import org.springframework.web.util.WebUtils;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
@@ -26,7 +28,7 @@ import java.util.Date;
 import java.util.List;
 
 @Controller
-@SessionAttributes({"userSession" ,"order"})
+@SessionAttributes({"userSession"})
 @RequiredArgsConstructor
 public class OrderController {
 
@@ -37,45 +39,90 @@ public class OrderController {
     @Autowired
     private OrderValidator orderValidator;
 
-    // 주문 객체를 생성하고 "order"라는 이름으로 모델에 추가
-    @ModelAttribute("orderForm")
-    public OrderForm createOrderForm() {
-        return new OrderForm();
-    }
-
-    // 결제수단 객체를 생성하고 "paymentTypes"라는 이름으로 모델에 추가
-    @ModelAttribute("paymentTypes")
-    public List<String> referenceData() {
-        ArrayList<String> paymentTypes = new ArrayList<String>();
-        paymentTypes.add("무통장 입금");
-        return paymentTypes;
-    }
-
-    @RequestMapping("/shop/newOrder.do")
-    public String initNewOrder(HttpServletRequest request,
-                               @ModelAttribute("sessionCart") Cart cart,
-                               @ModelAttribute("orderForm") OrderForm orderForm
-    ) throws ModelAndViewDefiningException {
-        UserSession userSession = (UserSession) request.getSession().getAttribute("userSession");
-        if (cart != null) {
-            // Re-read account from DB at team's request.
-            Account account = accountService.getAccount(userSession.getAccount().getId());
-            orderForm.getOrder().initOrder(account, cart);
-            return "NewOrderForm";
-        }
-        else {
-            ModelAndView modelAndView = new ModelAndView("Error");
-            modelAndView.addObject("message", "An order could not be created because a cart could not be found.");
-            throw new ModelAndViewDefiningException(modelAndView);
-        }
-    }
-
-    // GET 요청이 들어오면 "orderReq" 모델 속성이 모델에 추가되고 ORDER 뷰를 반환
-    @GetMapping("/order/form")
+    @GetMapping("/order")
     public String createForm(Model model) {
+
         model.addAttribute("orderReq", new OrderForm());
-        return "/order/form";
+
+        return "order/orderForm";
     }
+
+    @PostMapping("/order")
+    public String order(HttpServletRequest request,
+                        @RequestParam("itemId") Long itemId,
+                        @RequestParam("count") int count) {
+
+        UserSession userSession = (UserSession) WebUtils.getSessionAttribute(request, "userSession");
+        Account account = userSession.getAccount();
+
+        orderService.order(account.getId(), itemId, count);
+        return "redirect:/order/payment";
+    }
+
+    @GetMapping("/order/payment")
+    public String showOrderPaymentPage(@ModelAttribute("order") Order order) {
+        return "redirect:/order/complete";
+    }
+
+    @GetMapping("/order/complete")
+    public String showCompletePage(@ModelAttribute("order") Order order) {
+        return "redirect:/order/list";
+    }
+
+    //주문 목록 조회
+    @GetMapping("/orders")
+    public String orderList(@ModelAttribute("orderSearch") OrderSearch orderSearch, Model model) {
+        List<Order> orders = orderService.findOrders(orderSearch);
+        model.addAttribute("orders", orders);
+
+        return "order/orderList";
+    }
+
+    @PostMapping("/{orderId}/cancel") // TODO: 2023/05/27  마이페이지에서 접근
+    public String cancelOrder(@PathVariable("orderId") Long orderId) {
+        orderService.cancelOrder(orderId);
+        return "redirect:/"; // TODO: 2023/05/27 마이페이지로 리다이렉트
+    }
+
+//    // 주문 객체를 생성하고 "order"라는 이름으로 모델에 추가
+//    @ModelAttribute("orderForm")
+//    public OrderForm createOrderForm() {
+//        return new OrderForm();
+//    }
+//
+//    // 결제수단 객체를 생성하고 "paymentTypes"라는 이름으로 모델에 추가
+//    @ModelAttribute("paymentTypes")
+//    public List<String> referenceData() {
+//        ArrayList<String> paymentTypes = new ArrayList<String>();
+//        paymentTypes.add("무통장 입금");
+//        return paymentTypes;
+//    }
+//
+//    @RequestMapping("/shop/newOrder.do")
+//    public String initNewOrder(HttpServletRequest request,
+//                               @ModelAttribute("sessionCart") Cart cart,
+//                               @ModelAttribute("orderForm") OrderForm orderForm
+//    ) throws ModelAndViewDefiningException {
+//        UserSession userSession = (UserSession) request.getSession().getAttribute("userSession");
+//        if (cart != null) {
+//            // Re-read account from DB at team's request.
+//            Account account = accountService.getAccount(userSession.getAccount().getId());
+//            orderForm.getOrder().initOrder(account, cart);
+//            return "NewOrderForm";
+//        }
+//        else {
+//            ModelAndView modelAndView = new ModelAndView("Error");
+//            modelAndView.addObject("message", "An order could not be created because a cart could not be found.");
+//            throw new ModelAndViewDefiningException(modelAndView);
+//        }
+//    }
+//
+//    // GET 요청이 들어오면 "orderReq" 모델 속성이 모델에 추가되고 ORDER 뷰를 반환
+//    @GetMapping("/order/form")
+//    public String createForm(Model model) {
+//        model.addAttribute("orderReq", new OrderForm());
+//        return "/order/form";
+//    }
 
     // POST 요청이 들어오면 OrderRequest 객체가 세션에 저장되고 BindingResult를 통해 유효성 검사 결과를 확인
 //    @PostMapping("/order/form")
@@ -139,26 +186,4 @@ public class OrderController {
 //        status.setComplete();  // remove sessionCart and orderForm from session
 //        return mav;
 //    }
-
-
-    @GetMapping("/order/payment")
-    public String showOrderPaymentPage(@ModelAttribute("order") Order order) {
-        return "/order/payment";
-    }
-
-    @GetMapping("/order/complete")
-    public String showCompletePage(@ModelAttribute("order") Order order) {
-        return "/order/complete";
-    }
-
-//    @GetMapping("/order/main")
-//    public String backToMain() {
-//        return "/main";
-//    }
-
-    @PostMapping("/{orderId}/cancel") // TODO: 2023/05/27  마이페이지에서 접근
-    public String cancelOrder(@PathVariable("orderId") Long orderId) {
-        orderService.cancelOrder(orderId);
-        return "redirect:/"; // TODO: 2023/05/27 마이페이지로 리다이렉트
-    }
 }

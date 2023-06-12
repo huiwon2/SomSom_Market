@@ -1,6 +1,8 @@
 package com.example.somsom_market.controller.User;
 
 import com.example.somsom_market.domain.*;
+import com.example.somsom_market.domain.item.GroupItem;
+import com.example.somsom_market.domain.item.PersonalItem;
 import com.example.somsom_market.service.AccountService;
 import com.example.somsom_market.service.WishlistService;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -3,7 +3,7 @@ package com.example.somsom_market.service;
 import com.example.somsom_market.controller.PersonalItem.PersonalItemRequest;
 import com.example.somsom_market.dao.PersonalItemDao;
 import com.example.somsom_market.domain.ItemStatus;
-import com.example.somsom_market.domain.PersonalItem;
+import com.example.somsom_market.domain.item.PersonalItem;
 import com.example.somsom_market.repository.PersonalItemRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

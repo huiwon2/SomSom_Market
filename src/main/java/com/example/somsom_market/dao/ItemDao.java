@@ -1,6 +1,6 @@
 package com.example.somsom_market.dao;
 
-import com.example.somsom_market.domain.Item;
+import com.example.somsom_market.domain.item.Item;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 

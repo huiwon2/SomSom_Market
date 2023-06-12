@@ -1,8 +1,7 @@
 package com.example.somsom_market.repository;
 
-import com.example.somsom_market.domain.GroupItem;
+import com.example.somsom_market.domain.item.GroupItem;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
