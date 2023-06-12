@@ -63,6 +63,12 @@ public class AccountService {
         return null;
     }
 
+    // 이메일 + 휴대폰 번호로 아이디 찾기
+    public List<Account> getIdByEmailAndPhone(String email, String phone) {
+        List<Account> accountList = accountRepository.findByEmailAndPhone(email, phone);
+        return accountList;
+    }
+
     // 새로운 계정 추가 후 다시 Account 반환 → 바로 로그인
     public Account insertAccount(UserRegistRequest memReq) {
         Account account = new Account();
