@@ -1,9 +1,9 @@
 package com.example.somsom_market.service;
 
 import com.example.somsom_market.dao.WishlistDao;
-import com.example.somsom_market.domain.GroupItem;
-import com.example.somsom_market.domain.PersonalItem;
 import com.example.somsom_market.domain.Wishlist;
+import com.example.somsom_market.domain.item.GroupItem;
+import com.example.somsom_market.domain.item.PersonalItem;
 import com.example.somsom_market.repository.PersonalItemRepository;
 import com.example.somsom_market.repository.WishlistRepository;
 import org.springframework.beans.factory.annotation.Autowired;

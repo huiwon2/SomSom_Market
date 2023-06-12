@@ -4,8 +4,7 @@ package com.example.somsom_market.controller.SomsomItem;
 import com.example.somsom_market.controller.User.UserSession;
 import com.example.somsom_market.dao.SomsomItemDao;
 import com.example.somsom_market.domain.Account;
-import com.example.somsom_market.domain.PersonalItem;
-import com.example.somsom_market.domain.SomsomItem;
+import com.example.somsom_market.domain.item.SomsomItem;
 import com.example.somsom_market.service.SomsomItemService;
 import lombok.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,15 +21,14 @@ import java.util.List;
 
 @Controller
 @SessionAttributes("userSession")
-@Data
-@AllArgsConstructor
-@NoArgsConstructor
+@RequiredArgsConstructor
 public class SomsomItemController {
 //    mvc설계 보고 경로 채우기
     private static final String SOMSOM_REGISTRATION_FORM = "/somsom/somsomItemRegister";
     private static final String SOMSOM_UPDATE_FORM = "/somsom/somsomItemUpdate";
     private static final String ITEM_NOT_FOUND = "/somsom/notFound";
     private static final String ITEM_FORM = "/somsom/somsomItemList";
+    @Autowired
     private SomsomItemService  somsomItemService;
     @Autowired
     private SomsomItemDao somsomItemDao;
@@ -63,6 +61,7 @@ public class SomsomItemController {
         somsomItemService.saveItem(somsomItem);
         return "/main";
     }
+
 //    form(Update method)
     @GetMapping("somsomItem/update/{item_id}")
     public String form(ItemUpdateRequest itemUpdateRequest, @RequestParam("itemId")Long itemId, Model model) {
@@ -77,6 +76,7 @@ public class SomsomItemController {
         model.addAttribute("item", somsomItemService.itemView(itemId));
         return SOMSOM_UPDATE_FORM;
     }
+
     @PostMapping("somsomItem/update/product/{item_id}")
     public String update(@ModelAttribute("updateReq") ItemUpdateRequest itemUpdateRequest, Errors errors, HttpServletRequest request) {
         UserSession userSession = (UserSession) WebUtils.getSessionAttribute(request, "userSession");
@@ -94,16 +94,16 @@ public class SomsomItemController {
             return ITEM_NOT_FOUND;
         }
     }
-//    솜솜아이템 리스트
-@GetMapping("/somsomItem/somsomItemList")
-public String showList(HttpServletRequest request, Model model) {
 
-    List<SomsomItem> somsomItemList = somsomItemService.somsomItemList();
+    //솜솜아이템 리스트
+    @GetMapping("/somsomItem/list")
+    public String showList(HttpServletRequest request, Model model) {
 
-    model.addAttribute("personalItemList", somsomItemList);
+        List<SomsomItem> somsomItems = somsomItemService.somsomItemList();
+        model.addAttribute("somsomItems", somsomItems);
 
-    return "items/somsom/somsomItemist";
-}
+        return "/items/somsom/somsomItemList";
+    }
 
 //    상세 페이지
     @GetMapping("somsomItem/somsomDetail/{item_id}")
