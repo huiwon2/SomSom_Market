@@ -11,6 +11,11 @@
 <body onload="startPage();">
 <script>
     function addHeart() {
+        if (userId == sellerId) {
+            alert('본인 게시글에는 위시리스트를 추가할 수 없습니다.');
+            return;
+        }
+
         $.ajax({
 			type : "POST",
 			url : "/user/myPage/wishlist/add",
@@ -55,6 +60,9 @@
 <script th:inline="javascript">
 /*<![CDATA[*/
     var wishlistCount = /*[[${personalItem.wishCount}]]*/;
+    var userId = /*[[${userSession.account.id}]]*/;
+    var sellerId = /*[[${personalItem.sellerId}]]*/;
+
     function startPage() {
         var isExistWishlist = /*[[${isExistWish}]]*/;
         if (isExistWishlist == 0) {
