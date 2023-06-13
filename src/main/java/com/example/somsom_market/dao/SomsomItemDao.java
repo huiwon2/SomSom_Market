@@ -2,6 +2,7 @@ package com.example.somsom_market.dao;
 
 import com.example.somsom_market.domain.item.SomsomItem;
 import lombok.Data;
+import lombok.RequiredArgsConstructor;
 import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Repository;
 
@@ -11,10 +12,10 @@ import javax.transaction.Transactional;
 import java.util.List;
 
 @Repository
-@Data
+@RequiredArgsConstructor
 public class SomsomItemDao {
-    @PersistenceContext
-    private EntityManager em;
+
+    private final EntityManager em;
 
     @Transactional
     public void insertSomsomItem(SomsomItem somsomItem) throws DataAccessException {

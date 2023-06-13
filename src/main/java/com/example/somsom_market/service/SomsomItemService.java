@@ -64,7 +64,7 @@ public class SomsomItemService {
     public Optional<SomsomItem> itemView(long id) { return somsomItemRepository.findById(id); }
 //    전체 리스트 읽기
     public List<SomsomItem> allItemView(){
-        return somsomItemRepository.findAll();
+        return somsomItemDao.findAll();
     }
 //    상품 삭제
     public void itemDelete(long id){

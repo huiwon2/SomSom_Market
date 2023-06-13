@@ -7,6 +7,7 @@ import com.example.somsom_market.domain.Account;
 import com.example.somsom_market.domain.item.SomsomItem;
 import com.example.somsom_market.service.SomsomItemService;
 import lombok.*;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -22,6 +23,7 @@ import java.util.List;
 @Controller
 @SessionAttributes("userSession")
 @RequiredArgsConstructor
+@Slf4j
 public class SomsomItemController {
 //    mvc설계 보고 경로 채우기
     private static final String SOMSOM_REGISTRATION_FORM = "/somsom/somsomItemRegister";
@@ -99,8 +101,10 @@ public class SomsomItemController {
     @GetMapping("/somsomItem/list")
     public String showList(HttpServletRequest request, Model model) {
 
-        List<SomsomItem> somsomItems = somsomItemService.somsomItemList();
+        List<SomsomItem> somsomItems = somsomItemService.allItemView();
         model.addAttribute("somsomItems", somsomItems);
+
+        log.info("info log = {}", somsomItems.toString());
 
         return "/items/somsom/somsomItemList";
     }
@@ -109,7 +113,6 @@ public class SomsomItemController {
     @GetMapping("somsomItem/somsomDetail/{item_id}")
     public String itemView(Model model, @PathVariable("itemId")Long itemId){
         model.addAttribute("somsomItmem", somsomItemService.itemView(itemId));
-
         return "somsomItem/somsomDetail";
     }
 //     관리자 아이디 검증하기
