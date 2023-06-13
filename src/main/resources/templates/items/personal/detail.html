@@ -11,6 +11,11 @@
 <body onload="startPage();">
 <script>
     function addHeart() {
+        if (userId == sellerId) {
+            alert('본인 게시글에는 위시리스트를 추가할 수 없습니다.');
+            return;
+        }
+
         $.ajax({
 			type : "POST",
 			url : "/user/myPage/wishlist/add",
@@ -22,6 +27,9 @@
                     $('.add').hide();
 
           	        $('.cancel').show();
+
+                    wishlistCount += 1;
+          	        $('#wishCount').text(wishlistCount);
 				} else {
 				    alert('로그인 후 이용해주세요.');
 				}
@@ -41,6 +49,9 @@
                     $('.cancel').hide();
 
           	        $('.add').show();
+
+          	        wishlistCount -= 1;
+          	        $('#wishCount').text(wishlistCount);
 				}
 			}
 		})
@@ -48,6 +59,10 @@
 </script>
 <script th:inline="javascript">
 /*<![CDATA[*/
+    var wishlistCount = /*[[${personalItem.wishCount}]]*/;
+    var userId = /*[[${userSession.account.id}]]*/;
+    var sellerId = /*[[${personalItem.sellerId}]]*/;
+
     function startPage() {
         var isExistWishlist = /*[[${isExistWish}]]*/;
         if (isExistWishlist == 0) {
@@ -70,6 +85,7 @@
 <textarea th:value="${personalItem.description}" th:text="${personalItem.description}"></textarea><br>
 <span th:text="${personalItem.status}"></span><br>
 <span th:text="${personalItem.nickName}"></span>
+담은 인원 : <span id="wishCount" th:text="${personalItem.wishCount}"></span>
 
 <div th:if="${userSession?.account}">
     <div th:if="${userSession.account.id} == ${personalItem.sellerId}">
