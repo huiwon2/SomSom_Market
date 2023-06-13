@@ -1,8 +1,8 @@
-package com.example.somsom_market.domain;
+package com.example.somsom_market.domain.item;
 
+import com.example.somsom_market.domain.item.Item;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.*;
-import org.hibernate.annotations.Table;
 
 import javax.persistence.Column;
 import javax.persistence.DiscriminatorValue;
@@ -15,7 +15,7 @@ import javax.persistence.Transient;
 @Entity
 @DiscriminatorValue(value="PERSONAL")
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class PersonalItem extends Item{
+public class PersonalItem extends Item {
     @Column(name="seller_id")
     private String sellerId;
 

@@ -1,6 +1,6 @@
 package com.example.somsom_market.controller.Main;
 
-import com.example.somsom_market.domain.Item;
+import com.example.somsom_market.domain.item.Item;
 import com.example.somsom_market.service.MainService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,12 +29,12 @@ public class MainController {
         return "home";
     }
 
-    @GetMapping("/items")
-    public String getAllItems(Model model) {
-        List<Item> items = mainService.getAllItems();
-        model.addAttribute("items", items);
-        return "home";
-    }
+//    @GetMapping("/main/items")
+//    public String getAllItems(Model model) {
+//        List<Item> items = mainService.getAllItems();
+//        model.addAttribute("items", items);
+//        return "items/somsom/somsomItemList";
+//    }
 
     @GetMapping("/search")
     public String searchItems(@RequestParam("query") String query,

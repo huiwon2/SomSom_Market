@@ -1,13 +1,57 @@
-<!DOCTYPE html>
+<!--<!DOCTYPE html>-->
+<!--<html xmlns:th="http://www.thymeleaf.org">-->
+<!--<head>-->
+<!--    <meta charset="UTF-8">-->
+<!--    <title>학교 거래 장터</title>-->
+<!--</head>-->
+<!--<body>-->
+<!--&lt;!&ndash; <a th:href="@{/items/somsom/register}">-->
+<!--    <input type="button" value="게시글 등록"> admin만 가능하게..?-->
+<!--    </a>&ndash;&gt;-->
+<!--</body>-->
+<!--</html>-->
+
+<!DOCTYPE HTML>
 <html xmlns:th="http://www.thymeleaf.org">
-<head>
-    <meta charset="UTF-8">
-    <title>학교 거래 장터</title>
-</head>
+<head th:replace="fragments/header :: header" />
 <body>
-<!-- <a th:href="@{/items/somsom/register}">
-    <input type="button" value="게시글 등록"> admin만 가능하게..?
-    </a>-->
+
+<div class="container">
+    <div th:replace="fragments/bodyHeader :: bodyHeader"/>
+
+    <div>
+        <table class="table table-striped">
+            <thead>
+            <tr>
+                <th>#</th>
+                <th>상품명</th>
+                <th>가격</th>
+                <th>재고수량</th>
+                <th></th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="item : ${somsomItems}">
+                <td th:text="${item.id}"></td>
+                <td th:text="${item.title}"></td>
+                <td th:text="${item.price}"></td>
+                <td th:text="${item.stockQuantity}"></td>
+                <td>
+                    <a href="#" th:href="@{/items/{id}/edit (id=${item.id})}" class="btn btn-primary" role="button">수정</a>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <a href="#" th:href="@{/order}" class="btn btn-primary" role="button">주문</a>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div th:replace="fragments/footer :: footer"/>
+
+</div> <!-- /container -->
 
 </body>
 </html>

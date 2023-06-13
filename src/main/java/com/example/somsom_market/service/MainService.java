@@ -1,6 +1,6 @@
 package com.example.somsom_market.service;
 
-import com.example.somsom_market.domain.Item;
+import com.example.somsom_market.domain.item.Item;
 import org.springframework.stereotype.Service;
 
 import java.util.HashMap;

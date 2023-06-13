@@ -1,7 +1,8 @@
-package com.example.somsom_market.domain;
+package com.example.somsom_market.domain.item;
 
+import com.example.somsom_market.domain.CartItem;
+import com.example.somsom_market.domain.item.Item;
 import lombok.*;
-import org.hibernate.annotations.Table;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -13,13 +14,10 @@ import java.util.List;
 public class SomsomItem extends Item {
 
     private int stockQuantity;
+
     @OneToMany(mappedBy = "item")
     private List<CartItem> cartItemList = new ArrayList<>();
 
-    @Column(name = "img_name")
-    private String imgName;
-    @Column(name = "img_path")
-    private String imgPath;
     //==비즈니스 로직==//
     /**
      * stock 증가

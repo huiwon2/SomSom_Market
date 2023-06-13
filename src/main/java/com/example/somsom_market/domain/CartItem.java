@@ -1,5 +1,7 @@
 package com.example.somsom_market.domain;
 
+import com.example.somsom_market.domain.item.Item;
+import com.example.somsom_market.domain.item.SomsomItem;
 import lombok.*;
 
 import javax.persistence.*;

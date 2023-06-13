@@ -1,11 +1,9 @@
 package com.example.somsom_market.service;
 
 import com.example.somsom_market.controller.SomsomItem.ItemRegistRequest;
-import com.example.somsom_market.controller.SomsomItem.ItemUpdateRequest;
 import com.example.somsom_market.dao.SomsomItemDao;
-import com.example.somsom_market.domain.SomsomItem;
+import com.example.somsom_market.domain.item.SomsomItem;
 import com.example.somsom_market.repository.SomsomItemRepository;
-import com.fasterxml.jackson.annotation.JacksonAnnotationsInside;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -13,7 +11,6 @@ import lombok.Setter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import javax.swing.text.html.Option;
 import java.util.*;
 
 @Getter
@@ -73,5 +70,11 @@ public class SomsomItemService {
     public void itemDelete(long id){
         somsomItemRepository.deleteById(id);
     }
+
+//    리스트
+    public List<SomsomItem> somsomItemList() {
+    List<SomsomItem> somsomItemList = somsomItemDao.findAll();
+    return somsomItemList;
+}
 
 }

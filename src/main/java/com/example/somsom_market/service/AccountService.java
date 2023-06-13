@@ -3,6 +3,8 @@ package com.example.somsom_market.service;
 import com.example.somsom_market.controller.User.UserRegistRequest;
 import com.example.somsom_market.dao.AccountDao;
 import com.example.somsom_market.domain.*;
+import com.example.somsom_market.domain.item.GroupItem;
+import com.example.somsom_market.domain.item.PersonalItem;
 import com.example.somsom_market.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
