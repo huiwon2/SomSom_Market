@@ -40,30 +40,66 @@
     </style>
 
 </head>
+<!--<body>-->
+<!--<div th:replace="fragments/bodyHeader :: bodyHeader" />-->
+<!--<div class="container">-->
+<!--    <table>-->
+<!--        <tr>-->
+<!--            <th>상품명</th>-->
+<!--            <td><input type="text" name="title" th:placeholder="상품명을 입력해주세요" /></td>-->
+<!--        </tr>-->
+<!--        <tr>-->
+<!--            <th>대표 이미지</th>-->
+<!--            <td><input type="file" name="img_path"/></td>-->
+<!--        </tr>-->
+<!--        <tr>-->
+<!--            <th>가격</th>-->
+<!--            <td><input type="text" name="price" th:placeholder="가격을 입력해주세요" /></td>-->
+<!--        </tr>-->
+<!--        <tr>-->
+<!--            <th>상세 정보</th>-->
+<!--            <td><textarea name="details" th:placeholder="상세 정보를 입력해주세요"></textarea></td>-->
+<!--        </tr>-->
+<!--    </table>-->
+
+<!--    <button>게시글 등록</button>-->
+<!--</div>-->
+
+<!--</body>-->
 <body>
 <div th:replace="fragments/bodyHeader :: bodyHeader" />
 <div class="container">
-    <table>
-        <tr>
-            <th>상품명</th>
-            <td><input type="text" name="title" th:placeholder="상품명을 입력해주세요" /></td>
-        </tr>
-        <tr>
-            <th>대표 이미지</th>
-            <td><input type="file" name="img_path"/></td>
-        </tr>
-        <tr>
-            <th>가격</th>
-            <td><input type="text" name="price" th:placeholder="가격을 입력해주세요" /></td>
-        </tr>
-        <tr>
-            <th>상세 정보</th>
-            <td><textarea name="details" th:placeholder="상세 정보를 입력해주세요"></textarea></td>
-        </tr>
-    </table>
 
-    <button>게시글 등록</button>
+    <form th:object="${somsomItem}" method="post" enctype="multipart/form-data">
+        <div class="form-group">
+            <label th:for="name">상품명</label>
+            <input type="text" th:field="*{title}" class="form-control" placeholder="이름을 입력하세요">
+        </div>
+<div th:if="${somsomItem.itemId} == -1">
+    <!-- 이미지 등록은 등록 시에만 가능 (수정 시엔 불가능!!) -->
+    <div class="form-group">
+        <label th:for="img">이미지</label>
+        <input type="file" id="imgFile" name="imgFile" class="form-control" value="파일 선택">
+    </div>
 </div>
+        <div class="form-group">
+            <label th:for="price">가격</label>
+            <input type="number" th:field="*{price}" class="form-control" placeholder="가격을 입력하세요">
+        </div>
+        <div class="form-group">
+            <label th:for="stockQuantity">수량</label>
+            <input type="number" th:field="*{stockQuantity}" class="form-control" placeholder="수량을 입력하세요">
+        </div>
+        <button type="submit" class="btn btn-primary">Submit</button>
+    </form>
+    <br/>
+    <div th:replace="fragments/footer :: footer" />
+    <div class="form-group">
+        <label th:for="description">내용</label>
+        <textarea th:field="*{description}" rows="15" cols="30" placeholder="내용을 입력해주세요"/>
+    </div>
+</div> <!-- /container -->
+
 
 </body>
 </html>
@@ -75,15 +111,22 @@
 <!--<html xmlns:th="http://www.thymeleaf.org">-->
 <!--<head th:replace="fragments/header :: header" />-->
 <!--<body>-->
-
+<!--<div th:replace="fragments/bodyHeader :: bodyHeader" />-->
 <!--<div class="container">-->
 <!--    <div th:replace="fragments/bodyHeader :: bodyHeader"/>-->
 
 <!--    <form th:action="@{/items/new}" th:object="${form}" method="post">-->
 <!--        <div class="form-group">-->
 <!--            <label th:for="name">상품명</label>-->
-<!--            <input type="text" th:field="*{name}" class="form-control" placeholder="이름을 입력하세요">-->
+<!--            <input type="text" th:field="*{title}" class="form-control" placeholder="이름을 입력하세요">-->
 <!--        </div>-->
+<!--<div th:if="${somsomItem.itemId} == -1">-->
+<!--    &lt;!&ndash; 이미지 등록은 등록 시에만 가능 (수정 시엔 불가능!!) &ndash;&gt;-->
+<!--    <div class="form-group">-->
+<!--        <label th:for="img">이미지</label>-->
+<!--        <input type="file" id="imgFile" name="imgFile" class="form-control" value="파일 선택">-->
+<!--    </div>-->
+<!--</div>-->
 <!--        <div class="form-group">-->
 <!--            <label th:for="price">가격</label>-->
 <!--            <input type="number" th:field="*{price}" class="form-control" placeholder="가격을 입력하세요">-->
@@ -91,14 +134,6 @@
 <!--        <div class="form-group">-->
 <!--            <label th:for="stockQuantity">수량</label>-->
 <!--            <input type="number" th:field="*{stockQuantity}" class="form-control" placeholder="수량을 입력하세요">-->
-<!--        </div>-->
-<!--        <div class="form-group">-->
-<!--            <label th:for="author">저자</label>-->
-<!--            <input type="text" th:field="*{author}" class="form-control" placeholder="저자를 입력하세요">-->
-<!--        </div>-->
-<!--        <div class="form-group">-->
-<!--            <label th:for="isbn">ISBN</label>-->
-<!--            <input type="text" th:field="*{isbn}" class="form-control" placeholder="ISBN을 입력하세요">-->
 <!--        </div>-->
 <!--        <button type="submit" class="btn btn-primary">Submit</button>-->
 <!--    </form>-->
