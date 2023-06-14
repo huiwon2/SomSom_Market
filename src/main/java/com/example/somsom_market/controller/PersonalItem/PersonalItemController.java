@@ -4,6 +4,7 @@ import com.example.somsom_market.controller.User.UserSession;
 import com.example.somsom_market.domain.Account;
 import com.example.somsom_market.domain.Wishlist;
 import com.example.somsom_market.domain.item.PersonalItem;
+import com.example.somsom_market.service.AccountService;
 import com.example.somsom_market.service.PersonalItemService;
 import com.example.somsom_market.service.WishlistService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,6 +38,12 @@ public class PersonalItemController {
     private WishlistService wishlistService;
     public void setWishlistService(WishlistService wishlistService) {
         this.wishlistService = wishlistService;
+    }
+
+    @Autowired
+    private AccountService accountService;
+    public void setAccountService(AccountService accountService) {
+        this.accountService = accountService;
     }
 
     @GetMapping("/personal/register")
@@ -153,6 +160,8 @@ public class PersonalItemController {
     public String showPersonalDetail(HttpServletRequest request,
                                      @PathVariable("itemId") long itemId, Model model) {
         PersonalItem personalItem = personalItemService.searchItem(itemId);
+        Account ac = accountService.getAccount(personalItem.getSellerId());
+        personalItem.setNickName(ac.getNickName());
 
         UserSession userSession = (UserSession) WebUtils.getSessionAttribute(request, "userSession");
         int isExistWish = 0;
