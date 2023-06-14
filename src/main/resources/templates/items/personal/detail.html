@@ -11,16 +11,12 @@
 <body onload="startPage();">
 <script>
     function addHeart() {
-        if (userId == sellerId) {
-            alert('본인 게시글에는 위시리스트를 추가할 수 없습니다.');
-            return;
-        }
-
         $.ajax({
 			type : "POST",
 			url : "/user/myPage/wishlist/add",
 			data : {
-				"itemId" : $('#itemId').val()
+				"itemId" : $('#itemId').val(),
+				"sellerId" : $('#sellerId').val()
 			},
 			success : function(data) {
 				if (data == true) {
@@ -31,7 +27,7 @@
                     wishlistCount += 1;
           	        $('#wishCount').text(wishlistCount);
 				} else {
-				    alert('로그인 후 이용해주세요.');
+				    alert('로그인이 되어 있지 않거나 본인의 게시글에는 찜할 수 없습니다.');
 				}
 			}
 		})
@@ -60,8 +56,6 @@
 <script th:inline="javascript">
 /*<![CDATA[*/
     var wishlistCount = /*[[${personalItem.wishCount}]]*/;
-    var userId = /*[[${userSession.account.id}]]*/;
-    var sellerId = /*[[${personalItem.sellerId}]]*/;
 
     function startPage() {
         var isExistWishlist = /*[[${isExistWish}]]*/;
@@ -78,13 +72,19 @@
 <div th:replace="fragments/bodyHeader :: bodyHeader" />
 
 <input type="hidden" id="itemId" th:name="itemId" th:value="${personalItem.id}"/>
+<input type="hidden" id="sellerId" th:name="sellerId" th:value="${personalItem.sellerId}"/>
 
 <img th:src="@{${personalItem.imgPath}}"/>
 <h2><span th:text="${personalItem.title}"></span></h2><br>
-<span th:text="${personalItem.price}"></span><br>
+<span th:text="${personalItem.price}"></span>원<br>
 <textarea th:value="${personalItem.description}" th:text="${personalItem.description}"></textarea><br>
-<span th:text="${personalItem.status}"></span><br>
-<span th:text="${personalItem.nickName}"></span>
+<!--<span th:text="${personalItem.status}"></span><br>-->
+<div th:switch="${personalItem.getStatus().toString()}">
+    <p th:case="INSTOCK">거래가능</p>
+    <p th:case="ING">거래중</p>
+    <p th:case="SOLDOUT">거래완료</p>
+</div>
+<span th:text="${personalItem.nickName}"></span><br>
 담은 인원 : <span id="wishCount" th:text="${personalItem.wishCount}"></span>
 
 <div th:if="${userSession?.account}">

@@ -18,8 +18,7 @@ public class GroupItem extends Item implements Serializable {
     //@ManyToOne
     //@JoinColumn(name="seller", referencedColumnName="id")
     //private Account user; //1 : N(0..*) , many side
-    @Column(name="seller_id")
-    private String sellerId; // userId
+
 
     @Column(name="sales_target")
     private int salesTarget; //공구 목표액
