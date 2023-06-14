@@ -4,7 +4,17 @@
     <meta charset="UTF-8">
     <title>비밀번호 확인</title>
 </head>
-<body>
+<body onload="startPage();">
+<script th:inline="javascript">
+/*<![CDATA[*/
+    function startPage() {
+        var errorString = /*[[${error}]]*/;
+        if (errorString == true) {
+            alert('회원 탈퇴할 수 없습니다.');
+        }
+    }
+/*]]>*/
+</script>
 <form th:action="@{/user/myPage/update/pwCheck}" method="post">
   <div>
     <input type="password" name="password" placeholder="비밀번호">

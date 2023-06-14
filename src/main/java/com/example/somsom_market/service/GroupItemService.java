@@ -86,4 +86,12 @@ public class GroupItemService {
             groupItemDao.cancelGroupItemOrders(itemId);
         }
     }
+
+    public boolean isExistSellingItem(String id) {
+        List<GroupItem> groupItems = groupItemRepository.findBySellerIdAndStatus(id, ItemStatus.INSTOCK.toString());
+        if (groupItems.size() > 0) {
+            return true;
+        }
+        return false;
+    }
 }

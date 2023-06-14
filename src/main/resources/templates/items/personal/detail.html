@@ -79,11 +79,17 @@
 <span th:text="${personalItem.price}"></span>원<br>
 <textarea th:value="${personalItem.description}" th:text="${personalItem.description}"></textarea><br>
 <!--<span th:text="${personalItem.status}"></span><br>-->
-<div th:switch="${personalItem.getStatus().toString()}">
-    <p th:case="INSTOCK">거래가능</p>
-    <p th:case="ING">거래중</p>
-    <p th:case="SOLDOUT">거래완료</p>
+<div th:if="${personalItem.sellerId} != 'unregister'">
+    <div th:switch="${personalItem.getStatus().toString()}">
+        <p th:case="INSTOCK">거래가능</p>
+        <p th:case="ING">거래중</p>
+        <p th:case="SOLDOUT">거래완료</p>
+    </div>
 </div>
+<div th:if="${personalItem.sellerId} == 'unregister'">
+    <p>거래불가</p>
+</div>
+
 <span th:text="${personalItem.nickName}"></span><br>
 담은 인원 : <span id="wishCount" th:text="${personalItem.wishCount}"></span>
 
@@ -96,12 +102,15 @@
     </div>
 </div>
 
-<div class="add" id="add">
-    <img th:src="@{/images/hearts.png}" th:onclick="addHeart()" />
+<div th:if="${personalItem.sellerId} != 'unregister'">
+    <div class="add" id="add">
+        <img th:src="@{/images/hearts.png}" th:onclick="addHeart()" />
+    </div>
+    <div class="cancel" id="cancel">
+        <img th:src="@{/images/heartFill.png}" th:onclick="cancelHeart()" />
+    </div>
 </div>
-<div class="cancel" id="cancel">
-    <img th:src="@{/images/heartFill.png}" th:onclick="cancelHeart()" />
-</div>
+
 
 
 </body>

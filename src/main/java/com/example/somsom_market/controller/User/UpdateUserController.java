@@ -1,8 +1,10 @@
 package com.example.somsom_market.controller.User;
 
 import com.example.somsom_market.domain.Account;
+import com.example.somsom_market.domain.item.GroupItem;
 import com.example.somsom_market.service.AccountFormValidator;
 import com.example.somsom_market.service.AccountService;
+import com.example.somsom_market.service.GroupItemService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -12,6 +14,7 @@ import org.springframework.web.util.WebUtils;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
+import java.util.List;
 
 @Controller
 @RequestMapping("/user/myPage/update")
@@ -25,6 +28,12 @@ public class UpdateUserController {
     private AccountService accountService;
     public void setAccountService(AccountService accountService) {
         this.accountService = accountService;
+    }
+
+    @Autowired
+    private GroupItemService groupItemService;
+    public void setGroupItemService(GroupItemService groupItemService) {
+        this.groupItemService = groupItemService;
     }
 
     @Autowired
@@ -51,7 +60,8 @@ public class UpdateUserController {
     }
 
     @GetMapping("/pwCheck")
-    public String showPwCheckForm() {
+    public String showPwCheckForm(Model model) {
+        model.addAttribute("error", false);
         return USER_PW_CHECK_FORM;
     }
 
@@ -121,9 +131,22 @@ public class UpdateUserController {
     }
 
     @GetMapping("/delete")
-    public String delete(HttpServletRequest request) {
+    public String delete(HttpServletRequest request, Model model) {
         UserSession userSession = (UserSession) WebUtils.getSessionAttribute(request, "userSession");
         Account account = userSession.getAccount();
+
+        if (groupItemService.isExistSellingItem(account.getId())) {
+            UserRegistRequest accountReq = new UserRegistRequest(
+                    account.getName(), account.getNickName(), account.getId(),
+                    account.getEmail(), account.getAddress(), account.getZipcode(),
+                    account.getBankName(), account.getBankAccount(), account.getPhone()
+            );
+            model.addAttribute("accountReq", accountReq);
+            model.addAttribute("error", true);
+
+            return USER_PW_CHECK_FORM;
+        }
+
         accountService.deleteAccount(account);
 
         return "redirect:/" + "user/logout";

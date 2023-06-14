@@ -2,12 +2,14 @@ package com.example.somsom_market.service;
 
 import com.example.somsom_market.controller.User.UserRegistRequest;
 import com.example.somsom_market.dao.AccountDao;
+import com.example.somsom_market.dao.PersonalItemDao;
 import com.example.somsom_market.domain.*;
 import com.example.somsom_market.domain.item.GroupItem;
 import com.example.somsom_market.domain.item.PersonalItem;
 import com.example.somsom_market.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
@@ -34,6 +36,12 @@ public class AccountService {
     }
 
     @Autowired
+    private PersonalItemDao personalItemDao;
+    public void setPersonalItemDao(PersonalItemDao personalItemDao) {
+        this.personalItemDao = personalItemDao;
+    }
+
+    @Autowired
     private GroupItemRepository groupItemRepository;
     public void setGroupItemRepository(GroupItemRepository groupItemRepository) {
         this.groupItemRepository = groupItemRepository;
@@ -49,6 +57,18 @@ public class AccountService {
     private WishlistRepository wishlistRepository;
     public void setWishlistRepository(WishlistRepository wishlistRepository) {
         this.wishlistRepository = wishlistRepository;
+    }
+
+    @Autowired
+    private ReviewRepository reviewRepository;
+    public void setReviewRepository(ReviewRepository reviewRepository) {
+        this.reviewRepository = reviewRepository;
+    }
+
+    @Autowired
+    private CartRepository cartRepository;
+    public void setCartRepository(CartRepository cartRepository) {
+        this.cartRepository = cartRepository;
     }
 
     // 사용자 PK로 계정 검색
@@ -106,7 +126,22 @@ public class AccountService {
     }
 
     // 회원 삭제
+    @Transactional
     public void deleteAccount(Account account) {
+        /*
+            wishlist / review 삭제 / personalItem sellerId 변경
+            orders의 order_id로 order_item 삭제 / cart_id로 cartItem 삭제
+            orders 삭제 / cart 삭제
+            이제 account 삭제
+         */
+        personalItemDao.updateItemSellerId(account.getId(), "unregister");
+        // group...은 음..
+        wishlistRepository.deleteByAccountId(account.getId());
+//        reviewRepository.deleteByAccountId(account.getId());
+
+//        orderRepository.deleteByAccountId(account.getId());
+//        cartRepository.deleteByAccountId(account.getId());
+
         accountDao.deleteAccount(account);
     }
 
