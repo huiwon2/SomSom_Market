@@ -95,11 +95,9 @@ function formSubmit() {
         <input type="password" id="password" th:field="*{password}" class="form-control" placeholder="비밀번호를 입력해주세요"
                th:class="${#fields.hasErrors('password')}? 'form-control fieldError' : 'form-control'">
         <br>
-        <input type="password" id="passwordCheck" th:field="*{passwordCheck}" class="form-control"
-               onChange="confirmPassword()" placeholder="비밀번호를 다시 한번 입력해주세요"
-               th:class="${#fields.hasErrors('passwordCheck')}? 'form-control fieldError' : 'form-control'">
+        <input type="password" id="passwordCheck" name="passwordCheck" class="form-control"
+               onChange="confirmPassword()" placeholder="비밀번호를 다시 한번 입력해주세요">
         <span id="confirm" style="color:red;">*비밀번호가 일치하지 않습니다.</span>
-        <p th:if="${#fields.hasErrors('password')}" th:errors="*{password}"></p>
     </div>
     <br>
 
