@@ -7,5 +7,6 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 public interface ReviewRepository extends JpaRepository<Review, Long> {
-    List<Review> findReviewByUserId(int userId); // userId로 리뷰 리스트 반환
+    List<Review> findReviewByUserId(String userId); // userId로 리뷰 리스트 반환
+//    void deleteByAccountId(String id);
 }

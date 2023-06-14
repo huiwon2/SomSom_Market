@@ -16,7 +16,7 @@ public class ReviewService {
     @Autowired
     ReviewRepository reviewRepository;
     //userId로 리뷰 리스트 반환
-    public List<Review> getReviewListByUserId(int userId){
+    public List<Review> getReviewListByUserId(String userId){
         return reviewRepository.findReviewByUserId(userId);
     }
 

@@ -23,7 +23,7 @@ public class Cart {
 
     private long count;
 
-    @OneToMany(mappedBy = "cart")
+    @OneToMany(mappedBy = "cart", cascade = CascadeType.ALL)
     private List<CartItem> cartItems = new ArrayList<>();
     @NotNull
     private int total_quantity;
