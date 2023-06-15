@@ -15,6 +15,9 @@
     }
 /*]]>*/
 </script>
+
+<div th:replace="fragments/bodyHeader :: bodyHeader" />
+
 <form th:action="@{/user/myPage/update/pwCheck}" method="post">
   <div>
     <input type="password" name="password" placeholder="비밀번호">

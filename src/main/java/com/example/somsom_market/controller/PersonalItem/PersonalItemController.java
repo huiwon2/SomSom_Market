@@ -166,16 +166,21 @@ public class PersonalItemController {
         UserSession userSession = (UserSession) WebUtils.getSessionAttribute(request, "userSession");
         int isExistWish = 0;
 
+        String userId;
         if (userSession != null) { // 로그인 사용자는 위시리스트 추가되어 있는지 아닌지 확인
             Account account = userSession.getAccount();
             Wishlist wishlist = wishlistService.getPersonalWishlistByAccountAndItem(account.getId(), itemId);
             if (wishlist != null) { // 위시리스트에 추가되어 있으면
                 isExistWish = 1;
             }
+            userId = account.getId();
+        } else {
+            userId = "false";
         }
 
         model.addAttribute("personalItem", personalItem);
         model.addAttribute("isExistWish", isExistWish);
+        model.addAttribute("userId", userId);
 
         return PERSONAL_DETAIL_VIEW;
     }
