@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/header :: header">
+    <meta charset="UTF-8">
+    <title>쪽지 보내기</title>
+</head>
+<body>
+
+<script>
+    function onSubmit() {
+        var title = $('#title').val();
+        var content = $('#content').val();
+
+        if (title == '' && content == '') {
+            alert('제목과 내용을 입력해주세요.');
+        } else if (title == '') {
+            alert('제목을 입력해주세요.');
+        } else if (content == '') {
+            alert('내용을 입력해주세요.');
+        } else {
+            $("#frm").submit();
+        }
+    }
+</script>
+
+<div th:replace="fragments/bodyHeader :: bodyHeader" />
+
+<h2>쪽지 보내기</h2>
+
+<a th:href="@{/personal/detail/{itemId}(itemId=${item.id})}">
+    <h2><span th:text="${item.title}"></span></h2></a>
+<hr>
+
+<form role="form" th:action="@{/personal/chat/register}" id="frm" method="post">
+    <div class="form-group">
+        <input type="text" id="title" name="title" class="form-control" placeholder="제목을 입력해주세요">
+    </div>
+    <br>
+
+    <div class="form-group">
+        <textarea id="content" name="content" rows="15" cols="30" placeholder="내용을 입력해주세요"></textarea>
+    </div>
+    <br>
+
+    <input type="button" onClick="onSubmit()" value="보내기">
+</form>
+
+</body>
+</html>

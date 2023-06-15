@@ -10,7 +10,13 @@
 </style>
 <body onload="startPage();">
 <script>
+var frm = document.frmSubmit;
+
     function addHeart() {
+        if (userId == sellerId) {
+            alert('본인의 게시글에는 찜할 수 없습니다.');
+            return;
+        }
         $.ajax({
 			type : "POST",
 			url : "/user/myPage/wishlist/add",
@@ -27,7 +33,7 @@
                     wishlistCount += 1;
           	        $('#wishCount').text(wishlistCount);
 				} else {
-				    alert('로그인이 되어 있지 않거나 본인의 게시글에는 찜할 수 없습니다.');
+				    alert('로그인 후 이용해주세요.');
 				}
 			}
 		})
@@ -56,6 +62,8 @@
 <script th:inline="javascript">
 /*<![CDATA[*/
     var wishlistCount = /*[[${personalItem.wishCount}]]*/;
+    var userId = /*[[${userId}]]*/;
+    var sellerId = /*[[${personalItem.sellerId}]]*/;
 
     function startPage() {
         var isExistWishlist = /*[[${isExistWish}]]*/;
@@ -66,6 +74,14 @@
             $('.add').hide();
             $('.cancel').show();
         }
+    }
+
+    function goInquires() {
+        if (userId == sellerId) {
+            alert('자신의 글에는 쪽지를 보낼 수 없습니다.');
+            return;
+        }
+        $("#frm").submit();
     }
 /*]]>*/
 </script>
@@ -109,8 +125,12 @@
     <div class="cancel" id="cancel">
         <img th:src="@{/images/heartFill.png}" th:onclick="cancelHeart()" />
     </div>
-</div>
 
+    <form id="frm" th:action="@{/personal/chat/send}" method="get">
+        <input type="hidden" id="itemId2" th:name="itemId2" th:value="${personalItem.id}"/>
+        <input type="button" onClick="goInquires()" value="구매 문의하기"></a>
+    </form>
+</div>
 
 
 </body>
