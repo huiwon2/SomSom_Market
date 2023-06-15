@@ -158,7 +158,7 @@ public class PersonalItemController {
     // 개인 거래 게시글 상세 뷰
     @RequestMapping("/personal/detail/{itemId}")
     public String showPersonalDetail(HttpServletRequest request,
-                                     @PathVariable("itemId") long itemId, Model model) {
+                                     @PathVariable("itemId") Long itemId, Model model) {
         PersonalItem personalItem = personalItemService.searchItem(itemId);
         Account ac = accountService.getAccount(personalItem.getSellerId());
         personalItem.setNickName(ac.getNickName());

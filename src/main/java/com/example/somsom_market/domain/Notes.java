@@ -16,19 +16,27 @@ import java.util.Date;
 @SequenceGenerator(name="SEQ_NOTES", sequenceName="NOTES_ID_SEQ", allocationSize=1)
 public class Notes {
     @Id @GeneratedValue(strategy=GenerationType.SEQUENCE, generator="SEQ_NOTES")
-    private Long notes_id;
+    @Column(name = "notes_id")
+    private Long notesId;
 
-    private String from_account_id;
-    private Long from_item_id;
-    private String to_seller_id;
+    @Column(name = "from_account_id")
+    private String fromAccountId;
+    @Column(name = "from_item_id")
+    private Long fromItemId;
+    @Column(name = "to_seller_id")
+    private String toSellerId;
 
     @Transient
-    private String to_seller_nickName;
+    private String toSellerNickName;
 
     private String title;
     private String content;
-    private Date sended_at;
-    private Date readed_at;
-    private String from_del;
-    private String to_del;
+    @Column(name = "sended_at")
+    private Date sendedAt;
+    @Column(name = "readed_at")
+    private Date readedAt;
+    @Column(name = "from_del")
+    private String fromDel;
+    @Column(name = "to_del")
+    private String toDel;
 }
