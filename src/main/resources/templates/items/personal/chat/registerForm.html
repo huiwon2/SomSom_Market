@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <title>쪽지 보내기</title>
 </head>
-<body>
+<body onload="startPage();">
 
 <script>
     function onSubmit() {
@@ -22,7 +22,14 @@
         }
     }
 </script>
-
+<script th:inline="javascript">
+    var error = /*[[${error}]]*/;
+    function startPage() {
+        if (error == 'true') {
+            alert('쪽지 보내기에 실패하였습니다. 다시 시도해주세요.');
+        }
+    }
+  </script>
 <div th:replace="fragments/bodyHeader :: bodyHeader" />
 
 <h2>쪽지 보내기</h2>
@@ -31,7 +38,9 @@
     <h2><span th:text="${item.title}"></span></h2></a>
 <hr>
 
-<form role="form" th:action="@{/personal/chat/register}" id="frm" method="post">
+<form role="form" th:action="@{/personal/chat/send}" id="frm" method="post">
+    <input type="hidden" id="itemId" th:name="itemId" th:value="${item.id}"/>
+
     <div class="form-group">
         <input type="text" id="title" name="title" class="form-control" placeholder="제목을 입력해주세요">
     </div>

@@ -5,6 +5,7 @@ import com.example.somsom_market.domain.Account;
 import com.example.somsom_market.domain.Notes;
 import com.example.somsom_market.domain.item.PersonalItem;
 import com.example.somsom_market.service.AccountService;
+import com.example.somsom_market.service.NotesService;
 import com.example.somsom_market.service.PersonalItemService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -33,9 +34,15 @@ public class NotesController {
         this.accountService = accountService;
     }
 
+    @Autowired
+    private NotesService notesService;
+    public void setNotesService(NotesService notesService) {
+        this.notesService = notesService;
+    }
+
     @GetMapping("/personal/chat/send")
     public String showChatSendForm(HttpServletRequest request,
-                                   @RequestParam("itemId2") long itemId, Model model) {
+                                   @RequestParam("itemId2") Long itemId, Model model) {
         UserSession userSession = (UserSession) WebUtils.getSessionAttribute(request, "userSession");
 
         if (userSession == null) {
@@ -47,14 +54,33 @@ public class NotesController {
         personalItem.setNickName(account.getNickName());
 
         model.addAttribute("item", personalItem);
+        model.addAttribute("error", "false");
         return PERSONAL_CHAT_FORM;
     }
 
     @PostMapping("/personal/chat/send")
-    public String charSend() {
+    public String chatSend(HttpServletRequest request,
+                           @RequestParam("title") String title,
+                           @RequestParam("content") String content,
+                           @RequestParam("itemId") Long itemId,
+                           Model model) {
+        UserSession userSession = (UserSession) WebUtils.getSessionAttribute(request, "userSession");
+        Account account = userSession.getAccount();
 
+        PersonalItem personalItem = personalItemService.searchItem(itemId);
+        boolean success = notesService.insertNotes(
+                account.getId(), itemId, personalItem.getSellerId(), title, content);
 
-        return "";
+        if (!success) { // 쪽지 보내기에 실패하면 다시 보내기 창으로
+            Account seller = accountService.getAccount(personalItem.getSellerId());
+            personalItem.setNickName(seller.getNickName());
+
+            model.addAttribute("item", personalItem);
+            model.addAttribute("error", "true");
+            return PERSONAL_CHAT_FORM;
+        }
+
+        return "redirect:/personal/chat/list";
     }
 
 
@@ -68,7 +94,23 @@ public class NotesController {
 
         Account account = userSession.getAccount();
 
+        List<Notes> receivedNotes = notesService.receivedNotes(account.getId());
+        List<Notes> sendedNotes = notesService.sendedNotes(account.getId());
+
+        model.addAttribute("receivedNotes", receivedNotes);
+        model.addAttribute("sendedNotes", sendedNotes);
+
         return PERSONAL_CHAT_LIST;
+    }
+
+    @GetMapping("/personal/chat/{chatId}")
+    @ResponseBody
+    public Notes showChatDetail(HttpServletRequest request,
+                                 @RequestParam("chatId") Long chatId) {
+        UserSession userSession = (UserSession) WebUtils.getSessionAttribute(request, "userSession");
+        Account account = userSession.getAccount();
+
+        return null;
     }
 
 
