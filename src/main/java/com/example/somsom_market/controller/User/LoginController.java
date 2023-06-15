@@ -6,17 +6,20 @@ import com.example.somsom_market.service.AccountService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.SessionAttributes;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 @Controller
 @SessionAttributes("userSession")
 public class LoginController {
     private static final String USER_LOGIN_FORM = "user/loginForm";
+    private static final String USER_FIND_ID_FORM = "user/findIdForm";
 
     @Autowired
     private AccountService accountService;
@@ -32,8 +35,9 @@ public class LoginController {
 
         Account account = accountService.getAccount(id, password);
         if (account == null) {
-            return new ModelAndView("redirect:loginForm", "message",
-                    "아이디 또는 패스워드가 잘못되었습니다.");
+            ModelAndView mav = new ModelAndView(USER_LOGIN_FORM);
+            mav.addObject("message", "아이디 또는 패스워드가 잘못되었습니다.");
+            return mav;
         } else {
             UserSession userSession = new UserSession(account);
             model.addAttribute("userSession", userSession);
@@ -43,5 +47,25 @@ public class LoginController {
             else
                 return new ModelAndView("redirect:" + "/");
         }
+    }
+
+    @GetMapping("/user/findId")
+    public String findIdShow() {
+        return USER_FIND_ID_FORM;
+    }
+
+    @PostMapping("/user/findId")
+    @ResponseBody
+    public Map<String,Object> findId(@RequestParam("email") String email,
+                                    @RequestParam("phone") String phone) {
+        List<Account> accountList = accountService.getIdByEmailAndPhone(email, phone);
+        Map<String, Object> responseVal = new HashMap<String, Object>();
+        if (accountList.size() == 0) {
+            responseVal.put("code", "false");
+            return responseVal;
+        }
+        responseVal.put("code", "OK");
+        responseVal.put("idList", accountList);
+        return responseVal;
     }
 }

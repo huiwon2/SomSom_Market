@@ -1,16 +1,9 @@
 package com.example.somsom_market.controller.GroupItem;
 
-import com.example.somsom_market.controller.PersonalItem.PersonalItemRequest;
-import com.example.somsom_market.controller.User.UserSession;
-import com.example.somsom_market.domain.Account;
-import com.example.somsom_market.domain.GroupItem;
-import com.example.somsom_market.domain.PersonalItem;
 import com.example.somsom_market.repository.GroupItemRepository;
 import com.example.somsom_market.service.GroupItemService;
-import org.hibernate.sql.Update;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.bind.support.SessionStatus;
@@ -19,10 +12,8 @@ import org.springframework.web.util.WebUtils;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
-import javax.validation.Valid;
 import java.util.Calendar;
 import java.util.List;
-import java.util.Map;
 
 @Controller
 @SessionAttributes("userSession")

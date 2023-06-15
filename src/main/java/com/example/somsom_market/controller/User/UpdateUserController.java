@@ -1,8 +1,10 @@
 package com.example.somsom_market.controller.User;
 
 import com.example.somsom_market.domain.Account;
+import com.example.somsom_market.domain.item.GroupItem;
 import com.example.somsom_market.service.AccountFormValidator;
 import com.example.somsom_market.service.AccountService;
+import com.example.somsom_market.service.GroupItemService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -12,18 +14,26 @@ import org.springframework.web.util.WebUtils;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
+import java.util.List;
 
 @Controller
 @RequestMapping("/user/myPage/update")
 @SessionAttributes("userSession")
 /* 회원 수정 (수정, 비밀번호 변경, 회원 탈퇴) */
 public class UpdateUserController {
-    private static final String USER_MYPAGE_FORM = "user/myPageUpdateForm";
+    private static final String USER_MYPAGE_FORM = "user/myPage/updateForm";
+    private static final String USER_PW_CHECK_FORM = "user/myPage/pwCheckForm";
 
     @Autowired
     private AccountService accountService;
     public void setAccountService(AccountService accountService) {
         this.accountService = accountService;
+    }
+
+    @Autowired
+    private GroupItemService groupItemService;
+    public void setGroupItemService(GroupItemService groupItemService) {
+        this.groupItemService = groupItemService;
     }
 
     @Autowired
@@ -47,6 +57,25 @@ public class UpdateUserController {
             return accountReq;
         }
         return new UserRegistRequest();
+    }
+
+    @GetMapping("/pwCheck")
+    public String showPwCheckForm(Model model) {
+        model.addAttribute("error", false);
+        return USER_PW_CHECK_FORM;
+    }
+
+    @PostMapping("/pwCheck")
+    public String pwCheckSubmit(HttpServletRequest request,
+                                @RequestParam("password") String password) throws Exception {
+        UserSession userSession = (UserSession) WebUtils.getSessionAttribute(request, "userSession");
+        Account account = userSession.getAccount();
+
+        if (account.getPassword().equals(password)) { // 비밀번호가 같으면 마이페이지 수정 페이지로
+            return "redirect:/user/myPage/update";
+        } else { // 틀리면 다시
+            return USER_PW_CHECK_FORM;
+        }
     }
 
     @GetMapping
@@ -80,31 +109,44 @@ public class UpdateUserController {
     }
 
     @PostMapping("/password")
-    public String updatePassword( HttpServletRequest request,
+    @ResponseBody
+    public boolean updatePassword( HttpServletRequest request,
                                   @RequestParam("currentPassword") String currentPassword,
-                                  @RequestParam("newPassword") String newPassword,
-                                  @RequestParam("newPasswordCheck") String newPasswordCheck) {
+                                  @RequestParam("newPassword") String newPassword) {
 
         UserSession userSession = (UserSession) WebUtils.getSessionAttribute(request, "userSession");
         Account account = userSession.getAccount();
 
-        if (account.getPassword().equals(currentPassword)) { // 현재 비밀번호 틀릴 경우
-            return "redirect:/" + "user/myPage"; // 추후 수정
-        }
+        System.out.println(account.getPassword() + ", " + currentPassword + ", " + newPassword);
 
-        if (newPassword.equals(newPasswordCheck)) { // 새 비밀번호와 비밀번호 확인이 다를 경우
-            return "redirect:/" + "user/myPage"; // 추후 수정
+        if (!account.getPassword().equals(currentPassword)) { // 현재 비밀번호 틀릴 경우
+            return false; // 추후 수정
         }
 
         accountService.updatePassword(account.getId(), newPassword);
+        account.setPassword(newPassword);
+        userSession.setAccount(account);
 
-        return "redirect:/" + "user/myPage";
+        return true;
     }
 
     @GetMapping("/delete")
-    public String delete(HttpServletRequest request) {
+    public String delete(HttpServletRequest request, Model model) {
         UserSession userSession = (UserSession) WebUtils.getSessionAttribute(request, "userSession");
         Account account = userSession.getAccount();
+
+        if (groupItemService.isExistSellingItem(account.getId())) {
+            UserRegistRequest accountReq = new UserRegistRequest(
+                    account.getName(), account.getNickName(), account.getId(),
+                    account.getEmail(), account.getAddress(), account.getZipcode(),
+                    account.getBankName(), account.getBankAccount(), account.getPhone()
+            );
+            model.addAttribute("accountReq", accountReq);
+            model.addAttribute("error", true);
+
+            return USER_PW_CHECK_FORM;
+        }
+
         accountService.deleteAccount(account);
 
         return "redirect:/" + "user/logout";

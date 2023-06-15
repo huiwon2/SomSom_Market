@@ -3,7 +3,7 @@ package com.example.somsom_market.service;
 import com.example.somsom_market.controller.GroupItem.GroupItemRequest;
 import com.example.somsom_market.dao.AccountDao;
 import com.example.somsom_market.dao.GroupItemDao;
-import com.example.somsom_market.domain.GroupItem;
+import com.example.somsom_market.domain.item.GroupItem;
 import com.example.somsom_market.domain.ItemStatus;
 import com.example.somsom_market.repository.GroupItemRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -84,5 +84,13 @@ public class GroupItemService {
             groupItemDao.cancelGroupItemOrders(itemId);
         }
         return groupItem;
+    }
+
+    public boolean isExistSellingItem(String id) {
+        List<GroupItem> groupItems = groupItemRepository.findBySellerIdAndStatus(id, ItemStatus.INSTOCK.toString());
+        if (groupItems.size() > 0) {
+            return true;
+        }
+        return false;
     }
 }

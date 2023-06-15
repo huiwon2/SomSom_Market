@@ -1,8 +1,8 @@
-package com.example.somsom_market.domain;
+package com.example.somsom_market.domain.item;
 
+import com.example.somsom_market.domain.item.Item;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.*;
-import org.hibernate.annotations.Table;
 
 import javax.persistence.Column;
 import javax.persistence.DiscriminatorValue;
@@ -15,15 +15,9 @@ import javax.persistence.Transient;
 @Entity
 @DiscriminatorValue(value="PERSONAL")
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class PersonalItem extends Item{
-    @Column(name="seller_id")
-    private String sellerId;
+public class PersonalItem extends Item {
 
     @Transient
     private String nickName; // 화면에 닉네임 출력하기 위한 필드
 
-    @Column(name = "img_name")
-    private String imgName;
-    @Column(name = "img_path")
-    private String imgPath;
 }

@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/header :: header">
+    <meta charset="UTF-8">
+    <title>쪽지함</title>
+</head>
+<body>
+<style>
+	table {
+		border: 1px solid;
+		border-collapse: collapse;
+		width: 100%;
+	}
+	td {
+		padding: 20px;
+		border: 1px solid;
+		width: 45%;
+	}
+
+	.received {
+	    float: left;
+	    width: 150px;
+	    height: 50px;
+	    border: 1px solid;
+	    text-align:center;
+	    line-height: 50px;
+	}
+
+	.sended {
+	    float: left;
+	    width: 150px;
+	    height: 50px;
+	    border: 1px solid;
+	    text-align:center;
+	    line-height: 50px;
+	}
+
+	.receive {
+        display: block;
+	}
+
+	.send {
+        display: none;
+	}
+
+	.received span {
+        font-weight: bold;
+    }
+</style>
+
+<script>
+    function receivedList() {
+        var receivedTextElement = document.getElementById("receivedText");
+        receivedTextElement.style.fontWeight = "bold";
+        var sendedTextElement = document.getElementById("sendedText");
+        sendedTextElement.style.fontWeight = "normal";
+
+        $('.send').hide();
+        $('.receive').show();
+    }
+
+    function sendedList() {
+        var sendedTextElement = document.getElementById("sendedText");
+        sendedTextElement.style.fontWeight = "bold";
+        var receivedTextElement = document.getElementById("receivedText");
+        receivedTextElement.style.fontWeight = "normal";
+
+        $('.receive').hide();
+        $('.send').show();
+    }
+
+    function detailView() {
+        alert('상세뷰 보기 누름');
+    }
+</script>
+
+
+<div th:replace="fragments/bodyHeader :: bodyHeader" />
+<h2>쪽지함</h2><hr>
+
+<div id="received" class="received" onclick='receivedList()'>
+    <span id="receivedText">받은 쪽지함</span>
+</div>
+<div id="sended" class="sended" onclick='sendedList()'>
+    <span id="sendedText">보낸 쪽지함</span>
+</div>
+
+<table>
+  <tr>
+    <td>
+        <div class="receive">
+            <div th:each="note : ${receivedNotes}">
+                <a th:href="'javascript:void(0)'" th:onclick="'detailView()'" th:text="${note.title}"></a><hr>
+            </div>
+        </div>
+
+        <div class="send">
+            <div th:each="note : ${sendedNotes}">
+                <a th:href="'javascript:void(0)'" th:onclick="'detailView()'" th:text="${note.title}"></a><hr>
+            </div>
+        </div>
+    </td>
+
+    <td>
+
+    </td>
+  </tr>
+</table>
+
+
+</body>
+</html>

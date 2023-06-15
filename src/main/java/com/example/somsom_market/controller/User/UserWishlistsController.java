@@ -1,9 +1,8 @@
 package com.example.somsom_market.controller.User;
 
-import com.example.somsom_market.domain.Account;
-import com.example.somsom_market.domain.GroupItem;
-import com.example.somsom_market.domain.PersonalItem;
-import com.example.somsom_market.domain.SomsomItem;
+import com.example.somsom_market.domain.*;
+import com.example.somsom_market.domain.item.GroupItem;
+import com.example.somsom_market.domain.item.PersonalItem;
 import com.example.somsom_market.service.AccountService;
 import com.example.somsom_market.service.WishlistService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -51,21 +50,36 @@ public class UserWishlistsController {
 
     @ResponseBody
     @PostMapping("/add")
-    public void add(HttpServletRequest request,
-                    @RequestParam("itemId") Long itemId) {
+    public boolean add(HttpServletRequest request,
+                    @RequestParam("itemId") Long itemId,
+                    @RequestParam("sellerId") String sellerId) {
         UserSession userSession = (UserSession) WebUtils.getSessionAttribute(request, "userSession");
+
+        if (userSession == null) {
+            return false;
+        }
+        if (sellerId.equals(userSession.getAccount().getId())) {
+            return false;
+        }
+
         Account account = userSession.getAccount();
 
-        wishlistService.addWishlist(account.getId(), itemId);
+        Wishlist wishlist = wishlistService.addWishlist(account.getId(), itemId);
+
+        if (wishlist != null) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
     @ResponseBody
     @PostMapping("/delete")
-    public void cancel(HttpServletRequest request,
+    public boolean cancel(HttpServletRequest request,
                     @RequestParam("itemId") Long itemId) {
         UserSession userSession = (UserSession) WebUtils.getSessionAttribute(request, "userSession");
         Account account = userSession.getAccount();
 
-        wishlistService.cancelWishlist(account.getId(), itemId);
+        return wishlistService.cancelWishlist(account.getId(), itemId);
     }
 }

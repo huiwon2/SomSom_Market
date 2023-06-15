@@ -4,7 +4,8 @@
     <ul class="nav nav-pills pull-right">
         <li><a href="/">Home</a></li>
     </ul>
-    <a href="/"><h3 class="text-muted">솜솜마켓</h3></a>
+    <a href="/"><img th:src="@{/images/somsom.png}" width="150" height="150"/></a>
+<!--    <h3 class="text-muted">솜솜마켓</h3>-->
 
     <div th:unless="${userSession?.account}">
         <a th:href="@{/user/register}">
@@ -20,7 +21,8 @@
             <input type="button" value="마이페이지"></a>
     </div>
 
-    <br>
 
-    <a th:href="@{/personal/list}">장터</a>
+    <a th:href="@{/personal/list}">장터</a> &nbsp;&nbsp;
+    <a th:href="@{/personal/chat/list}">쪽지함</a>
+
 </div>

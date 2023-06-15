@@ -2,13 +2,14 @@ package com.example.somsom_market.dao;
 
 import com.example.somsom_market.controller.PersonalItem.PersonalItemRequest;
 import com.example.somsom_market.domain.ItemStatus;
-import com.example.somsom_market.domain.PersonalItem;
+import com.example.somsom_market.domain.item.PersonalItem;
 import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 import java.util.List;
 
 @Repository
@@ -43,6 +44,13 @@ public class PersonalItemDao {
         return personalItem;
     }
 
+    public void updateItemSellerId(String sellerId, String newSellerId) {
+        Query query = em.createNativeQuery("UPDATE Item i SET i.seller_id = :newSellerId WHERE i.seller_id = :sellerId");
+        query.setParameter("newSellerId", newSellerId);
+        query.setParameter("sellerId", sellerId);
+        query.executeUpdate();
+    }
+
     @Transactional
     public void deleteItem(PersonalItem personalItem) {
         if (em.contains(personalItem)) {
@@ -50,5 +58,18 @@ public class PersonalItemDao {
         } else {
             em.remove(em.merge(personalItem));
         }
+    }
+
+    public void updateAddItemWishcount(Long itemId) {
+        Query query = em.createNativeQuery("Update Item i SET i.wish_count = i.wish_count+1 Where i.item_id = ?1");
+
+        query.setParameter(1, itemId);
+        query.executeUpdate();
+    }
+
+    public void updateDeleteItemWishcount(Long itemId) {
+        Query query = em.createNativeQuery("Update Item i SET i.wish_count = i.wish_count-1 Where i.item_id = ?1");
+        query.setParameter(1, itemId);
+        query.executeUpdate();
     }
 }

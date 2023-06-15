@@ -1,34 +1,33 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<head>
+<head th:replace="fragments/header :: header">
   <meta charset="UTF-8">
   <title>위시리스트 내역</title>
-</head>
 
+</head>
 <style>
-.personal { display: block; }
-.group { display: none;	}
+  .personal { display: block; }
+  .group { display: none;	}
 </style>
 
+<body>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
-$(document).ready(function($) {
-	// select 선택에 맞게 보여지는 div 변화 (근데 안돼서 수정 필요)
-    $('#selectBox').change(function() {
+  // select 선택에 맞게 보여지는 div 변화
+    $(document).ready(function() {
+      $('#selectBox').change(function() {
         var result = $("select[name=selectBox]").val();
 
         if (result == 'personal') {
-        	$('.group').hide();
-
-          	$('.personal').show();
+          $('.group').hide();
+          $('.personal').show();
         } else {
-          	$('.personal').hide();
-
-          	$('.group').show();
+          $('.personal').hide();
+          $('.group').show();
         }
+      });
     });
-});
 </script>
-<body>
 <div th:replace="fragments/bodyHeader :: bodyHeader" />
 
 <h2>위시리스트</h2>
@@ -55,7 +54,7 @@ $(document).ready(function($) {
   <table>
     <tr th:each="item : ${userWishlistGroupItem}">
       <td>
-        <a th:href="@{/personal/detail/{itemId}(itemId = ${item.id})}"> <!-- 경로 수정 필요 -->
+        <a th:href="@{/personal/detail/{itemId}(itemId = ${item.id})}">
           <span th:text="${item.title}"></span>
         </a>
         <span th:text="${item.price}"></span>
