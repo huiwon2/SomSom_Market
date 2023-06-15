@@ -13,11 +13,10 @@ public class GroupItemOrderController {
     @Autowired
     private GroupItemService groupService;
     @RequestMapping("")
-    public String changeStatusByManager(@RequestParam("itemId") Long itemId, Model model){
+    public String changeStatusBySeller(@RequestParam("itemId") Long itemId, Model model){
         GroupItem groupItem = groupService.searchItem(itemId);
         groupService.changeStatus(groupItem);
-        //수정 필요
-        //  model.addAttribute("orderList", list);
-        return "/user/myPage/orderList";
+        model.addAttribute("groupItem", groupItem);
+        return
     }
 }

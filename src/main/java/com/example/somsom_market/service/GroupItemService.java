@@ -41,13 +41,11 @@ public class GroupItemService {
         return tmp;
     }
 
-    //게시글 추가 후 itemId 반환
-    public long registerNewGroupItem(GroupItemRequest req, String userId){
+    public GroupItem registerNewGroupItem(GroupItemRequest req, String userId){
         return groupItemDao.insertGroupItem(reqToGroupItem(req, userId));
     }
 
-    //게시글 수정 후 itemId 반환
-    public long updateGroupItem(GroupItemRequest req, String userId){
+    public GroupItem updateGroupItem(GroupItemRequest req, String userId){
        return groupItemDao.updateGroupItem(reqToGroupItem(req, userId));
     }
 
@@ -63,7 +61,7 @@ public class GroupItemService {
 
     //사용자가 판매하는 공동구매 리스트 보여주기
     public List<GroupItem> showGroupItemList(String userId){
-        return groupItemRepository.findGroupItemsBySellerIdOrderByStartDate(userId);
+        return groupItemRepository.findBySellerIdOrderByStartDate(userId);
     }
 
     //모든 공동구매 리스트 보여주기
@@ -71,8 +69,8 @@ public class GroupItemService {
         return groupItemDao.findAllGroupItem();
     }
 
-    //목표 금액이 모이면 관리자가 상태 바꾸고, 마감 기한 전까지 모이지 않으면 주문 취소하기
-    public void changeStatus(GroupItem groupItem){
+    //목표 금액이 모이면 판매자가 상태 바꾸고, 마감 기한 전까지 모이지 않으면 주문 취소하기
+    public GroupItem changeStatus(GroupItem groupItem){
         long itemId = groupItem.getId();
         int totalOrdersPrice = groupItemDao.getTotalPriceOfGroupItemOrders(groupItem.getId());
         int salesTarget = groupItem.getSalesTarget();
@@ -85,6 +83,7 @@ public class GroupItemService {
         if(totalOrdersPrice < salesTarget && endDate.compareTo(today) < 0){
             groupItemDao.cancelGroupItemOrders(itemId);
         }
+        return groupItem;
     }
 
     public boolean isExistSellingItem(String id) {
