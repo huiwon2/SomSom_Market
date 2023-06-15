@@ -1,10 +1,10 @@
 <!DOCTYPE html>
-<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <!-- 글꼴 -->
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Do Hyeon">
-    <title>공동구매 아이템 등록</title>
+    <title>공동 구매 게시글 등록</title>
     <style>
         * {
             margin: 0;
@@ -117,54 +117,47 @@
             color:azure;
         }
     </style>
-    <script>
-        document.getElementById("now").value = new Date().toDateInputValue();
-    </script>
 </head>
 <body>
-<form action="/group/register" th:object="${groupItemRequest}" method="post">
+<div th:replace="fragments/bodyHeader :: bodyHeader" />
+
+<form role="form" th:object="${groupItem}" th:action="@{/group/register}" method="post">
     <div class="main">
         <div>
-            <input type="text" name="groupItem.title" required>
-            <label>제목</label>
+            <input type="text" th:field="*{title}" required>
+           <label th:for="title">제목</label>
             <span></span>
         </div>
-        <div>
-            <input type="text" name="productName" required>
-            <label>상품명</label>
-            <span></span>
-        </div>
-        <div>
-            <input type="text" name="price" required>
-            <label>가격</label>
-            <span></span>
-        </div>
-        <div>
-            <input type="date" id="now" name="endDate" required>
-            <label>마감일</label>
-            <span></span>
-        </div>
-        <div>
 
+        <div>
+            <input type="text" th:field="*{price}" required>
+            <label th:for="price">가격</label>
             <span></span>
         </div>
+
         <div>
-            <input type="text" name="salesTarget" required>
-            <label>목표액</label>
+            <input type="date" id="now" th:field="*{endDate}" required>
+            <label th:for="endDate">마감일</label>
             <span></span>
         </div>
+
         <div>
-            <input type="file" name="img">
-            <label>이미지</label>
+            <input type="text" th:field="*{salesTarget}" required>
+            <label th:for="salesTarget">목표액</label>
             <span></span>
         </div>
+
+
         <div>
-            <textarea name="description" oninput='this.style.height = ""; this.style.height = this.scrollHeight + "px"' placeholder="내용을 입력하세요."></textarea>
+            <textarea th:field=description" oninput='this.style.height = ""; this.style.height = this.scrollHeight + "px"' placeholder="내용을 입력하세요."></textarea>
             <span></span>
         </div>
         <div><button type="submit" class="btn">submit</button></div>
 
     </div>
 </form>
+<script>
+    document.getElementById("now").value = new Date().toDateInputValue();
+</script>
 </body>
 </html>

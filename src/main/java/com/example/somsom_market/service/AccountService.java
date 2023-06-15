@@ -130,7 +130,7 @@ public class AccountService {
 
     // 사용자 PK로 공동구매 판매 내역 리스트 검색
     public List<GroupItem> getSellGroupList(String id) {
-        return groupItemRepository.findGroupItemsBySellerIdOrderByStartDate(id);
+        return groupItemRepository.findBySellerIdOrderByStartDate(id);
     }
 
     // 사용자 PK로 구매 내역 리스트 검색
