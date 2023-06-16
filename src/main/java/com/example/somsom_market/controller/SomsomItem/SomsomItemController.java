@@ -92,7 +92,6 @@ public class SomsomItemController {
         itemUpdateRequest.setTitle(itemInfo.getTitle());
         itemUpdateRequest.setPrice(itemInfo.getPrice());
         itemUpdateRequest.setDescription(itemInfo.getDescription());
-//        itemUpdateRequest.setImageUrl(itemInfo.getImageUrl().toString());//?
         model.addAttribute("item", somsomItemService.itemView(itemId));
         return SOMSOM_UPDATE_FORM;
     }
@@ -130,7 +129,7 @@ public class SomsomItemController {
     public String itemView(Model model, @PathVariable("itemId")Long itemId){
         model.addAttribute("somsomItmem", somsomItemService.itemView(itemId));
 
-        return "somsomItem/somsomDetail";
+        return "/somsomItem/somsomDetail";
     }
 //     관리자 아이디 검증하기
      private boolean isTrueAdmin(Account account){

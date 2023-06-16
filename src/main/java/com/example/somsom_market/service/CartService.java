@@ -28,7 +28,7 @@ public class CartService {
             cart = Cart.createCart(account);
             cartRepository.save(cart);
         }
-        Optional<SomsomItem> item = somsomItemRepository.findById(newItem.getId());
+        Optional<SomsomItem> item = somsomItemRepository.findById(newItem.get().getId());
         CartItem cartItem = cartItemRepository.findByCartIdAndItemId(cart.getId(), item.get().getId());
 //        장바구니에 아이템 없을 때
         if(cartItem == null){
