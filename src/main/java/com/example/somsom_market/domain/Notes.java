@@ -27,6 +27,8 @@ public class Notes {
     private String toSellerId;
 
     @Transient
+    private String itemTitle;
+    @Transient
     private String toSellerNickName;
     @Transient
     private String fromAccountNickName;
@@ -46,6 +48,4 @@ public class Notes {
     private String sendDate;
     @Transient
     private String readDate;
-    @Transient
-    private String person; // 수신자인지 발신자인지 저장
 }
