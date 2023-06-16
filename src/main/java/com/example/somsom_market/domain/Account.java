@@ -40,4 +40,10 @@ public class Account implements Serializable {
     @OneToMany(mappedBy = "account")
     private List<Order> orders = new ArrayList<>();
 
+//    맞는지 잘 모름..
+    public Cart getCart() {
+        Cart cart = new Cart();
+        Cart.createCart(cart.getAccount());
+        return cart;
+    }
 }
