@@ -99,7 +99,7 @@ public class WishlistService {
     }
 
     // 사용자 PK, 아이템 PK로 학교 위시리스트 검색
-    private Wishlist getSomsomWishlistByAccountAndItem(String id, Long itemId) {
+    public Wishlist getSomsomWishlistByAccountAndItem(String id, Long itemId) {
         Optional<Wishlist> wishlist = wishlistRepository.findByAccountIdAndItemId(id, itemId);
         if(wishlist.isPresent()){
             return wishlist.get();
