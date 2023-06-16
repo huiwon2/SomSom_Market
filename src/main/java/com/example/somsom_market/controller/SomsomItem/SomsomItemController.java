@@ -4,6 +4,7 @@ package com.example.somsom_market.controller.SomsomItem;
 import com.example.somsom_market.controller.User.UserSession;
 import com.example.somsom_market.dao.SomsomItemDao;
 import com.example.somsom_market.domain.Account;
+import com.example.somsom_market.domain.Wishlist;
 import com.example.somsom_market.domain.item.SomsomItem;
 import com.example.somsom_market.service.AccountService;
 import com.example.somsom_market.service.SomsomItemService;
@@ -128,7 +129,7 @@ public class SomsomItemController {
     @GetMapping("somsomItem/somsomDetail/{item_id}")
     public String itemView(Model model, @PathVariable("itemId")Long itemId){
         model.addAttribute("somsomItmem", somsomItemService.itemView(itemId));
-
+//        Wishlist wishlist = wishlistService.;
         return "/somsomItem/somsomDetail";
     }
 //     관리자 아이디 검증하기
