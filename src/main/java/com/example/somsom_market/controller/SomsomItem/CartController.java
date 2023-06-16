@@ -9,6 +9,7 @@ import com.example.somsom_market.domain.item.SomsomItem;
 import com.example.somsom_market.service.AccountService;
 import com.example.somsom_market.service.CartService;
 import com.example.somsom_market.service.SomsomItemService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -22,8 +23,11 @@ import java.util.Optional;
 @Controller
 @SessionAttributes("userSession")
 public class CartController {
+    @Autowired
     AccountService accountService;
+    @Autowired
     SomsomItemService somsomItemService;
+    @Autowired
     CartService cartService;
 //    장바구니에 물건 담기
     @PostMapping("/user/cart/{id}/{item_id}")

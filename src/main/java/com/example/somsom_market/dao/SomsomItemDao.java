@@ -7,6 +7,7 @@ import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 import javax.transaction.Transactional;
 import java.util.List;
 
@@ -41,5 +42,18 @@ public class SomsomItemDao {
     public List<SomsomItem> findAll() {
         return em.createQuery("select s from SomsomItem s", SomsomItem.class)
                 .getResultList();
+    }
+
+    public void updateAddItemWishCount(Long itemId) {
+        Query query = em.createNativeQuery("Update Item i SET i.wish_count = i.wish_count+1 Where i.item_id = ?1");
+
+        query.setParameter(1, itemId);
+        query.executeUpdate();
+    }
+
+    public void updateDeleteItemWishcount(Long itemId) {
+        Query query = em.createNativeQuery("Update Item i SET i.wish_count = i.wish_count-1 Where i.item_id = ?1");
+        query.setParameter(1, itemId);
+        query.executeUpdate();
     }
 }

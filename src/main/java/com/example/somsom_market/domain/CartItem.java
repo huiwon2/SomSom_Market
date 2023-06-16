@@ -12,7 +12,8 @@ import java.util.Optional;
 @AllArgsConstructor
 @Getter @Setter
 @Entity
-public class CartItem {
+public class
+CartItem {
     @Id
     @GeneratedValue
     @Column(name = "cart_item_id")
