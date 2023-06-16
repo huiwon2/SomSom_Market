@@ -111,6 +111,8 @@ public class NotesController {
         Account users = userSession.getAccount();
 
         Notes notes = notesService.searchNotes(notesId);
+        PersonalItem personalItem = personalItemService.searchItem(notes.getFromItemId());
+        notes.setItemTitle(personalItem.getTitle());
 
         if (notes.getFromAccountId().equals(users.getId())) { // 보낸 사람 == 현재 사용자
             // 보낸 쪽지함이므로 수신자 (seller) 표시
@@ -132,6 +134,21 @@ public class NotesController {
         return notes;
     }
 
+    @PostMapping("/personal/chat/send/{resItemId}/{resNotesId}")
+    public String responseSend(HttpServletRequest request,
+                               @PathVariable("resItemId") Long itemId,
+                               @PathVariable("resNotesId") Long notesId,
+                               @RequestParam("resTitle") String title,
+                               @RequestParam("resContent") String content) {
+        UserSession userSession = (UserSession) WebUtils.getSessionAttribute(request, "userSession");
+        Account account = userSession.getAccount();
+
+        Notes notes = notesService.searchNotes(notesId);
+        notesService.insertNotes(account.getId(), itemId,
+                notes.getFromAccountId(), title, content);
+
+        return "redirect:/personal/chat/list";
+    }
 
 
 
