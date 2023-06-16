@@ -23,6 +23,7 @@ import java.util.*;
 @Service
 public class SomsomItemService {
 
+    @Autowired
     private static SomsomItemRepository somsomItemRepository;
     @Autowired
     private SomsomItemDao somsomItemDao;
