@@ -110,6 +110,8 @@
 				"notesId" : notesId
 			},
 			success : function(data) {
+			    $('.responseForm').hide();
+
 			    var notes = data;
 
                 var notesId = notes.notesId;
@@ -183,6 +185,17 @@
             $("#resFrm").submit();
         }
     }
+
+    function onDelete() {
+        if(confirm("정말로 삭제하시겠습니까?")){
+            var notesId = $("#notesId").val();
+            $("#delFrm").attr("action", "/personal/chat/delete/" + notesId);
+            $("#delFrm").submit();
+		}
+		else {
+			return false;
+        }
+    }
 </script>
 
 
@@ -227,7 +240,10 @@
             </div><hr>
             <span id="content"></span><br><br>
             <div class="resBtn">
-                <input type="button" value="답장하기" onclick="responseChat()">
+                <input type="button" value="답장하기" onclick="responseChat()" style="display: inline-block;">
+                <form id="delFrm" name="delFrm" method="post" style="display: inline-block;">
+                    <input type="button" onClick="onDelete()" value="삭제하기">
+                </form>
             </div><hr>
             <form id="frm2" name="frm2" method="get">
                 <input type="hidden" id="itemId" name="itemId">
@@ -249,6 +265,7 @@
                 <input type="button" onClick="onSubmit()" value="보내기">
             </form>
         </div>
+
     </td>
   </tr>
 </table>

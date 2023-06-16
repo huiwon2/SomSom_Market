@@ -20,7 +20,9 @@ public class NotesDao {
     }
 
     @Transactional
-    public Notes updateReaded(Notes notes) throws DataAccessException {
+    public Notes updateNotes(Notes notes) throws DataAccessException {
         return em.merge(notes);
     }
+
+
 }
