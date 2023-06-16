@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.WebUtils;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.ArrayList;
 import java.util.List;
 
 @Controller
@@ -94,8 +95,26 @@ public class NotesController {
 
         Account account = userSession.getAccount();
 
-        List<Notes> receivedNotes = notesService.receivedNotes(account.getId());
-        List<Notes> sendedNotes = notesService.sendedNotes(account.getId());
+        List<Notes> receivedAllNotes = notesService.receivedNotes(account.getId());
+        List<Notes> sendedAllNotes = notesService.sendedNotes(account.getId());
+
+        // 사용자가 지운 쪽지는 거르는 작업
+        List<Notes> receivedNotes = new ArrayList<>();
+        List<Notes> sendedNotes = new ArrayList<>();
+
+        for (Notes note : receivedAllNotes) {
+            if (note.getToDel().equals("N")) {
+                // 받은 쪽지 = 내가 seller, 그니까 to_del 컬럼 확인 (지우지 않았으면!)
+                receivedNotes.add(note);
+            }
+        }
+
+        for (Notes note : sendedAllNotes) {
+            if (note.getFromDel().equals("N")) {
+                // 보낸 쪽지 = 내가 account, 그니까 from_del 컬럼 확인 (지우지 않았으면!)
+                sendedNotes.add(note);
+            }
+        }
 
         model.addAttribute("receivedNotes", receivedNotes);
         model.addAttribute("sendedNotes", sendedNotes);
@@ -146,6 +165,18 @@ public class NotesController {
         Notes notes = notesService.searchNotes(notesId);
         notesService.insertNotes(account.getId(), itemId,
                 notes.getFromAccountId(), title, content);
+
+        return "redirect:/personal/chat/list";
+    }
+
+    @PostMapping("/personal/chat/delete/{notesId}")
+    public String deleteChat(HttpServletRequest request,
+                             @PathVariable("notesId") Long notesId) {
+        UserSession userSession = (UserSession) WebUtils.getSessionAttribute(request, "userSession");
+        Account account = userSession.getAccount();
+
+        Notes notes = notesService.searchNotes(notesId);
+        notesService.deleteNotes(account, notes);
 
         return "redirect:/personal/chat/list";
     }
