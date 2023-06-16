@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<head>
+<head th:replace="fragments/header :: header">
     <meta charset="UTF-8">
     <title>개인 거래 목록</title>
 </head>
@@ -12,8 +12,13 @@
 
 <table>
     <tr th:each="item : ${personalItemList}">
-        <td>
-            <a th:href="@{/personal/detail/{itemId}(itemId = ${item.id})}">
+        <td style="white-space: nowrap;">
+            <div th:switch="${item.getStatus().toString()}" style="display: inline-block;">
+                <p th:case="INSTOCK" style="white-space: nowrap">[거래가능]</p>
+                <p th:case="ING" style="white-space: nowrap">[거래중]</p>
+                <p th:case="SOLDOUT" style="white-space: nowrap">[거래완료]</p>
+            </div>
+            <a th:href="@{/personal/detail/{itemId}(itemId = ${item.id})}" style="display: inline-block;">
                 <span th:text="${item.title}"></span>
             </a>
         </td>
