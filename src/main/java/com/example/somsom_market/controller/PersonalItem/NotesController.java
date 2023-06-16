@@ -103,14 +103,33 @@ public class NotesController {
         return PERSONAL_CHAT_LIST;
     }
 
-    @GetMapping("/personal/chat/{chatId}")
+    @GetMapping("/personal/chat/detail")
     @ResponseBody
     public Notes showChatDetail(HttpServletRequest request,
-                                 @RequestParam("chatId") Long chatId) {
+                                 @RequestParam("notesId") Long notesId) {
         UserSession userSession = (UserSession) WebUtils.getSessionAttribute(request, "userSession");
-        Account account = userSession.getAccount();
+        Account users = userSession.getAccount();
 
-        return null;
+        Notes notes = notesService.searchNotes(notesId);
+
+        if (notes.getFromAccountId().equals(users.getId())) { // 보낸 사람 == 현재 사용자
+            // 보낸 쪽지함이므로 수신자 (seller) 표시
+            Account seller = accountService.getAccount(notes.getToSellerId());
+            String name = "수신자 : " + seller.getNickName();
+            notes.setToSellerNickName(name);
+        } else { // 받는 사람 == 사용자
+            Account account = accountService.getAccount(notes.getFromAccountId());
+            String name = "발신자 : " + account.getNickName();
+            notes.setFromAccountNickName(name);
+
+            // 열람한 적 없는 쪽지라면 열람 표시
+            if (notes.getReadedAt() == null) {
+                Notes newNotes = notesService.updateReaded(notes);
+                notes.setReadedAt(newNotes.getReadedAt());
+                notes.setReadDate(newNotes.getReadDate());
+            }
+        }
+        return notes;
     }
 
 

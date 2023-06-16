@@ -46,9 +46,36 @@
 	.received span {
         font-weight: bold;
     }
+
+    .con:hover {
+        background : #EAEAEA;
+        font-weight: bold;
+    }
+
+    .pad {
+        padding-left: 5px;
+    }
+
+    .message {
+        width: 100%;
+        padding: 15px;
+        display: none;
+    }
+
+    .rig {
+        text-align: right;
+        padding-right: 15px;
+    }
+
+    .resBtn {
+        text-align: right;
+        padding-right: 15px;
+        display: none;
+    }
 </style>
 
 <script>
+
     function receivedList() {
         var receivedTextElement = document.getElementById("receivedText");
         receivedTextElement.style.fontWeight = "bold";
@@ -69,8 +96,55 @@
         $('.send').show();
     }
 
-    function detailView() {
-        alert('상세뷰 보기 누름');
+    function detailView(notesId) {
+        $.ajax({
+			type : "GET",
+			url : "/personal/chat/detail",
+			data : {
+				"notesId" : notesId
+			},
+			success : function(data) {
+			    var notes = data;
+
+                var notesId = notes.notesId;
+                var title = notes.title;
+                var content = notes.content;
+                var sendDate = notes.sendDate;
+                var readDate = "수신일 : ";
+
+                document.getElementById("notesId").value = notesId;
+                document.getElementById("title").textContent = title;
+                document.getElementById("content").textContent = content;
+                document.getElementById("sendedAt").textContent = "발신일 : " + sendDate;
+
+                if (notes.readedAt != null) {
+                    readDate += notes.readDate;
+                } else {
+                    readDate += " - ";
+                }
+                document.getElementById("readedAt").textContent = readDate;
+                if (notes.toSellerNickName != null) { // 내가 발신자인 쪽지
+                    var sender = notes.toSellerNickName;
+                    document.getElementById("sender").textContent = sender;
+
+                    $('.resBtn').hide();
+                }
+                if (notes.fromAccountNickName != null) { // 내가 수신자인 쪽지
+                    var receiver = notes.fromAccountNickName;
+                    document.getElementById("sender").textContent = receiver;
+
+                    // 받은 쪽지를 열람할 때만 답장 버튼 생성
+                    $('.resBtn').show();
+                }
+
+                $('.message').show();
+			}
+		})
+    }
+
+    function responseChat() {
+        var notesId = document.getElementById("notesId").value;
+        alert(notesId);
     }
 </script>
 
@@ -87,22 +161,38 @@
 
 <table>
   <tr>
-    <td>
+    <td style="vertical-align: top;">
         <div class="receive">
-            <div th:each="note : ${receivedNotes}">
-                <a th:href="'javascript:void(0)'" th:onclick="'detailView()'" th:text="${note.title}"></a><hr>
+            <div class="con" th:each="note : ${receivedNotes}"
+                 th:onclick="|javascript:detailView('${note.notesId}')|">
+                <span class="pad" th:text="${note.title}"></span>
+                <hr>
             </div>
         </div>
 
         <div class="send">
-            <div th:each="note : ${sendedNotes}">
-                <a th:href="'javascript:void(0)'" th:onclick="'detailView()'" th:text="${note.title}"></a><hr>
+            <div class="con" th:each="note : ${sendedNotes}"
+                th:onclick="|javascript:detailView('${note.notesId}')|">
+                <span class="pad" th:text="${note.title}"></span>
+                <hr>
             </div>
         </div>
     </td>
 
     <td>
-
+        <div class="message">
+            <input type="hidden" id="notesId" name="notesId">
+            <h2><span id="title" style="font-weight: bold;"></span></h2>
+            <div class="rig">
+                <span id="sender"></span><br>
+                <span id="sendedAt"></span><br>
+                <span id="readedAt"></span>
+            </div><hr>
+            <span id="content"></span><br><br>
+            <div class="resBtn">
+                <input type="button" value="답장하기" onclick="responseChat()">
+            </div>
+        </div>
     </td>
   </tr>
 </table>
