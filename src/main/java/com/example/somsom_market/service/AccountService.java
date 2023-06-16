@@ -171,7 +171,7 @@ public class AccountService {
 
     // 사용자 PK로 판매 내역 리스트 검색
     public List<PersonalItem> getSellItemList(String id) {
-        return personalItemRepository.findBySellerId(id);
+        return personalItemRepository.findBySellerIdOrderByStartDateDesc(id);
     }
 
     // 사용자 PK로 공동구매 판매 내역 리스트 검색

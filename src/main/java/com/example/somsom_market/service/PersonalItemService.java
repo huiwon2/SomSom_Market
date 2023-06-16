@@ -26,7 +26,8 @@ public class PersonalItemService {
 
     // 개인 게시글 리스트
     public List<PersonalItem> personalItemList() {
-        List<PersonalItem> personalItemList = personalItemDao.findAll();
+        List<PersonalItem> personalItemList = personalItemRepository.findAllByOrderByStartDateDesc();
+                // personalItemDao.findAll();
         return personalItemList;
     }
 
@@ -51,6 +52,7 @@ public class PersonalItemService {
             item.setStatus(ItemStatus.SOLDOUT);
         }
         item.setSellerId(userId);
+        item.setStartDate(new Date());
 
         // 이미지 등록
         String oriImgName = itemRegistReq.getImgFile().getOriginalFilename(); // 원래 이미지 이름
