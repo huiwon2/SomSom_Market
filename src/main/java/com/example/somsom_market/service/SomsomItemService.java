@@ -50,7 +50,7 @@ public class SomsomItemService {
         String imgName = "";
 
         // 프로그램 폴더 위치 + 프로그램 내에서 저장할 폴더까지의 경로
-        String path = System.getProperty("user.dir") + "/src/main/resources/static/images/personalItem";
+        String path = System.getProperty("user.dir") + "/src/main/resources/static/images/somsomItem";
         // 폴더 없을 시 생성
         if (!new File(path).exists()) {
             try {
@@ -60,7 +60,6 @@ public class SomsomItemService {
             }
         }
 
-        // 이미지 이름 겹치지 않게 현재 시간 가져오기
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyyMMddHHmmss");
         String current_date = simpleDateFormat.format(new Date());
 
@@ -71,8 +70,7 @@ public class SomsomItemService {
         regReq.getImgFile().transferTo(saveFile);
 
         somsomItem.setImgName(imgName); // 이미지 이름 저장
-        somsomItem.setImgPath("/images/personalItem/"+imgName);
-        // 경로 저장 (resource/static쪽에 저장하므로 위와 같이 저장 후 이미지 보여주기 위해!)
+        somsomItem.setImgPath("/images/somsomItem/"+imgName);
 
         somsomItemDao.insertSomsomItem(somsomItem);
         return somsomItem;

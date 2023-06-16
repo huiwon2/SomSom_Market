@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<div th:replace="fragments/bodyHeader :: bodyHeader" />
+<img th:src="@{${somsomItem.imgPath}}"/>
+<h2><span th:text="${somsomItem.title}"></span></h2><br>
+<span th:text="${somsomItem.price}"></span>원<br><br><br>
+<textarea th:value="${somsomItem.description}" th:text="${somsomItem.description}"
+          rows="30" cols="100" style="border: none;" readonly></textarea><br>
+</body>
+</html>

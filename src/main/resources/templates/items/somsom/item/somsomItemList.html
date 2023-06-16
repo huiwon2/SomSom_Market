@@ -1,16 +1,3 @@
-<!--<!DOCTYPE html>-->
-<!--<html xmlns:th="http://www.thymeleaf.org">-->
-<!--<head>-->
-<!--    <meta charset="UTF-8">-->
-<!--    <title>학교 거래 장터</title>-->
-<!--</head>-->
-<!--<body>-->
-<!--&lt;!&ndash; <a th:href="@{/items/somsom/register}">-->
-<!--    <input type="button" value="게시글 등록"> admin만 가능하게..?-->
-<!--    </a>&ndash;&gt;-->
-<!--</body>-->
-<!--</html>-->
-
 <!DOCTYPE HTML>
 <html xmlns:th="http://www.thymeleaf.org">
 <head th:replace="fragments/header :: header" />
@@ -37,12 +24,12 @@
                 <td th:text="${item.price}"></td>
                 <td th:text="${item.stockQuantity}"></td>
                 <td>
-                    <a href="#" th:href="@{/items/{id}/edit (id=${item.id})}" class="btn btn-primary" role="button">수정</a>
+                    <a th:if="${userSession.isAdmin()}" href="#" th:href="@{/items/{id}/edit (id=${item.id})}" class="btn btn-primary" role="button">수정</a>
                 </td>
             </tr>
             <tr>
                 <td>
-                    <a href="#" th:href="@{/order}" class="btn btn-primary" role="button">주문</a>
+                    <a href="#" th:href="@{/templates/order}" class="btn btn-primary" role="button">주문</a>
                 </td>
             </tr>
             </tbody>
