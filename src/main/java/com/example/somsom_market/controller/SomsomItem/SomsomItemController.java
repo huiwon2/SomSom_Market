@@ -5,7 +5,9 @@ import com.example.somsom_market.controller.User.UserSession;
 import com.example.somsom_market.dao.SomsomItemDao;
 import com.example.somsom_market.domain.Account;
 import com.example.somsom_market.domain.item.SomsomItem;
+import com.example.somsom_market.service.AccountService;
 import com.example.somsom_market.service.SomsomItemService;
+import com.example.somsom_market.service.WishlistService;
 import lombok.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -13,10 +15,12 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.util.WebUtils;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
+import java.io.IOException;
 import java.util.List;
 
 @Controller
@@ -29,24 +33,40 @@ public class SomsomItemController {
     private static final String ITEM_NOT_FOUND = "/somsom/notFound";
     private static final String ITEM_FORM = "/somsom/somsomItemList";
     @Autowired
+    @Setter
     private SomsomItemService  somsomItemService;
     @Autowired
+    @Setter
+    private WishlistService wishlistService;
+    @Autowired
     private SomsomItemDao somsomItemDao;
-
+    @Autowired
+    @Setter
+    private AccountService accountService;
     private SomsomItem somsomItem;
 
 
 //    Register
 //    form(register method)
     @GetMapping("somsomItem/somsomItemRegister")
-    public String form() {
-        return SOMSOM_REGISTRATION_FORM;
+    public ModelAndView registerForm(HttpServletRequest request) {
+        UserSession userSession = (UserSession) WebUtils.getSessionAttribute(request, "userSession");
+        ModelAndView modelAndView = new ModelAndView();
+        Account account = userSession.getAccount();
+        if(isTrueAdmin(account)){
+            modelAndView.setViewName(SOMSOM_REGISTRATION_FORM);
+            somsomItem.setId((long)-1);
+            modelAndView.addObject("somsomItem", somsomItem);
+            return modelAndView;
+        }
+        modelAndView.setViewName(ITEM_FORM);
+        return modelAndView;
     }
 
     @PostMapping("somsomItem/somsomItemRegister/product")
-    public String register(@Valid @ModelAttribute("registerReq") ItemRegistRequest itemRegistRequest,
+    public String register(@Valid @ModelAttribute("registerReq") SomsomItemRegistRequest itemRegistRequest,
                            BindingResult bindingResult,
-                           Model model, HttpServletRequest request){
+                           Model model, HttpServletRequest request) throws IOException {
         UserSession userSession = (UserSession) WebUtils.getSessionAttribute(request, "userSession");
         Account account = userSession.getAccount();
 
@@ -54,17 +74,17 @@ public class SomsomItemController {
             return ITEM_FORM;
         }
         if (bindingResult.hasErrors()) {
-            return SOMSOM_REGISTRATION_FORM;
+            return "redirect:/somsomItem/register";
         }
         Long itemId = somsomItem.getId();
         model.addAttribute("itemId", itemId);
-        somsomItemService.saveItem(somsomItem);
-        return "/main";
+        somsomItemService.registerSomsomItem(itemRegistRequest, itemId);
+        return "redirect:/main";
     }
 
 //    form(Update method)
     @GetMapping("somsomItem/update/{item_id}")
-    public String form(ItemUpdateRequest itemUpdateRequest, @RequestParam("itemId")Long itemId, Model model) {
+    public String form(SomsomItemUpdateRequest itemUpdateRequest, @RequestParam("itemId")Long itemId, Model model) {
         SomsomItem itemInfo = somsomItemService.getSomsomItem(itemId);
         if(itemInfo == null){
             return ITEM_NOT_FOUND;
@@ -78,7 +98,7 @@ public class SomsomItemController {
     }
 
     @PostMapping("somsomItem/update/product/{item_id}")
-    public String update(@ModelAttribute("updateReq") ItemUpdateRequest itemUpdateRequest, Errors errors, HttpServletRequest request) {
+    public String update(@ModelAttribute("updateReq") SomsomItemUpdateRequest itemUpdateRequest, Errors errors, HttpServletRequest request) {
         UserSession userSession = (UserSession) WebUtils.getSessionAttribute(request, "userSession");
         Account account = userSession.getAccount();
         if(!isTrueAdmin(account)){
