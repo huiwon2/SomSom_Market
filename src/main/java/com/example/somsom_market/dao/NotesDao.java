@@ -18,4 +18,9 @@ public class NotesDao {
         em.persist(notes);
         return notes;
     }
+
+    @Transactional
+    public Notes updateReaded(Notes notes) throws DataAccessException {
+        return em.merge(notes);
+    }
 }

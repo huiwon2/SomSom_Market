@@ -17,10 +17,6 @@ public class PersonalItemDao {
     @PersistenceContext
     private EntityManager em;
 
-    public List<PersonalItem> findAll() {
-        return em.createQuery("select p from PersonalItem p", PersonalItem.class).getResultList();
-    }
-
     @Transactional
     public PersonalItem insertItem(PersonalItem personalItem) throws DataAccessException {
         em.persist(personalItem);
