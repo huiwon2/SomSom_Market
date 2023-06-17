@@ -10,8 +10,9 @@ import java.util.List;
 @NoArgsConstructor
 @Getter @Setter
 @Entity
+@SequenceGenerator(name="SEQ_CART", sequenceName="CART_ID_SEQ", allocationSize=1)
 public class Cart {
-    @Generated
+    @GeneratedValue(strategy=GenerationType.SEQUENCE, generator="SEQ_CART")
     @Id
     @Column(name = "cart_id")
     private Long id;
@@ -32,6 +33,7 @@ public class Cart {
         Cart cart = new Cart();
         cart.setCount(0);
         cart.setAccount(account);
+        cart.setTotal_quantity(0);
         return cart;
     }
 

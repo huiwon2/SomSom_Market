@@ -12,11 +12,12 @@ import java.util.Optional;
 @AllArgsConstructor
 @Getter @Setter
 @Entity
-public class
-CartItem {
+@Table(name = "CARTITEM")
+@SequenceGenerator(name="SEQ_CARTITEM", sequenceName="CARTITEM_ID_SEQ", allocationSize=1)
+public class CartItem {
     @Id
-    @GeneratedValue
-    @Column(name = "cart_item_id")
+    @GeneratedValue(strategy=GenerationType.SEQUENCE, generator="SEQ_CARTITEM")
+    @Column(name = "cartitem_id")
     private Long id;
 
     @ManyToOne(fetch = FetchType.EAGER)
@@ -30,10 +31,10 @@ CartItem {
 //    개수
     private int count;
 
-    public static CartItem createCartItem(Cart cart, Optional<SomsomItem> item, int amount){
+    public static CartItem createCartItem(Cart cart, SomsomItem item, int amount){
         CartItem cartItem = new CartItem();
         cartItem.setCart(cart);
-        cartItem.setItem(item.get());
+        cartItem.setItem(item);
         cartItem.setCount(amount);
         return cartItem;
     }

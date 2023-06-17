@@ -142,7 +142,7 @@ public class SomsomItemController {
         } else {
             userId = "false";
         }
-        somsomItem = somsomItemService.getSomsomItem(itemId);
+        somsomItem = somsomItemService.findOne(itemId);
 
         model.addAttribute("somsomItem", somsomItem);
         model.addAttribute("isExistWish", isExistWish);
