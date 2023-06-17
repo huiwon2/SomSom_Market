@@ -29,12 +29,12 @@ import java.util.List;
 @RequiredArgsConstructor
 public class SomsomItemController {
 //    mvc설계 보고 경로 채우기
-    private static String SOMSOM_REGISTRATION_FORM = "items/somsom/item/somsomItemRegister";
-    private static String SOMSOM_UPDATE_FORM = "items/somsom/item/somsomItemRegister";
-    private static String ITEM_NOT_FOUND = "items/somsom/item/notFound";
-    private static String ITEM_FORM = "items/somsom/item/somsomItemList";
+    private static String SOMSOM_REGISTRATION_FORM = "/somsom/item/somsomItemRegister";
+    private static String SOMSOM_UPDATE_FORM = "/somsom/item/somsomItemRegister";
+    private static String ITEM_NOT_FOUND = "/somsom/item/notFound";
+    private static String ITEM_FORM = "/somsom/item/somsomItemList";
 
-    private static String SOMSOM_ITEM_DETAIL = "items/somsom/item/somsomDetail";
+    private static String SOMSOM_ITEM_DETAIL = "/somsom/item/somsomDetail";
     @Autowired
     @Setter
     private SomsomItemService  somsomItemService;
@@ -118,13 +118,13 @@ public class SomsomItemController {
     }
 
     //솜솜아이템 리스트
-    @GetMapping("/somsom/item/somsomItemlist")
+    @GetMapping("/somsom/item/somsomItemList")
     public String showList(HttpServletRequest request, Model model) {
 
         List<SomsomItem> somsomItems = somsomItemService.somsomItemList();
         model.addAttribute("somsomItems", somsomItems);
 
-        return ITEM_FORM;
+        return "items/somsom/item/somsomItemList";
     }
 
 //    상세 페이지
@@ -146,7 +146,7 @@ public class SomsomItemController {
         model.addAttribute("somsomItem", somsomItem);
         model.addAttribute("isExistWish", isExistWish);
         model.addAttribute("userId", userId);
-        return SOMSOM_ITEM_DETAIL;
+        return "items/somsom/item/somsomDetail";
     }
 //     관리자 아이디 검증하기
      private boolean isTrueAdmin(Account account){

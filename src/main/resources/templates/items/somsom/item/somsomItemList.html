@@ -1,8 +1,8 @@
 <!DOCTYPE HTML>
 <html xmlns:th="http://www.thymeleaf.org">
 <head th:replace="fragments/header :: header" >
-<meta charset="UTF-8">
-<title>학교 상품 목록</title>
+    <meta charset="UTF-8">
+    <title>학교 상품 목록</title>
 </head>
 <body>
 <div class="container">
@@ -16,26 +16,29 @@
                 <th>상품명</th>
                 <th>가격</th>
                 <th>재고수량</th>
-                <th></th>
+                <th>장바구니</th>
+                <th>주문</th>
             </tr>
             </thead>
             <tbody>
             <tr th:each="item : ${somsomItems}">
                 <td th:text="${item.id}"></td>
-                <td th:text="${item.title}"></td>
+                <td>
+                    <a href="#" th:text="${item.title}" th:href="@{/somsom/item/somsomDetail/{item_id} (item_id=${item.id})}"></a>
+                </td>
+<!--                <td th:text="${item.title}"></td>-->
                 <td th:text="${item.price}"></td>
                 <td th:text="${item.stockQuantity}"></td>
+                <td class="btn btn-primary" role="button">장바구니</td>
                 <td>
-                    <div th:if="${userSession?.account}">
-                        <a th:if="${userSession.account.id} == 'admin'" href="#" th:href="@{/items/{id}/edit (id=${item.id})}" class="btn btn-primary" role="button">수정</a>
-                    </div>>
+                    <a href="#" th:href="@{/order/{itemId} (itemId=${item.id})}">주문</a>
                 </td>
             </tr>
-            <tr>
-                <td>
-                    <a href="#" th:href="@{/templates/order}" class="btn btn-primary" role="button">주문</a>
-                </td>
-            </tr>
+<!--            <tr>-->
+<!--                <td>-->
+<!--                    <a href="#" th:href="@{/templates/order}" class="btn btn-primary" role="button">주문</a>-->
+<!--                </td>-->
+<!--            </tr>-->
             </tbody>
         </table>
     </div>
