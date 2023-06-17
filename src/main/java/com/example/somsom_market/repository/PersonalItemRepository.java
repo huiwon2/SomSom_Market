@@ -6,6 +6,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.List;
 
 public interface PersonalItemRepository extends JpaRepository<PersonalItem, Long> {
-    List<PersonalItem> findBySellerId(String sellerId);
+    List<PersonalItem> findBySellerIdOrderByStartDateDesc(String sellerId);
+    List<PersonalItem> findAllByOrderByStartDateDesc();
 }
 

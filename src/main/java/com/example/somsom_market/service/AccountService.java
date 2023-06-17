@@ -2,6 +2,7 @@ package com.example.somsom_market.service;
 
 import com.example.somsom_market.controller.User.UserRegistRequest;
 import com.example.somsom_market.dao.AccountDao;
+import com.example.somsom_market.dao.GroupItemDao;
 import com.example.somsom_market.dao.PersonalItemDao;
 import com.example.somsom_market.domain.*;
 import com.example.somsom_market.domain.item.GroupItem;
@@ -45,6 +46,12 @@ public class AccountService {
     private GroupItemRepository groupItemRepository;
     public void setGroupItemRepository(GroupItemRepository groupItemRepository) {
         this.groupItemRepository = groupItemRepository;
+    }
+
+    @Autowired
+    private GroupItemDao groupItemDao;
+    public void setGroupItemDao(GroupItemDao groupItemDao) {
+        this.groupItemDao = groupItemDao;
     }
 
     @Autowired
@@ -135,12 +142,12 @@ public class AccountService {
             이제 account 삭제
          */
         personalItemDao.updateItemSellerId(account.getId(), "unregister");
-        // group...은 음..
-        wishlistRepository.deleteByAccountId(account.getId());
-//        reviewRepository.deleteByAccountId(account.getId());
 
-//        orderRepository.deleteByAccountId(account.getId());
-//        cartRepository.deleteByAccountId(account.getId());
+        wishlistRepository.deleteByAccountId(account.getId());
+        reviewRepository.deleteByUserId(account.getId());
+
+        orderRepository.deleteByAccountId(account.getId());
+        cartRepository.deleteByAccountId(account.getId());
 
         accountDao.deleteAccount(account);
     }
@@ -171,7 +178,7 @@ public class AccountService {
 
     // 사용자 PK로 판매 내역 리스트 검색
     public List<PersonalItem> getSellItemList(String id) {
-        return personalItemRepository.findBySellerId(id);
+        return personalItemRepository.findBySellerIdOrderByStartDateDesc(id);
     }
 
     // 사용자 PK로 공동구매 판매 내역 리스트 검색
@@ -181,7 +188,7 @@ public class AccountService {
 
     // 사용자 PK로 구매 내역 리스트 검색
     public List<Order> getOrderList(String id) {
-        return null;
+        return orderRepository.findByAccountIdOrderByOrderDate(id);
     }
 
 }

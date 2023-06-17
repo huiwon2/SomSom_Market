@@ -7,7 +7,7 @@
 - 우리학교 학생들도 굿즈를 만들어 판매 가능
 - 공동구매를 통해 저렴하게 구매 가능
 ### 기술 스택
-- Java, Spring, SpringBoot, JDBC, hikariCP, OracleDB, WebSocket, Lombok
+- Java, Spring, SpringBoot, JPA, OracleDB, WebSocket, Lombok, Thymeleaf
 <br>
 
 ## Workflow

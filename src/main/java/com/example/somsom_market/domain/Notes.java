@@ -27,7 +27,11 @@ public class Notes {
     private String toSellerId;
 
     @Transient
+    private String itemTitle;
+    @Transient
     private String toSellerNickName;
+    @Transient
+    private String fromAccountNickName;
 
     private String title;
     private String content;
@@ -39,4 +43,9 @@ public class Notes {
     private String fromDel;
     @Column(name = "to_del")
     private String toDel;
+
+    @Transient
+    private String sendDate;
+    @Transient
+    private String readDate;
 }

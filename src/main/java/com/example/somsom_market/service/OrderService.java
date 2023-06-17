@@ -20,12 +20,34 @@ public class OrderService {
     private final OrderDao orderDao;
     private final AccountDao accountDao;
     private final SomsomItemDao somsomItemDao;
+    private AccountService accountService;
+    private SomsomItem item;
 
     /**
      * 주문
      */
     @Transactional
-    public Long order(String memberId, Long itemId, int count) {
+    public Long order(String memberId, Order order) {
+
+        //엔티티 조회
+        Account account = accountDao.findOne(memberId);
+
+        for (int i = 0; i < order.getOrderItems().size(); i++) {
+            OrderItem orderItem = (OrderItem) order.getOrderItems().get(i);
+            Long itemId = orderItem.getId();
+            int increment = orderItem.getQuantity();
+            SomsomItem somsomItem = somsomItemDao.findOne(itemId);
+            somsomItem.setStockQuantity(somsomItem.getStockQuantity() - increment);
+        }
+
+        //주문 저장
+        orderDao.save(order);
+
+        return order.getId();
+    }
+
+    @Transactional
+    public Long insertOrder(String memberId, Long itemId, int count) {
 
         //엔티티 조회
         Account account = accountDao.findOne(memberId);
@@ -58,4 +80,11 @@ public class OrderService {
     public List<Order> findOrders(OrderSearch orderSearch) {
         return orderDao.findAllByString(orderSearch);
     }
+
+    //장바구니
+//    @Transactional
+//    public OrderItem addCartOrder(int itemId, String accountId, CartItem cartItem) {
+//
+//        Account account = accountService.getAccount(accountId);
+//    }
 }

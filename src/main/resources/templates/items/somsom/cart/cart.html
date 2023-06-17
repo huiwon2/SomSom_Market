@@ -1,0 +1,47 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/header :: header">
+    <meta charset="UTF-8">
+    <title>장바구니 목록</title>
+</head>
+<body>
+
+<div class="container">
+    <div th:replace="fragments/bodyHeader :: bodyHeader"/>
+
+    <div>
+        <table class="table table-striped">
+            <thead>
+            <tr>
+                <th>#</th>
+                <th>상품명</th>
+                <th>가격</th>
+                <th>구매수량</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="item : ${cartItems}">
+                <td th:text="${cartItem.id}"></td>
+                <td>
+                    <a th:href="@{/templates/items/somsom/somsomDetail/{itemId}(itemId=${cartItem.item.id})}">
+                        <span th:text="${cartItem.item.title}"></span>
+                    </a>
+                </td>
+                <td th:text="${cartItem.item.price}"></td>
+                <td th:text="${cartItem.count}"></td>
+            </tr>
+            <tr>
+                <td>
+                    <a href="#" th:href="@{/templates/order/orderForm}" class="btn btn-primary" role="button">결제하기</a>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div th:replace="fragments/footer :: footer"/>
+
+</div> <!-- /container -->
+
+</body>
+</html>

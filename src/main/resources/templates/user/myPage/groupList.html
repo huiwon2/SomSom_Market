@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<head>
+<head th:replace="fragments/header :: header">
     <meta charset="UTF-8">
     <title>공구 판매 내역</title>
     <style>
@@ -120,6 +120,5 @@
         </table>
         <div th:replace="fragments/footer :: footer"/>
     </div>
-</table>
 </body>
 </html>

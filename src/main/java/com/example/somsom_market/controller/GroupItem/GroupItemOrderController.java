@@ -18,6 +18,8 @@ public class GroupItemOrderController {
         GroupItem groupItem = groupService.searchItem(itemId);
         groupService.changeStatus(groupItem);
         model.addAttribute("groupItem", groupItem);
+
         return MY_GROUP_LIST;
+
     }
 }

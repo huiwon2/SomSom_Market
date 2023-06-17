@@ -8,6 +8,7 @@ import javax.persistence.Column;
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 import javax.persistence.Transient;
+import java.util.Date;
 
 @Getter @Setter
 @NoArgsConstructor
@@ -19,5 +20,8 @@ public class PersonalItem extends Item {
 
     @Transient
     private String nickName; // 화면에 닉네임 출력하기 위한 필드
+
+    @Column(name="start_date")
+    private Date startDate; // 글 올린 날짜 ㅎ
 
 }

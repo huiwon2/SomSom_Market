@@ -2,19 +2,21 @@ package com.example.somsom_market.dao;
 
 import com.example.somsom_market.domain.item.SomsomItem;
 import lombok.Data;
+import lombok.RequiredArgsConstructor;
 import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 import javax.transaction.Transactional;
 import java.util.List;
 
 @Repository
-@Data
+@RequiredArgsConstructor
 public class SomsomItemDao {
-    @PersistenceContext
-    private EntityManager em;
+
+    private final EntityManager em;
 
     @Transactional
     public void insertSomsomItem(SomsomItem somsomItem) throws DataAccessException {
@@ -41,5 +43,18 @@ public class SomsomItemDao {
     public List<SomsomItem> findAll() {
         return em.createQuery("select s from SomsomItem s", SomsomItem.class)
                 .getResultList();
+    }
+
+    public void updateAddItemWishCount(Long itemId) {
+        Query query = em.createNativeQuery("Update Item i SET i.wish_count = i.wish_count+1 Where i.item_id = ?1");
+
+        query.setParameter(1, itemId);
+        query.executeUpdate();
+    }
+
+    public void updateDeleteItemWishcount(Long itemId) {
+        Query query = em.createNativeQuery("Update Item i SET i.wish_count = i.wish_count-1 Where i.item_id = ?1");
+        query.setParameter(1, itemId);
+        query.executeUpdate();
     }
 }

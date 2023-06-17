@@ -6,7 +6,6 @@ import lombok.*;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.*;
 
 import static javax.persistence.FetchType.LAZY;
@@ -23,17 +22,22 @@ public class Order implements Serializable{
     private Long id;
 
     @ManyToOne(fetch = LAZY)
-    @JoinColumn(name = "member_id")
+    @JoinColumn(name = "account_id", referencedColumnName = "account_id")
     private Account account;
 
+    @Column(name = "order_date")
     private LocalDate orderDate;
     private String name;
+    private String phone;
+    @Column(name = "ship_address")
     private String address;
     private String zipcode;
 
+    @Column(name = "ship_state")
     @Enumerated(EnumType.STRING)
     private OrderStatus status;
 
+    @Column(name = "total_price")
     private int totalPrice;
 
     @JsonIgnore
@@ -53,19 +57,17 @@ public class Order implements Serializable{
     }
 
     //==생성 메서드==//
-    public static Order createOrder(Account account, OrderItem... orderItems) {
+    public static Order createOrder(Account account, OrderItem orderItem) {
         Order order = new Order();
         order.setAccount(account);
-        for (OrderItem orderItem : orderItems) {
-            order.addOrderItem(orderItem);
-        }
+        order.addOrderItem(orderItem);
         order.setStatus(OrderStatus.PROCESSING);
         order.setOrderDate(LocalDate.now());
         return order;
     }
 
     // TODO: 2023/06/04 카트 아이템 바탕으로 주문 생성하는 로직 필요
-    public void initOrder(Account account, Cart cart) {
+    public void createOrderFromCart(Account account, Cart cart) {
 //        setAccount(account);
 //        orderDate.setOrderDate(LocalDate.now());
 //

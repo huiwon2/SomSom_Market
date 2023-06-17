@@ -1,13 +1,16 @@
 package com.example.somsom_market.service;
 
 import com.example.somsom_market.dao.NotesDao;
+import com.example.somsom_market.domain.Account;
 import com.example.somsom_market.domain.Notes;
 import com.example.somsom_market.repository.NotesRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class NotesService {
@@ -45,6 +48,23 @@ public class NotesService {
     }
 
     /* 쪽지 지우기 */
+    public void deleteNotes(Account account, Notes notes) {
+        if (account.getId().equals(notes.getFromAccountId())) { // 보낸 사람이면
+            if (notes.getToDel().equals("Y")) { // 상대방이 지웠으면
+                notesRepository.deleteById(notes.getNotesId()); // db에서 삭제
+            } else { // 상대방은 안 지웠으면
+                notes.setFromDel("Y");
+                notesDao.updateNotes(notes); // Y로만 변경
+            }
+        } else {
+            if (notes.getFromDel().equals("Y")) {
+                notesRepository.deleteById(notes.getNotesId());
+            } else {
+                notes.setToDel("Y");
+                notesDao.updateNotes(notes);
+            }
+        }
+    }
     
     /* 받은 쪽지 리스트 */
     public List<Notes> receivedNotes(String toSellerId) {
@@ -55,4 +75,33 @@ public class NotesService {
     public List<Notes> sendedNotes(String fromAccountId) {
         return notesRepository.findByFromAccountIdOrderBySendedAtDesc(fromAccountId);
     }
+
+    /* 개별 쪽지 열람 */
+    public Notes searchNotes(Long notesId) {
+        Optional<Notes> notes = notesRepository.findById(notesId);
+        Notes note = null;
+        if (notes.isPresent()) {
+            note = notes.get();
+
+            SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            note.setSendDate(formatter.format(note.getSendedAt()));
+            if (note.getReadedAt() != null) {
+                note.setReadDate(formatter.format(note.getReadedAt()));
+            }
+            return note;
+        }
+        return null;
+    }
+
+    /* 받은 쪽지 처음 열람 시, */
+    public Notes updateReaded(Notes notes) {
+        notes.setReadedAt(new Date());
+        Notes newNotes = notesDao.updateNotes(notes);
+
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        notes.setReadDate(formatter.format(newNotes.getReadedAt()));
+
+        return newNotes;
+    }
+
 }

@@ -8,32 +8,44 @@
 
     <form role="form" action="/order" method="post">
 
-        <div class="form-group">
-            <label for="member">주문회원</label>
-            <select name="memberId" id="member" class="form-control">
-                <option value="">회원선택</option>
-                <option th:each="member : ${members}"
-                        th:value="${member.id}"
-                        th:text="${member.name}" />
-            </select>
-        </div>
+        <div>
+            <table class="table table-striped">
+                <thead>
+                <tr>
+                    <th>상품명</th>
+                    <th>가격</th>
+                    <th>수량</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td th:text="${item.title}"></td>
+                    <td th:text="${item.price}"></td>
+                    <td>
+                        <input type="number" name="count" class="form-control" placeholder="주문 수량을 입력하세요">
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div><br><br>
+
+<!--        <div class="form-group">-->
+<!--            <label for="count">주문수량</label>-->
+<!--            <input type="number" name="count" class="form-control" id="count" placeholder="주문 수량을 입력하세요">-->
+<!--        </div>-->
 
         <div class="form-group">
-            <label for="item">상품명</label>
-            <select name="itemId" id="item" class="form-control">
-                <option value="">상품선택</option>
-                <option th:each="item : ${items}"
-                        th:value="${item.id}"
-                        th:text="${item.name}" />
-            </select>
+            <label th:for="name">주문자 이름</label>
+            <input type="text" th:field="${account.name}" class="form-control" th:value="${account.name}"><br>
+            <label for="phone">주문자 연락처</label>
+            <input type="text" id="phone" name="phone" class="form-control" th:value="${account.phone}"><br>
+            <label for="address">주소</label>
+            <input type="text" id="address" name="address" class="form-control"  th:value="${account.address}"><br>
+            <label for="phone">우편번호</label>
+            <input type="text" id="account" name="name" class="form-control" th:value="${account.zipcode}"><br>
         </div>
 
-        <div class="form-group">
-            <label for="count">주문수량</label>
-            <input type="number" name="count" class="form-control" id="count" placeholder="주문 수량을 입력하세요">
-        </div>
-
-        <button type="submit" class="btn btn-primary">Submit</button>
+        <button type="submit" class="btn btn-primary">결제</button>
     </form>
     <br/>
     <div th:replace="fragments/footer :: footer" />
