@@ -19,8 +19,9 @@ public class SomsomItemDao {
     private final EntityManager em;
 
     @Transactional
-    public void insertSomsomItem(SomsomItem somsomItem) throws DataAccessException {
+    public SomsomItem insertSomsomItem(SomsomItem somsomItem) throws DataAccessException {
         em.persist(somsomItem);
+        return somsomItem;
     }
 
     @Transactional

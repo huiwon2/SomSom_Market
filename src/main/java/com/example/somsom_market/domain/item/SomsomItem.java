@@ -13,6 +13,7 @@ import java.util.List;
 @Getter @Setter
 public class SomsomItem extends Item {
 
+    @Column(name = "stock_quantity")
     private int stockQuantity;
 
     @OneToMany(mappedBy = "item")

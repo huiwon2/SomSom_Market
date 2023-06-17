@@ -7,6 +7,6 @@ import java.util.List;
 import java.util.Optional;
 
 public interface SomsomItemRepository extends JpaRepository<SomsomItem, Long> {
-    Optional<SomsomItem> findById(long item_id);
-    SomsomItem findItemById(long item_id);
+//    Optional<SomsomItem> findById(Long item_id);
+    SomsomItem findItemById(Long item_id);
 }
