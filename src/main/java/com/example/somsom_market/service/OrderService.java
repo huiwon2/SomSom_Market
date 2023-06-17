@@ -10,6 +10,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -25,23 +26,42 @@ public class OrderService {
      * 주문
      */
     @Transactional
-    public Long order(String memberId, Long itemId, int count) {
+    public Long insertOrder(String memberId, Order order) {
 
         //엔티티 조회
         Account account = accountDao.findOne(memberId);
-        SomsomItem item = somsomItemDao.findOne(itemId);
 
-        //주문상품 생성
-        OrderItem orderItem = OrderItem.createOrderItem(item, item.getPrice(), count);
-
-        //주문 생성
-        Order order = Order.createOrder(account, orderItem);
+        for (int i = 0; i < order.getOrderItems().size(); i++) {
+            OrderItem orderItem = (OrderItem) order.getOrderItems().get(i);
+            Long itemId = orderItem.getId();
+            int increment = orderItem.getQuantity();
+            SomsomItem somsomItem = somsomItemDao.findOne(itemId);
+            somsomItem.setStockQuantity(somsomItem.getStockQuantity() - increment);
+        }
 
         //주문 저장
         orderDao.save(order);
 
         return order.getId();
     }
+//    @Transactional
+//    public Long insertOrder(String memberId, Long itemId, int count) {
+//
+//        //엔티티 조회
+//        Account account = accountDao.findOne(memberId);
+//        SomsomItem item = somsomItemDao.findOne(itemId);
+//
+//        //주문상품 생성
+//        OrderItem orderItem = OrderItem.createOrderItem(item, item.getPrice(), count);
+//
+//        //주문 생성
+//        Order order = Order.createOrder(account, orderItem);
+//
+//        //주문 저장
+//        orderDao.save(order);
+//
+//        return order.getId();
+//    }
 
     /**
      * 주문 취소

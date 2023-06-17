@@ -9,9 +9,15 @@
     <form role="form" action="/order" method="post">
 
         <div class="form-group">
-            <label for="name">주문회원</label>
-            <input type="text" id="name" name="name" class="form-control" placeholder="${account.name}">
-
+            <label th:for="name">주문자 이름</label>
+            <input type="number" th:field="${account.name}" class="form-control" placeholder="가격을 입력해주세요">
+            <div class="form-group">
+            <label for="phone">주문자 연락처</label>
+            <input type="text" id="phone" name="phone" class="form-control" placeholder="전화번호">
+            <label for="address">주소</label>
+            <input type="text" id="address" name="address" class="form-control" placeholder="주소">
+            <label for="phone">우편번호</label>
+            <input type="text" id="account" name="name" class="form-control" placeholder="우편번호">
         </div>
 
         <div class="form-group">
