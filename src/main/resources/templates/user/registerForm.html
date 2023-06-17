@@ -5,6 +5,23 @@
     <title>회원가입</title>
 </head>
 <body>
+<style>
+    .content {
+        width: 100%;
+        text-align: center;
+    }
+
+    .regBtn {
+        border: 1px solid;
+		border-radius: 8px;
+		background-color: #AB2948;
+		color: white;
+		font-weight: bold;
+		width: 300px;
+		height: 70px;
+		font-size: 35px;
+    }
+</style>
 <script>
 var idck = 0;
 var pwck = 0;
@@ -57,6 +74,12 @@ function formSubmit() {
     }
 }
 </script>
+
+<div class="content">
+    <a href="/"><img th:src="@{/images/somsom.png}" width="150" height="150"/></a>
+    <br><br>
+
+
 <form role="form" id="frm" th:object="${memReq}" th:action="@{/user/register}" method="post">
 
     <div class="form-group">
@@ -96,7 +119,7 @@ function formSubmit() {
                th:class="${#fields.hasErrors('password')}? 'form-control fieldError' : 'form-control'">
         <br>
         <input type="password" id="passwordCheck" name="passwordCheck" class="form-control"
-               onChange="confirmPassword()" placeholder="비밀번호를 다시 한번 입력해주세요">
+               onChange="confirmPassword()" placeholder="비밀번호를 다시 한번 입력해주세요"><br>
         <span id="confirm" style="color:red;">*비밀번호가 일치하지 않습니다.</span>
     </div>
     <br>
@@ -150,7 +173,8 @@ function formSubmit() {
     <br>
 
 
-    <input type="button" class="btn" onClick="formSubmit()" value="회원가입">
+    <input type="button" class="regBtn" onClick="formSubmit()" value="회원가입">
 </form>
+</div>
 </body>
 </html>
