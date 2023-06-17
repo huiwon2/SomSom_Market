@@ -50,14 +50,17 @@ public class CartController {
         Account account = userSession.getAccount();
 
             Cart userCart = cartService.findUserCart(account.getId());
-            List<CartItem> cartItemList = cartService.allUserCartView(userCart);
-            int totalPrice = 0;
-            for(CartItem cartItem : cartItemList){
-                totalPrice += cartItem.getCount() + cartItem.getItem().getPrice();
+            if (userCart != null) {
+                List<CartItem> cartItemList = cartService.allUserCartView(userCart);
+                int totalPrice = 0;
+                for(CartItem cartItem : cartItemList){
+                    totalPrice += cartItem.getCount() + cartItem.getItem().getPrice();
+                }
+                model.addAttribute("totalPrice", totalPrice);
+                model.addAttribute("totalCount", userCart.getCount());
+                model.addAttribute("cartItems", cartItemList);
             }
-            model.addAttribute("totalPrice", totalPrice);
-            model.addAttribute("totalCount", userCart.getCount());
-            model.addAttribute("cartItems", cartItemList);
+
 //            model.addAttribute("user", accountService.getAccount(id));
 
             return "items/somsom/cart/cart";
