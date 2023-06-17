@@ -4,6 +4,23 @@
     <meta charset="UTF-8">
     <title>쪽지 보내기</title>
 </head>
+<style>
+    .content {
+        width: 90%;
+        padding: 20px;
+    }
+
+    .regBtn {
+        border: 1px solid;
+		border-radius: 8px;
+		background-color: #AB2948;
+		color: white;
+		font-weight: bold;
+		width: 300px;
+		height: 70px;
+		font-size: 35px;
+    }
+</style>
 <body onload="startPage();">
 
 <script>
@@ -32,6 +49,7 @@
   </script>
 <div th:replace="fragments/bodyHeader :: bodyHeader" />
 
+<div class="content">
 <h2>쪽지 보내기</h2>
 
 <a th:href="@{/personal/detail/{itemId}(itemId=${item.id})}">
@@ -51,8 +69,8 @@
     </div>
     <br>
 
-    <input type="button" onClick="onSubmit()" value="보내기">
+    <input type="button" class="regBtn" onClick="onSubmit()" value="보내기">
 </form>
-
+</div>
 </body>
 </html>

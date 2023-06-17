@@ -11,7 +11,6 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class CartService {
@@ -26,18 +25,18 @@ public class CartService {
 
 //    장바구니 추가
     @Transactional
-    public void addCart(Account account, Optional<SomsomItem> newItem, int amount){
-        Cart cart = cartRepository.findById(account.getId());
+    public void addCart(Account account, SomsomItem newItem, int amount){
+        Cart cart = cartRepository.findByAccountId(account.getId());
 //        장바구니 없을 때
         if(cart == null){
             cart = Cart.createCart(account);
-            cartRepository.save(cart);
+            cart = cartRepository.save(cart);
         }
-        Optional<SomsomItem> item = somsomItemRepository.findById(newItem.get().getId());
-        CartItem cartItem = cartItemRepository.findByCartIdAndItemId(cart.getId(), item.get().getId());
+//        Optional<SomsomItem> item = somsomItemRepository.findById(newItem.get().getId());
+        CartItem cartItem = cartItemRepository.findByCartIdAndItemId(cart.getId(), newItem.getId());
 //        장바구니에 아이템 없을 때
         if(cartItem == null){
-            cartItem = CartItem.createCartItem(cart, item, amount);
+            cartItem = CartItem.createCartItem(cart, newItem, amount);
             cartItemRepository.save(cartItem);
         }
 //        아이템 있을 때 수량 증가
@@ -64,7 +63,7 @@ public class CartService {
     }
 
     public Cart findUserCart(String id) {
-        Cart cart = cartRepository.findByAccount(id);
+        Cart cart = cartRepository.findByAccountId(id);
         return cart;
     }
 
