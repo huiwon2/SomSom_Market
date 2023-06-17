@@ -12,11 +12,12 @@ import org.springframework.web.bind.annotation.*;
 public class GroupItemOrderController {
     @Autowired
     private GroupItemService groupService;
+    private final String MY_GROUP_LIST = "/group/list"; // 수정해라
     @RequestMapping("")
     public String changeStatusBySeller(@RequestParam("itemId") Long itemId, Model model){
         GroupItem groupItem = groupService.searchItem(itemId);
         groupService.changeStatus(groupItem);
         model.addAttribute("groupItem", groupItem);
-        return
+        return MY_GROUP_LIST;
     }
 }

@@ -6,6 +6,7 @@ import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 import javax.transaction.Transactional;
 import java.util.List;
 @Repository
@@ -33,4 +34,19 @@ public class ReviewDao {
         Review review = em.find(Review.class, reviewId);
         em.remove(em.merge(review));
     }
+
+    //나의 리뷰 리스트
+    public List<Review> myReviewList(String userId){
+       Query query = em.createQuery("SELECT r FROM Review r WHERE r.userId = :userId", Review.class);
+       query.setParameter("userId", userId);
+       List<Review> reviews = query.getResultList();
+       return reviews;
+    }
+    //해당 상품에 대한 리뷰 리스트
+   public List<Review> findReviewListByItemId(Long itemId) {
+       Query query = em.createQuery("SELECT r FROM Review r WHERE r.orderItemId = :itemId", Review.class);
+       query.setParameter("itemId", itemId);
+       List<Review> reviews = query.getResultList();
+       return reviews;
+   }
 }

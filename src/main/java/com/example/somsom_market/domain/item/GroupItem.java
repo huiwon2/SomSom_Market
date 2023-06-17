@@ -2,30 +2,25 @@ package com.example.somsom_market.domain.item;
 
 import com.example.somsom_market.domain.item.Item;
 import lombok.*;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
 
 @Getter @Setter
-@AllArgsConstructor
-@RequiredArgsConstructor
-@Builder
 @Entity
 @DiscriminatorValue(value="GROUP")
 public class GroupItem extends Item implements Serializable {
 
-    //@ManyToOne
-    //@JoinColumn(name="seller", referencedColumnName="id")
-    //private Account user; //1 : N(0..*) , many side
-
-
-    @Column(name="sales_target")
+    @Column(name="SALES_TARGET")
     private int salesTarget; //공구 목표액
-    @Column(name="sales_now")
-    private int salesNow; //현재 판매액
-    @Column(name="start_date")
+    @Column(name="SALES_NOW")
+    private int salesNow; //현재 모금액
+    @Column(name="START_DATE")
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date startDate; //공구 시작일
-    @Column(name="end_date")
+    @Column(name="END_DATE")
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date endDate; //공구 마감일
 }

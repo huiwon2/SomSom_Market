@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>공동구매 아이템 상세 페이지</title>
+</head>
+<body>
+<div th:replace="fragments/bodyHeader :: bodyHeader" />
+
+<div class="main">
+    <div>
+        <label>제목</label>
+        <h2><span th:text="${groupItem.title}"></span></h2>
+    </div>
+    <div>
+        <label>모인 금액</label>
+        <span th:text="${totalPrice}">원</span>
+        <span th:text="${percent}">%</span>
+    </div>
+    <div>
+        <label>목표 금액</label>
+        <span th:text="${groupItem.salesTarget}"></span>
+    </div>
+    <div>
+        <label>펀딩 기간</label>
+        <span th:text="${groupItem.startDate}"></span>~
+        <span th:text="${groupItem.endDate}"></span>
+    </div>
+    <div>
+        <label>가격</label>
+        <span th:text="${groupItem.price}">원</span>
+    </div>
+    <div>
+        <label>소개</label>
+        <textarea th:text="${groupItem.description}"></textarea>
+    </div>
+
+</div>
+<script>
+    
+</script>
+</body>
+</html>

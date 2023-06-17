@@ -1,5 +1,8 @@
 package com.example.somsom_market.dao;
 
+import com.example.somsom_market.domain.item.GroupItem;
+import lombok.Data;
+import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
@@ -9,6 +12,7 @@ import javax.transaction.Transactional;
 import java.util.List;
 
 @Repository
+@Data
 public class GroupItemDao{
     @PersistenceContext
     private EntityManager em;
@@ -43,7 +47,7 @@ public class GroupItemDao{
 
     @Transactional
     public List<GroupItem> findAllGroupItem(){
-        Query query = em.createQuery("SELECT g FROM GroupItem g ORDER BY g.endDate DESC");
+        Query query = em.createQuery("SELECT g FROM GroupItem g ORDER BY g.endDate DESC", GroupItem.class);
         List<GroupItem> groupItems = query.getResultList();
         return groupItems;
     }
@@ -51,7 +55,7 @@ public class GroupItemDao{
     // 공구 판매자 ---> 모인 총 금액 확인
     @Transactional
     public int getTotalPriceOfGroupItemOrders(Long itemId){
-        Query query = em.createNativeQuery("SELECT SUM(o.ORDER_PRICE) FROM ORDER_ITEM o JOIN ITEM i WHERE o.ITEM_ID = ?");
+        Query query = em.createNativeQuery("SELECT SUM(o.ORDER_PRICE) FROM ORDER_ITEM o JOIN ITEM i WHERE o.ITEM_ID = ?1");
         query.setParameter(1, itemId);
         return (int) query.getSingleResult();
     }
@@ -71,8 +75,6 @@ public class GroupItemDao{
         return updateCnt;
     }
 
-
-
     //공구 마감
     @Transactional
     public int updateStatusToSoldOut(long itemId){
@@ -82,4 +84,5 @@ public class GroupItemDao{
         int updateCnt = query.executeUpdate();
         return updateCnt;
     }
+
 }

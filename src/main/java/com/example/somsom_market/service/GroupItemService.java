@@ -5,14 +5,28 @@ import com.example.somsom_market.dao.AccountDao;
 import com.example.somsom_market.dao.GroupItemDao;
 import com.example.somsom_market.domain.item.GroupItem;
 import com.example.somsom_market.domain.ItemStatus;
+import com.example.somsom_market.domain.item.Item;
 import com.example.somsom_market.repository.GroupItemRepository;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.io.File;
+import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
+
 @Service
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
 public class GroupItemService {
 
     @Autowired private GroupItemDao groupItemDao;
@@ -21,32 +35,64 @@ public class GroupItemService {
     @Autowired
     private AccountDao accountDao;
 
+    //아이템 검색
     public GroupItem searchItem(long itemId){
         return groupItemDao.getItem(itemId);
     }
 
-    private static GroupItem reqToGroupItem(GroupItemRequest req, String userId){
+    private static GroupItem reqToGroupItem(GroupItemRequest req, String userId) throws IOException {
         //itemId = AutoGenerate
         GroupItem tmp = new GroupItem();
         tmp.setSellerId(userId);
         tmp.setStatus(ItemStatus.INSTOCK);
         tmp.setSalesNow(req.getSalesNow());
+        tmp.setSalesTarget(req.getSalesTarget());
         tmp.setEndDate(req.getEndDate());
         tmp.setStartDate(req.getStartDate());
         tmp.setDescription(req.getDescription());
         tmp.setPrice(req.getPrice());
         tmp.setTitle(req.getTitle());
-//        tmp.setImageUrl(req.getImageUrl());
-        tmp.setWishCount(req.getWishCount());
+       // tmp.setWishCount(req.getWishCount());
+
+        String oriImgName = req.getImgFile().getOriginalFilename();
+        String path = System.getProperty("user.dir") + "/src/main/resources/static/images/groupItem";
+        if(!new File(path).exists()){
+            try{
+                new File(path).mkdir();
+            }catch(Exception e){
+                e.printStackTrace();
+            }
+        }
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyyMMddHHmmss");
+        String current_date = simpleDateFormat.format(new Date());
+        String imgName = current_date + "_" + oriImgName;
+        String filePath = path + "\\" + imgName;
+
+        File saveFile = new File(filePath);
+        req.getImgFile().transferTo(saveFile);
+
+        tmp.setImgName(imgName);
+        tmp.setImgPath("/images/groupItem/" + imgName);
         return tmp;
     }
 
-    public GroupItem registerNewGroupItem(GroupItemRequest req, String userId){
+    //등록
+    public GroupItem registerNewGroupItem(GroupItemRequest req, String userId) throws IOException {
         return groupItemDao.insertGroupItem(reqToGroupItem(req, userId));
     }
 
-    public GroupItem updateGroupItem(GroupItemRequest req, String userId){
-       return groupItemDao.updateGroupItem(reqToGroupItem(req, userId));
+    //수정
+    public GroupItem updateGroupItem(GroupItemRequest groupItem, String userId, long itemId) throws IOException {
+        GroupItem tmp = groupItemDao.getItem(itemId);
+        tmp.setTitle(groupItem.getTitle());
+        tmp.setDescription(groupItem.getDescription());
+        tmp.setPrice(groupItem.getPrice());
+        tmp.setEndDate(groupItem.getEndDate());
+        if(groupItem.getStatus().equals("재고있음")) tmp.setStatus(ItemStatus.INSTOCK);
+        else if(groupItem.getStatus().equals("재고 주문중")) tmp.setStatus(ItemStatus.ING);
+        else tmp.setStatus(ItemStatus.SOLDOUT);
+        groupItemDao.updateGroupItem(tmp);
+        return tmp;
     }
 
     //게시글 삭제

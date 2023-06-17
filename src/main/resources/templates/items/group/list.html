@@ -2,7 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>공구 판매 내역</title>
+    <title>공구 상품 목록</title>
     <style>
         body {
             padding:1.5em;
@@ -98,9 +98,9 @@
                 <th>#</th>
                 <th>상품명</th>
                 <th>가격</th>
+                <th>판매자</th>
                 <th>마감일</th>
                 <th>목표금액</th>
-                <th></th>
                 <th></th>
             </tr>
             </thead>
@@ -109,11 +109,11 @@
                 <td th:text="${item.id}"></td>
                 <td th:text="${item.title}"></td>
                 <td th:text="${item.price}">원</td>
+                <td th:text="${item.sellerId}"></td>
                 <td th:text="${#dates.format(item.endDate, 'dd-MMM-yyyy')}"></td>
                 <td th:text="${item.salesTarget}"></td>
-
-                <td><a th:href="@{/group/item/update(id=${item.id})}">수정</a></td>
-                <td><a th:href="@{/group/item/delete(id=${item.id})}">삭제</a></td>
+                <!--아래 수정하기-->
+                <td><a href="#" th:href="@{/templates/order}" class="btn btn-primary" role="button">주문</a></td>
             </tr>
 
             </tbody>
