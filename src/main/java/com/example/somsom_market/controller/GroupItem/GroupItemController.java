@@ -2,6 +2,7 @@ package com.example.somsom_market.controller.GroupItem;
 
 import com.example.somsom_market.controller.User.UserSession;
 import com.example.somsom_market.domain.Account;
+import com.example.somsom_market.domain.Wishlist;
 import com.example.somsom_market.domain.item.GroupItem;
 import com.example.somsom_market.repository.GroupItemRepository;
 import com.example.somsom_market.service.GroupItemService;
@@ -20,7 +21,9 @@ import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import java.io.IOException;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 @Controller
 @SessionAttributes("userSession")
@@ -38,14 +41,14 @@ public class GroupItemController {
     private final String GROUP_ITEM_DETAIL = "items/group/groupDetail";
     private final String GROUP_LIST = "items/group/list";
     private final String MY_GROUP_LIST = "user/myPage/groupList";
-    @ModelAttribute("groupItem")
+    /*@ModelAttribute("groupItem")
     public GroupItemRequest formBackingObject(HttpServletRequest request){
         GroupItemRequest groupItemRequest = (GroupItemRequest) request.getSession().getAttribute("groupItem");
         if(groupItemRequest == null) {
             groupItemRequest = new GroupItemRequest();
         }
         return groupItemRequest;
-    }
+    }*/
 
     //등록
     @GetMapping("/group/register")
@@ -116,6 +119,8 @@ public class GroupItemController {
         groupItemRequest.setTitle(groupItem.getTitle());
         groupItemRequest.setPrice(groupItem.getPrice());
         groupItemRequest.setDescription(groupItem.getDescription());
+        //groupItemRequest.setImgFile(groupItemRequest.getImgFile());
+        //groupItemRequest.setImgPath(groupItemRequest.getImgPath());
 
         mav.setViewName(UPDATE_GROUP_FORM);
         mav.addObject("statusString", new String[] {"재고있음", "재고 주문중", "재고없음"});
@@ -183,20 +188,32 @@ public class GroupItemController {
     }
 
     //상세 페이지
-    @GetMapping("/group/item/groupDetail/{itemId}")
-    public String showDetail(HttpServletRequest req, @PathVariable("itemId") long itemId, Model model){
+    @GetMapping("/group/detail")
+    public String showDetail(HttpServletRequest req, @RequestParam("id") long itemId, Model model){
         UserSession userSession = (UserSession) WebUtils.getSessionAttribute(req, "userSession");
         String userId;
         int isExistWish = 0;
-        if(userSession != null){
+        if(userSession != null) {
             Account account = userSession.getAccount();
             userId = account.getId();
             Wishlist wishlist = wishlistService.getGroupWishlistByAccountAndItem(userId, itemId);
-            if(wishlist != null) isExistWish = 1;
-        }else{
-
+            if (wishlist != null) isExistWish = 1;
         }
+        GroupItem groupItem = groupService.searchItem(itemId);
+        model.addAttribute("groupItem", groupItem);
+
+        long cnt = groupService.getOrderCnt(itemId);
+        model.addAttribute("cnt", cnt);
+
+        GroupItem tmp = groupService.searchItem(itemId);
+        long timeleft = getDateDiff(tmp.getStartDate(), tmp.getEndDate(), TimeUnit.DAYS);
+        model.addAttribute("timeleft",timeleft);
+
         model.addAttribute("isExistWish", isExistWish);
         return GROUP_ITEM_DETAIL;
+    }
+    public static long getDateDiff(Date date1, Date date2, TimeUnit timeUnit) {
+        long diffInMillies = date2.getTime() - date1.getTime();
+        return timeUnit.convert(diffInMillies, TimeUnit.MILLISECONDS);
     }
 }

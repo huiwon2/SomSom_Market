@@ -118,7 +118,7 @@ public class GroupItemService {
     //목표 금액이 모이면 판매자가 상태 바꾸고, 마감 기한 전까지 모이지 않으면 주문 취소하기
     public GroupItem changeStatus(GroupItem groupItem){
         long itemId = groupItem.getId();
-        int totalOrdersPrice = groupItemDao.getTotalPriceOfGroupItemOrders(groupItem.getId());
+        long totalOrdersPrice = groupItemDao.getTotalPriceOfGroupItemOrders(groupItem.getId());
         int salesTarget = groupItem.getSalesTarget();
         Date endDate = groupItem.getEndDate();
         Calendar cal = Calendar.getInstance();
@@ -139,4 +139,10 @@ public class GroupItemService {
         }
         return false;
     }
+
+    //아이템에 대한 주문 수
+    public long getOrderCnt(long itemId){
+        return groupItemDao.getTotalCntOfGroupItemOrders(itemId);
+    }
+
 }

@@ -107,7 +107,7 @@
             <tbody>
             <tr th:each="item : ${groupItemList}">
                 <td th:text="${item.id}"></td>
-                <td th:text="${item.title}"></td>
+                <td><a th:href="@{/group/detail(id=${item.id})}" th:text="${item.title}" /></td>
                 <td th:text="${item.price}">원</td>
                 <td th:text="${item.sellerId}"></td>
                 <td th:text="${#dates.format(item.endDate, 'dd-MMM-yyyy')}"></td>
