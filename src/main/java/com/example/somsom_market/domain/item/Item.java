@@ -21,15 +21,19 @@ public abstract class Item {
     @Column(name = "item_id")
     private Long id;
 
+    @Column(name = "seller_id")
     private String sellerId;
     private String title;
     private String description;
     private int price;
+    @Column(name = "wish_count")
     private int wishCount;
 
     @Enumerated(EnumType.STRING)
     private ItemStatus status;
 
+    @Column(name = "img_name")
     private String imgName;
+    @Column(name = "img_path")
     private String imgPath;
 }

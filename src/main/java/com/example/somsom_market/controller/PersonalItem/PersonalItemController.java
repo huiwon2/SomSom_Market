@@ -4,6 +4,7 @@ import com.example.somsom_market.controller.User.UserSession;
 import com.example.somsom_market.domain.Account;
 import com.example.somsom_market.domain.Wishlist;
 import com.example.somsom_market.domain.item.PersonalItem;
+import com.example.somsom_market.service.AccountService;
 import com.example.somsom_market.service.PersonalItemService;
 import com.example.somsom_market.service.WishlistService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,6 +38,12 @@ public class PersonalItemController {
     private WishlistService wishlistService;
     public void setWishlistService(WishlistService wishlistService) {
         this.wishlistService = wishlistService;
+    }
+
+    @Autowired
+    private AccountService accountService;
+    public void setAccountService(AccountService accountService) {
+        this.accountService = accountService;
     }
 
     @GetMapping("/personal/register")
@@ -151,22 +158,29 @@ public class PersonalItemController {
     // 개인 거래 게시글 상세 뷰
     @RequestMapping("/personal/detail/{itemId}")
     public String showPersonalDetail(HttpServletRequest request,
-                                     @PathVariable("itemId") long itemId, Model model) {
+                                     @PathVariable("itemId") Long itemId, Model model) {
         PersonalItem personalItem = personalItemService.searchItem(itemId);
+        Account ac = accountService.getAccount(personalItem.getSellerId());
+        personalItem.setNickName(ac.getNickName());
 
         UserSession userSession = (UserSession) WebUtils.getSessionAttribute(request, "userSession");
         int isExistWish = 0;
 
+        String userId;
         if (userSession != null) { // 로그인 사용자는 위시리스트 추가되어 있는지 아닌지 확인
             Account account = userSession.getAccount();
             Wishlist wishlist = wishlistService.getPersonalWishlistByAccountAndItem(account.getId(), itemId);
             if (wishlist != null) { // 위시리스트에 추가되어 있으면
                 isExistWish = 1;
             }
+            userId = account.getId();
+        } else {
+            userId = "false";
         }
 
         model.addAttribute("personalItem", personalItem);
         model.addAttribute("isExistWish", isExistWish);
+        model.addAttribute("userId", userId);
 
         return PERSONAL_DETAIL_VIEW;
     }

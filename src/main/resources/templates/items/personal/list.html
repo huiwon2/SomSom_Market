@@ -1,33 +1,28 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head th:replace="fragments/header :: header">
+    <meta charset="UTF-8">
     <title>개인 거래 목록</title>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 </head>
-
 <body>
+<div th:replace="fragments/bodyHeader :: bodyHeader" />
 
-<div class="container">
-    <div th:replace="fragments/bodyHeader :: bodyHeader" />
+<a th:href="@{/personal/register}">
+    <input type="button" value="게시글 등록"></a>
 
-    <div class="jumbotron">
-        <a th:href="@{/personal/register}">
-            <input type="button" value="게시글 등록"></a>
-
-        <table class="table table-striped">
-            <tr th:each="item : ${personalItemList}">
-                <td>
-                    <a th:href="@{/personal/detail/{itemId}(itemId = ${item.id})}">
-                        <span th:text="${item.title}"></span>
-                    </a>
-                </td>
-            </tr>
-        </table>
-    </div>
-
-    <div th:replace="fragments/footer :: footer"/>
-
-</div>
-
+<table>
+    <tr th:each="item : ${personalItemList}">
+        <td style="white-space: nowrap;">
+            <div th:switch="${item.getStatus().toString()}" style="display: inline-block;">
+                <p th:case="INSTOCK" style="white-space: nowrap">[거래가능]</p>
+                <p th:case="ING" style="white-space: nowrap">[거래중]</p>
+                <p th:case="SOLDOUT" style="white-space: nowrap">[거래완료]</p>
+            </div>
+            <a th:href="@{/personal/detail/{itemId}(itemId = ${item.id})}" style="display: inline-block;">
+                <span th:text="${item.title}"></span>
+            </a>
+        </td>
+    </tr>
+</table>
 </body>
 </html>

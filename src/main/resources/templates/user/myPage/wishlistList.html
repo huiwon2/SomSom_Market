@@ -3,27 +3,29 @@
 <head th:replace="fragments/header :: header">
   <meta charset="UTF-8">
   <title>위시리스트 내역</title>
-</head>
 
+</head>
 <style>
-.personal { display: block; }
-.group { display: none;	}
+  .personal { display: block; }
+  .group { display: none;	}
 </style>
+
 <body>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
-  // select 선택에 맞게 보여지는 div 변화 (근데 안 먹힘...ㅠ)
-    $('#selectBox').change(function() {
+  // select 선택에 맞게 보여지는 div 변화
+    $(document).ready(function() {
+      $('#selectBox').change(function() {
         var result = $("select[name=selectBox]").val();
 
         if (result == 'personal') {
-        	$('.group').hide();
-
-          	$('.personal').show();
+          $('.group').hide();
+          $('.personal').show();
         } else {
-          	$('.personal').hide();
-
-          	$('.group').show();
+          $('.personal').hide();
+          $('.group').show();
         }
+      });
     });
 </script>
 <div th:replace="fragments/bodyHeader :: bodyHeader" />
@@ -52,7 +54,7 @@
   <table>
     <tr th:each="item : ${userWishlistGroupItem}">
       <td>
-        <a th:href="@{/personal/detail/{itemId}(itemId = ${item.id})}"> <!-- 경로 수정 필요 -->
+        <a th:href="@{/personal/detail/{itemId}(itemId = ${item.id})}">
           <span th:text="${item.title}"></span>
         </a>
         <span th:text="${item.price}"></span>

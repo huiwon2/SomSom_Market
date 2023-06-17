@@ -10,12 +10,11 @@ public class GroupItemRequest {
     private String title;
     private int price;
     private String description;
-    private List<String> imageUrl;
+    //private List<String> imageUrl;
     private int wishCount;
-
     private String sellerId;
-    private int salesTarget;
-    private int salesNow;
+    private int salesTarget; // 목표 금액
+    private int salesNow; // 현재 판매액
 
     @DateTimeFormat(pattern="yyyy/MM/dd")
     private Date startDate;
@@ -54,14 +53,6 @@ public class GroupItemRequest {
 
     public void setDescription(String description) {
         this.description = description;
-    }
-
-    public List<String> getImageUrl() {
-        return imageUrl;
-    }
-
-    public void setImageUrl(List<String> imageUrl) {
-        this.imageUrl = imageUrl;
     }
 
     public int getWishCount() {

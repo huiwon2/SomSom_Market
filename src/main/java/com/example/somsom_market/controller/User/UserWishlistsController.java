@@ -51,10 +51,14 @@ public class UserWishlistsController {
     @ResponseBody
     @PostMapping("/add")
     public boolean add(HttpServletRequest request,
-                    @RequestParam("itemId") Long itemId) {
+                    @RequestParam("itemId") Long itemId,
+                    @RequestParam("sellerId") String sellerId) {
         UserSession userSession = (UserSession) WebUtils.getSessionAttribute(request, "userSession");
 
         if (userSession == null) {
+            return false;
+        }
+        if (sellerId.equals(userSession.getAccount().getId())) {
             return false;
         }
 

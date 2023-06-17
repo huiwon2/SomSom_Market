@@ -1,6 +1,9 @@
 <!DOCTYPE HTML>
 <html xmlns:th="http://www.thymeleaf.org">
-<head th:replace="fragments/header :: header" />
+<head th:replace="fragments/header :: header" >
+<meta charset="UTF-8">
+<title>학교 상품 목록</title>
+</head>
 <body>
 
 <div class="container">
@@ -24,12 +27,12 @@
                 <td th:text="${item.price}"></td>
                 <td th:text="${item.stockQuantity}"></td>
                 <td>
-                    <a href="#" th:href="@{/items/{id}/edit (id=${item.id})}" class="btn btn-primary" role="button">수정</a>
+                    <a th:if="${userSession.isAdmin()}" href="#" th:href="@{/items/{id}/edit (id=${item.id})}" class="btn btn-primary" role="button">수정</a>
                 </td>
             </tr>
             <tr>
                 <td>
-                    <a href="#" th:href="@{/order}" class="btn btn-primary" role="button">주문</a>
+                    <a href="#" th:href="@{/templates/order}" class="btn btn-primary" role="button">주문</a>
                 </td>
             </tr>
             </tbody>

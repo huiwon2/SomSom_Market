@@ -9,16 +9,13 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 import java.util.List;
 
 @Repository
 public class PersonalItemDao {
     @PersistenceContext
     private EntityManager em;
-
-    public List<PersonalItem> findAll() {
-        return em.createQuery("select p from PersonalItem p", PersonalItem.class).getResultList();
-    }
 
     @Transactional
     public PersonalItem insertItem(PersonalItem personalItem) throws DataAccessException {
@@ -43,6 +40,13 @@ public class PersonalItemDao {
         return personalItem;
     }
 
+    public void updateItemSellerId(String sellerId, String newSellerId) {
+        Query query = em.createNativeQuery("UPDATE Item i SET i.seller_id = :newSellerId WHERE i.seller_id = :sellerId");
+        query.setParameter("newSellerId", newSellerId);
+        query.setParameter("sellerId", sellerId);
+        query.executeUpdate();
+    }
+
     @Transactional
     public void deleteItem(PersonalItem personalItem) {
         if (em.contains(personalItem)) {
@@ -50,5 +54,18 @@ public class PersonalItemDao {
         } else {
             em.remove(em.merge(personalItem));
         }
+    }
+
+    public void updateAddItemWishcount(Long itemId) {
+        Query query = em.createNativeQuery("Update Item i SET i.wish_count = i.wish_count+1 Where i.item_id = ?1");
+
+        query.setParameter(1, itemId);
+        query.executeUpdate();
+    }
+
+    public void updateDeleteItemWishcount(Long itemId) {
+        Query query = em.createNativeQuery("Update Item i SET i.wish_count = i.wish_count-1 Where i.item_id = ?1");
+        query.setParameter(1, itemId);
+        query.executeUpdate();
     }
 }

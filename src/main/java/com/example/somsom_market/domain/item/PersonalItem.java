@@ -8,6 +8,7 @@ import javax.persistence.Column;
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 import javax.persistence.Transient;
+import java.util.Date;
 
 @Getter @Setter
 @NoArgsConstructor
@@ -16,14 +17,11 @@ import javax.persistence.Transient;
 @DiscriminatorValue(value="PERSONAL")
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class PersonalItem extends Item {
-    @Column(name="seller_id")
-    private String sellerId;
 
     @Transient
     private String nickName; // 화면에 닉네임 출력하기 위한 필드
 
-    @Column(name = "img_name")
-    private String imgName;
-    @Column(name = "img_path")
-    private String imgPath;
+    @Column(name="start_date")
+    private Date startDate; // 글 올린 날짜 ㅎ
+
 }
