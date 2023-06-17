@@ -21,18 +21,18 @@
             </thead>
             <tbody>
             <tr th:each="item : ${cartItems}">
-                <td th:text="${cartItem.id}"></td>
+                <td th:text="${item.id}"></td>
                 <td>
-                    <a th:href="@{/templates/items/somsom/somsomDetail/{itemId}(itemId=${cartItem.item.id})}">
-                        <span th:text="${cartItem.item.title}"></span>
+                    <a th:href="@{/somsom/item/somsomDetail/{item_id}(item_id=${item.item.id})}">
+                        <span th:text="${item.item.title}"></span>
                     </a>
                 </td>
-                <td th:text="${cartItem.item.price}"></td>
-                <td th:text="${cartItem.count}"></td>
+                <td th:text="${item.item.price}"></td>
+                <td th:text="${item.count}"></td>
             </tr>
             <tr>
                 <td>
-                    <a href="#" th:href="@{/templates/order/orderForm}" class="btn btn-primary" role="button">결제하기</a>
+                    <a th:href="@{/templates/order/orderForm}" class="btn btn-primary" role="button">결제하기</a>
                 </td>
             </tr>
             </tbody>

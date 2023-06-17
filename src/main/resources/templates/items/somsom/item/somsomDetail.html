@@ -27,7 +27,7 @@
 
     <button type="button" onclick="purchase()">구매하기</button>
     <!--넘어갈 컨트롤러 지정해야함-->
-    <form class="d-flex" th:action="@{/somsom/cart/{id}/{itemId}(id=${account.id}, itemId=${somsomItem.id})}" method="post">
+    <form class="d-flex" th:action="@{/somsom/cart/{id}/{itemId}(id=${userId}, itemId=${somsomItem.id})}" method="post">
         <div class="d-flex">
             <input class="form-control text-center me-3" id="amount" name="amount" type="num" value="1"
                    style="max-qwidth: 3rem"/>

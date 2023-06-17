@@ -16,7 +16,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.SessionAttributes;
+import org.springframework.web.util.WebUtils;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 import java.util.Optional;
 
@@ -31,10 +33,10 @@ public class CartController {
     CartService cartService;
 //    장바구니에 물건 담기
     @PostMapping("/somsom/cart/{id}/{item_id}")
-    public String addCartItem(@PathVariable("id") String id, @PathVariable("item_id") long itemId, int amount){
+    public String addCartItem(@PathVariable("id") String id, @PathVariable("item_id") Long itemId, int amount){
         Account account = accountService.getAccount(id);
 
-        Optional<SomsomItem> item = somsomItemService.itemView(itemId);
+        SomsomItem item = somsomItemService.findOne(itemId);
 
         cartService.addCart(account, item, amount);
         return "redirect:/somsom/cart/cart";
@@ -42,11 +44,12 @@ public class CartController {
     }
 
 //      장바구니 페이지 접속
-    @GetMapping("/somsom/cart/{id}")
-    public String userCartPage(@PathVariable("id")String id, Model model, UserSession userSession){
-        if(userSession.getAccount().getId() == id){
-            Account account = accountService.getAccount(id);
-            Cart userCart = account.getCart();
+    @GetMapping("/somsom/cart")
+    public String userCartPage(HttpServletRequest request, Model model){
+        UserSession userSession = (UserSession) WebUtils.getSessionAttribute(request, "userSession");
+        Account account = userSession.getAccount();
+
+            Cart userCart = cartService.findUserCart(account.getId());
             List<CartItem> cartItemList = cartService.allUserCartView(userCart);
             int totalPrice = 0;
             for(CartItem cartItem : cartItemList){
@@ -55,14 +58,9 @@ public class CartController {
             model.addAttribute("totalPrice", totalPrice);
             model.addAttribute("totalCount", userCart.getCount());
             model.addAttribute("cartItems", cartItemList);
-            model.addAttribute("user", accountService.getAccount(id));
+//            model.addAttribute("user", accountService.getAccount(id));
 
-            return "items/somsom/cart";
-
-        }
-        else{
-            return "redirect:/main";
-        }
+            return "items/somsom/cart/cart";
     }
 
 //    장바구니 물건 삭제
@@ -91,7 +89,7 @@ public class CartController {
         }
         // 로그인 id와 장바구니 삭제하려는 유저의 id가 같지 않는 경우
         else {
-            return "redirect:/main";
+            return "redirect:/";
         }
     }
 //    @PostMapping
