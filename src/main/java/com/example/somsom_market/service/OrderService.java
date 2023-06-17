@@ -20,6 +20,8 @@ public class OrderService {
     private final OrderDao orderDao;
     private final AccountDao accountDao;
     private final SomsomItemDao somsomItemDao;
+    private AccountService accountService;
+    private SomsomItem item;
 
     /**
      * 주문
@@ -58,4 +60,11 @@ public class OrderService {
     public List<Order> findOrders(OrderSearch orderSearch) {
         return orderDao.findAllByString(orderSearch);
     }
+
+    //장바구니
+//    @Transactional
+//    public OrderItem addCartOrder(int itemId, String accountId, CartItem cartItem) {
+//
+//        Account account = accountService.getAccount(accountId);
+//    }
 }
