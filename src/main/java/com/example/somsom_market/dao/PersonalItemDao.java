@@ -40,6 +40,7 @@ public class PersonalItemDao {
         return personalItem;
     }
 
+    @Transactional
     public void updateItemSellerId(String sellerId, String newSellerId) {
         Query query = em.createNativeQuery("UPDATE Item i SET i.seller_id = :newSellerId WHERE i.seller_id = :sellerId");
         query.setParameter("newSellerId", newSellerId);

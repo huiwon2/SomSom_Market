@@ -87,7 +87,7 @@ public class GroupItemService {
     }
 
     public boolean isExistSellingItem(String id) {
-        List<GroupItem> groupItems = groupItemRepository.findBySellerIdAndStatus(id, ItemStatus.INSTOCK.toString());
+        List<GroupItem> groupItems = groupItemRepository.findBySellerIdAndStatus(id, ItemStatus.INSTOCK);
         if (groupItems.size() > 0) {
             return true;
         }

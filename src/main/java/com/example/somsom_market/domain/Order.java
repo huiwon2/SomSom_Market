@@ -22,17 +22,22 @@ public class Order implements Serializable{
     private Long id;
 
     @ManyToOne(fetch = LAZY)
-    @JoinColumn(name = "member_id")
+    @JoinColumn(name = "account_id", referencedColumnName = "account_id")
     private Account account;
 
+    @Column(name = "order_date")
     private LocalDate orderDate;
     private String name;
+    private String phone;
+    @Column(name = "ship_address")
     private String address;
     private String zipcode;
 
+    @Column(name = "ship_state")
     @Enumerated(EnumType.STRING)
     private OrderStatus status;
 
+    @Column(name = "total_price")
     private int totalPrice;
 
     @JsonIgnore
