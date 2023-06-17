@@ -29,12 +29,12 @@ import java.util.List;
 @RequiredArgsConstructor
 public class SomsomItemController {
 //    mvc설계 보고 경로 채우기
-    private static String SOMSOM_REGISTRATION_FORM = "/somsom/item/somsomItemRegister";
-    private static String SOMSOM_UPDATE_FORM = "/somsom/item/somsomItemRegister";
-    private static String ITEM_NOT_FOUND = "/somsom/item/notFound";
-    private static String ITEM_FORM = "/somsom/item/somsomItemList";
+    private static String SOMSOM_REGISTRATION_FORM = "items/somsom/item/somsomItemRegister";
+    private static String SOMSOM_UPDATE_FORM = "items/somsom/item/somsomItemRegister";
+    private static String ITEM_NOT_FOUND = "items/somsom/item/notFound";
+    private static String ITEM_FORM = "items/somsom/item/somsomItemList";
 
-    private static String SOMSOM_ITEM_DETAIL = "/somsom/item/somsomDetail";
+    private static String SOMSOM_ITEM_DETAIL = "items/somsom/item/somsomDetail";
     @Autowired
     @Setter
     private SomsomItemService  somsomItemService;
@@ -124,7 +124,7 @@ public class SomsomItemController {
         List<SomsomItem> somsomItems = somsomItemService.somsomItemList();
         model.addAttribute("somsomItems", somsomItems);
 
-        return "/somsom/item/somsomItemList";
+        return ITEM_FORM;
     }
 
 //    상세 페이지

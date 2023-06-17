@@ -26,7 +26,9 @@
                 <td th:text="${item.price}"></td>
                 <td th:text="${item.stockQuantity}"></td>
                 <td>
-                    <a th:if="${userSession.isAdmin()}" href="#" th:href="@{/items/{id}/edit (id=${item.id})}" class="btn btn-primary" role="button">수정</a>
+                    <div th:if="${userSession?.account}">
+                        <a th:if="${userSession.account.id} == 'admin'" href="#" th:href="@{/items/{id}/edit (id=${item.id})}" class="btn btn-primary" role="button">수정</a>
+                    </div>>
                 </td>
             </tr>
             <tr>
