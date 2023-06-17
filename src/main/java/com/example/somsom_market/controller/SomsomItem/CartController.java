@@ -30,7 +30,7 @@ public class CartController {
     @Autowired
     CartService cartService;
 //    장바구니에 물건 담기
-    @PostMapping("/user/cart/{id}/{item_id}")
+    @PostMapping("/somsom/cart/{id}/{item_id}")
     public String addCartItem(@PathVariable("id") String id, @PathVariable("item_id") long itemId, int amount){
         Account account = accountService.getAccount(id);
 
@@ -42,7 +42,7 @@ public class CartController {
     }
 
 //      장바구니 페이지 접속
-    @GetMapping("/user/cart/{id}")
+    @GetMapping("/somsom/cart/{id}")
     public String userCartPage(@PathVariable("id")String id, Model model, UserSession userSession){
         if(userSession.getAccount().getId() == id){
             Account account = accountService.getAccount(id);
@@ -57,7 +57,7 @@ public class CartController {
             model.addAttribute("cartItems", cartItemList);
             model.addAttribute("user", accountService.getAccount(id));
 
-            return "/user/userCart";
+            return "/somsom/cart";
 
         }
         else{
@@ -66,7 +66,7 @@ public class CartController {
     }
 
 //    장바구니 물건 삭제
-    @GetMapping("/user/cart/{id}/{cartItemId}/delete")
+    @GetMapping("/somsom/cart/{id}/{cartItemId}/delete")
     public String deleteCartItem(@PathVariable("id") String id, @PathVariable("cartItemId") Long itemId, Model model, UserSession userSession){
         if(userSession.getAccount().getId() == id){
             CartItem cartItem = cartService.findCartItemById(itemId);
@@ -87,7 +87,7 @@ public class CartController {
             model.addAttribute("cartItems", cartItemList);
             model.addAttribute("user", accountService.getAccount(id));
 
-            return "/user/userCart";
+            return "/somsom/cart";
         }
         // 로그인 id와 장바구니 삭제하려는 유저의 id가 같지 않는 경우
         else {
