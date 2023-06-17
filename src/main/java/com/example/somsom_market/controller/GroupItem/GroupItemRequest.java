@@ -20,6 +20,7 @@ public class GroupItemRequest {
     @NotBlank
     private String description;
     private MultipartFile imgFile;
+    private String imgPath;
     private int wishCount;
     private String sellerId;
     @Positive

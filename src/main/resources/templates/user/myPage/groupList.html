@@ -107,9 +107,9 @@
             <tbody>
             <tr th:each="item : ${groupItemList}">
                 <td th:text="${item.id}"></td>
-                <td th:text="${item.title}"></td>
+                <td><a th:href="@{/group/detail(id=${item.id})}" th:text="${item.title}" /></td>
                 <td th:text="${item.price}">원</td>
-                <td th:text="${#dates.format(item.endDate, 'dd-MMM-yyyy')}"></td>
+                <td th:text="${#dates.format(item.endDate, 'dd-MM-yyyy')}"></td>
                 <td th:text="${item.salesTarget}"></td>
 
                 <td><a th:href="@{/group/item/update(id=${item.id})}">수정</a></td>
@@ -118,7 +118,8 @@
 
             </tbody>
         </table>
-        <div th:replace="fragments/footer :: footer"/>
     </div>
+</table>
+    <div th:replace="fragments/footer :: footer"/>
 </body>
 </html>
