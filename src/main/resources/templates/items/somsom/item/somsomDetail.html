@@ -6,10 +6,47 @@
 </head>
 <body>
 <div th:replace="fragments/bodyHeader :: bodyHeader" />
-<img th:src="@{${somsomItem.imgPath}}"/>
-<h2><span th:text="${somsomItem.title}"></span></h2><br>
-<span th:text="${somsomItem.price}"></span>원<br><br><br>
-<textarea th:value="${somsomItem.description}" th:text="${somsomItem.description}"
-          rows="30" cols="100" style="border: none;" readonly></textarea><br>
+<div>
+    <img th:src="@{${somsomItem.imgPath}}"/>
+    <h2><span th:text="${somsomItem.title}"></span></h2><br>
+    <span th:text="${somsomItem.price}"></span>원<br><br><br>
+    <textarea th:value="${somsomItem.description}" th:text="${somsomItem.description}"
+              rows="30" cols="100" style="border: none;" readonly></textarea><br>
+
+    <!--<label for="quantity">구매 수량:</label>-->
+    <!--<input type="number" th:value = "${quantity}" name="quantity" min="1" value="1"><br>-->
+
+
+    <!--<label for="option">옵션:</label>-->
+    <!--<select id="option" name="option">-->
+    <!--    <option value="option1">옵션 1</option>-->
+    <!--    <option value="option2">옵션 2</option>-->
+    <!--    <option value="option3">옵션 3</option>-->
+    <!--        &lt;!&ndash; 필요한 만큼 옵션을 추가할 수 있습니다 &ndash;&gt;-->
+    <!--</select><br><br>-->
+
+    <button type="button" onclick="purchase()">구매하기</button>
+    <form class="d-flex" th:action="@{/user/cart/{id}/{itemId}(id=${account.id}, itemId=${item.id})}" method="post">
+        <div class="d-flex">
+            <input class="form-control text-center me-3" id="amount" name="amount" type="num" value="1"
+                   style="max-width: 3rem"/>
+            <button class="btn btn-outline-dark flex-shrink-0" type="submit">
+                <i class="bi-cart-fill me-1"></i>
+                장바구니
+            </button>
+        </div>
+    </form>
+</div>
+
+
+<script>
+    function purchase() {
+        var quantity = document.getElementById("quantity").value;
+        var option = document.getElementById("option").value;
+        // 여기에서 구매 처리 로직을 작성하세요
+        // 구매 수량(quantity)과 옵션(option)을 사용하여 처리할 수 있습니다.
+    }
+</script>
+
 </body>
 </html>
