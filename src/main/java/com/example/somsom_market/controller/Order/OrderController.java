@@ -61,11 +61,8 @@ public class OrderController {
             orderForm.getOrder().initOrder(account, cart);
             model.addAttribute("orderReq", createOrderForm());
             return "order/orderForm";
-        }
-        else {
-            ModelAndView modelAndView = new ModelAndView("/error");
-            modelAndView.addObject("message", "An order could not be created because a cart could not be found.");
-            throw new ModelAndViewDefiningException(modelAndView);
+        } else {
+            return "error"; // TODO: 2023/06/17 오류페이지 생성 
         }
     }
 
