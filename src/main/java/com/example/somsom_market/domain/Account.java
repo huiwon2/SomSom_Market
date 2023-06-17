@@ -28,6 +28,7 @@ public class Account implements Serializable {
     @NotNull
     private String email;
     private String address;
+    @Column(length = 5)
     private String zipcode;
     private String bankName;
     private String bankAccount;

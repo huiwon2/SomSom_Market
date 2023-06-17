@@ -15,35 +15,36 @@ import static javax.persistence.FetchType.LAZY;
 @Table(name = "orders")
 @Getter @Setter
 //@NoArgsConstructor(access = AccessLevel.PROTECTED) //기본생성자 사용 불가
+@SequenceGenerator(name="SEQ_ORDER", sequenceName="ORDER_ID_SEQ", allocationSize=1)
 public class Order implements Serializable{
 
-    @Id @GeneratedValue
+    @Id @GeneratedValue(strategy=GenerationType.SEQUENCE, generator="SEQ_ORDER")
     @Column(name = "order_id")
     private Long id;
 
     @ManyToOne(fetch = LAZY)
-    @JoinColumn(name = "account_id", referencedColumnName = "account_id")
+    @JoinColumn(name = "account_id")
     private Account account;
-
-    @Column(name = "order_date")
     private LocalDate orderDate;
     private String name;
     private String phone;
+
     @Column(name = "ship_address")
     private String address;
+
+    @Column(length = 5)
     private String zipcode;
 
-    @Column(name = "ship_state")
+    @Enumerated(EnumType.STRING)
+    private ShipState shipState;
+
     @Enumerated(EnumType.STRING)
     private OrderStatus status;
 
-    @Column(name = "total_price")
     private int totalPrice;
 
-    @JsonIgnore
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL)
     private List<OrderItem> orderItems = new ArrayList<>();
-
 
     //==연관관계 메서드==//
     public void setAccount(Account account) {
@@ -60,9 +61,15 @@ public class Order implements Serializable{
     public static Order createOrder(Account account, OrderItem orderItem) {
         Order order = new Order();
         order.setAccount(account);
-        order.addOrderItem(orderItem);
-        order.setStatus(OrderStatus.PROCESSING);
         order.setOrderDate(LocalDate.now());
+        order.setName(account.getName());
+        order.setPhone(account.getPhone());
+        order.setAddress(account.getAddress());
+        order.setZipcode(account.getZipcode());
+        order.setShipState(ShipState.PROCESSING);
+        order.setStatus(OrderStatus.PROCESSED);
+        order.setTotalPrice(order.getTotalPrice());
+        order.addOrderItem(orderItem);
         return order;
     }
 
@@ -102,7 +109,7 @@ public class Order implements Serializable{
      * 주문 취소
      */
     public void cancel() {
-        if (status == OrderStatus.DELIVERED) {
+        if (shipState == ShipState.DELIVERED) {
             throw new IllegalStateException("이미 배송완료된 상품은 취소가 불가능합니다.");
         }
 

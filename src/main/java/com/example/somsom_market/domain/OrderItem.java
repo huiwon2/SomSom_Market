@@ -12,19 +12,20 @@ import static javax.persistence.FetchType.LAZY;
 @Getter
 @Setter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@SequenceGenerator(name="SEQ_ORDER_ITEM", sequenceName="ORDER_ITEM_ID_SEQ", allocationSize=1)
 public class OrderItem {
-    @Id @GeneratedValue
+    @Id @GeneratedValue(strategy=GenerationType.SEQUENCE, generator="SEQ_ORDER_ITEM")
     @Column(name = "order_item_id")
     private Long id;
+
+//    @JsonIgnore
+    @ManyToOne(fetch = LAZY)
+    @JoinColumn(name = "order_id")
+    private Order order;
 
     @ManyToOne(fetch = LAZY)
     @JoinColumn(name = "item_id")
     private SomsomItem item;
-
-    @JsonIgnore
-    @ManyToOne(fetch = LAZY)
-    @JoinColumn(name = "order_id")
-    private Order order;
 
     private int orderPrice;
     private int quantity;

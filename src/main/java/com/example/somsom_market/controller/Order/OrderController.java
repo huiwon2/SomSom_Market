@@ -43,6 +43,7 @@ public class OrderController {
         return paymentTypes;
     }
 
+
     //주문서 폼 생성
     @GetMapping("/order/{itemId}")
     public String createForm(HttpServletRequest request,
@@ -52,24 +53,55 @@ public class OrderController {
         UserSession userSession = (UserSession) WebUtils.getSessionAttribute(request, "userSession");
         Account account = userSession.getAccount();
         SomsomItem item = somsomItemService.findOne(itemId);
+        int count = 1;
 
         model.addAttribute("account", account);
         model.addAttribute("item", item);
+        model.addAttribute("count", count);
 
         return "order/orderForm";
     }
 
-    @PostMapping(value = "/order")
+//    //주문서 폼 생성
+//    @GetMapping("/order")
+//    public String createForm(HttpServletRequest request,
+//                             Model model,
+//                             @RequestParam("itemId") Long itemId) {
+//
+//        UserSession userSession = (UserSession) WebUtils.getSessionAttribute(request, "userSession");
+//        Account account = userSession.getAccount();
+//        SomsomItem item = somsomItemService.findOne(itemId);
+//
+//        model.addAttribute("account", account);
+//        model.addAttribute("item", item);
+//
+//        return "order/orderForm";
+//    }
+
+    @PostMapping(value = "/order/{itemId}/{count}")
     public String orderInsert(HttpServletRequest request,
-                              @RequestParam Long itemId,
-                              @RequestParam int count) {
-        UserSession userSession = (UserSession) request.getSession().getAttribute("userSession");
+                              @PathVariable Long itemId,
+                              @PathVariable int count) {
+        UserSession userSession = (UserSession) WebUtils.getSessionAttribute(request, "userSession");
         String accountId = userSession.getAccount().getId();
 
         orderService.insertOrder(accountId, itemId, count);
 
-        return "redirect:order/confirm";
+        return "order/orderList";
     }
+
+//
+//    @PostMapping(value = "/order/{itemId}/{count}")
+//    public String orderInsert(HttpServletRequest request,
+//                              @PathVariable Long itemId,
+//                              @PathVariable int count) {
+//        UserSession userSession = (UserSession) request.getSession().getAttribute("userSession");
+//        String accountId = userSession.getAccount().getId();
+//
+//        orderService.insertOrder(accountId, itemId, count);
+//
+//        return "redirect:order/confirm";
+//    }
 
 //    @PostMapping(value = "/order")
 //    public String orderInsert(HttpServletRequest request,
