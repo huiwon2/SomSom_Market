@@ -5,6 +5,24 @@
     <title>아이디 찾기</title>
 </head>
 <body>
+<style>
+    .content {
+        width: 100%;
+        text-align: center;
+    }
+
+    .regBtn {
+        border: 1px solid;
+		border-radius: 8px;
+		background-color: #AB2948;
+		color: white;
+		font-weight: bold;
+		width: 300px;
+		height: 70px;
+		font-size: 35px;
+    }
+
+</style>
 <script>
     function onSubmit() {
         var email = $('#email').val();
@@ -26,6 +44,7 @@
 				"email" : email, "phone" : phone
 			},
 			success : function(responseVal) {
+			    alert(responseVal);
 			    if (responseVal.code == "OK") {
                     var id = responseVal.idList;
                     var str = "아이디 : ";
@@ -40,6 +59,9 @@
 		});
     }
 </script>
+<div class="content">
+    <a href="/"><img th:src="@{/images/somsom.png}" width="150" height="150"/></a>
+    <br><br><br><br><br><br>
 
 <div class="form-group">
     <label th:for="email">이메일</label>
@@ -51,9 +73,10 @@
     <input type="text" id="phone" name="phone" class="form-control" placeholder="전화번호를 입력해주세요">
 </div>
 <br>
-<input type="button" onClick="onSubmit()" value="찾기"><br><br>
+<input type="button" class="regBtn" onClick="onSubmit()" value="찾기"><br><br>
 
 <span id="idAlert" style="color:red;"></span>
 
+</div>
 </body>
 </html>

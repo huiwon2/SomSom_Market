@@ -2,6 +2,7 @@ package com.example.somsom_market.controller.GroupItem;
 
 import com.example.somsom_market.controller.User.UserSession;
 import com.example.somsom_market.domain.Account;
+import com.example.somsom_market.domain.Wishlist;
 import com.example.somsom_market.domain.item.GroupItem;
 import com.example.somsom_market.repository.GroupItemRepository;
 import com.example.somsom_market.service.GroupItemService;
