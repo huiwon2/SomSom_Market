@@ -6,6 +6,7 @@ import com.example.somsom_market.domain.item.SomsomItem;
 import com.example.somsom_market.repository.CartItemRepository;
 import com.example.somsom_market.repository.CartRepository;
 import com.example.somsom_market.repository.SomsomItemRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -14,9 +15,13 @@ import java.util.Optional;
 
 @Service
 public class CartService {
+    @Autowired
     CartDao cartDao;
+    @Autowired
     CartRepository cartRepository;
+    @Autowired
     CartItemRepository cartItemRepository;
+    @Autowired
     SomsomItemRepository somsomItemRepository;
 
 //    장바구니 추가
@@ -59,7 +64,7 @@ public class CartService {
     }
 
     public Cart findUserCart(String id) {
-        Cart cart = cartRepository.findByUserId(id);
+        Cart cart = cartRepository.findByAccount(id);
         return cart;
     }
 
