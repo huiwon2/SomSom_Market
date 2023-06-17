@@ -1,113 +1,36 @@
 package com.example.somsom_market.controller.GroupItem;
 
+import lombok.Data;
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.web.multipart.MultipartFile;
 
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Positive;
+import javax.validation.constraints.PositiveOrZero;
 import java.util.Date;
 import java.util.List;
 
+@Data
 public class GroupItemRequest {
     private Long itemId;
+    @NotBlank
     private String title;
+    @Positive
     private int price;
+    @NotBlank
     private String description;
-    //private List<String> imageUrl;
+    private MultipartFile imgFile;
     private int wishCount;
     private String sellerId;
+    @Positive
     private int salesTarget; // 목표 금액
-    private int salesNow; // 현재 판매액
+    @PositiveOrZero
+    private int salesNow; // 현재 모금액
 
-    @DateTimeFormat(pattern="yyyy/MM/dd")
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date startDate;
-    @DateTimeFormat(pattern="yyyy/MM/dd")
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date endDate;
-
     private String status;
 
-    public Long getItemId() {
-        return itemId;
-    }
-
-    public void setItemId(Long itemId) {
-        this.itemId = itemId;
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
-    public int getPrice() {
-        return price;
-    }
-
-    public void setPrice(int price) {
-        this.price = price;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public int getWishCount() {
-        return wishCount;
-    }
-
-    public void setWishCount(int wishCount) {
-        this.wishCount = wishCount;
-    }
-
-    public String getSellerId() {
-        return sellerId;
-    }
-
-    public void setSellerId(String sellerId) {
-        this.sellerId = sellerId;
-    }
-
-    public int getSalesTarget() {
-        return salesTarget;
-    }
-
-    public void setSalesTarget(int salesTarget) {
-        this.salesTarget = salesTarget;
-    }
-
-    public int getSalesNow() {
-        return salesNow;
-    }
-
-    public void setSalesNow(int salesNow) {
-        this.salesNow = salesNow;
-    }
-
-    public Date getStartDate() {
-        return startDate;
-    }
-
-    public void setStartDate(Date startDate) {
-        this.startDate = startDate;
-    }
-
-    public Date getEndDate() {
-        return endDate;
-    }
-
-    public void setEndDate(Date endDate) {
-        this.endDate = endDate;
-    }
-
-    public String getStatus() {
-        return status;
-    }
-
-    public void setStatus(String status) {
-        this.status = status;
-    }
 }

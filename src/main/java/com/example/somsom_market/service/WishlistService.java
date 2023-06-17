@@ -1,5 +1,6 @@
 package com.example.somsom_market.service;
 
+import com.example.somsom_market.dao.GroupItemDao;
 import com.example.somsom_market.dao.PersonalItemDao;
 import com.example.somsom_market.dao.SomsomItemDao;
 import com.example.somsom_market.dao.WishlistDao;
@@ -48,6 +49,8 @@ public class WishlistService {
     }
 
     @Autowired
+    private GroupItemDao groupItemDao;
+
     private SomsomItemDao somsomItemDao;
     @Autowired
     @Setter
@@ -69,6 +72,14 @@ public class WishlistService {
     // 사용자 PK와 아이템 PK로 개인 판매 위시리스트 검색
     public Wishlist getPersonalWishlistByAccountAndItem(String id, Long itemId) {
         Optional<Wishlist> wishlist = wishlistRepository.findByAccountIdAndItemId(id, itemId);
+        if (wishlist.isPresent()) return wishlist.get();
+        return null;
+    }
+
+
+    // 사용자 PK와 아이템 PK로 공동구매 위시리스트 검색
+    public Wishlist getGroupWishlistByAccountAndItem(String userId, long itemId) {
+        Optional<Wishlist> wishlist = wishlistRepository.findByAccountIdAndItemId(userId, itemId);
         if (wishlist.isPresent()) return wishlist.get();
         return null;
     }
@@ -121,9 +132,18 @@ public class WishlistService {
             return true;
         }
     }
+
     // 사용자 PK로 공동구매 위시리스트 검색
     public List<GroupItem> getGroupWishlist(String id) {
-        return null;
+        List<Wishlist> wishlist = wishlistRepository.findByAccountId(id);
+        List<GroupItem> groupItemList = new ArrayList<>();
+        for (Wishlist wish : wishlist) {
+            Long itemId = wish.getItemId();
+            Optional<GroupItem> groupItem = Optional.ofNullable(groupItemDao.getItem(itemId));
+            if (groupItem.isPresent()) groupItemList.add(groupItem.get());
+        }
+
+        return groupItemList;
     }
 
     // 해당 사용자에 해당 아이템 위시리스트 추가

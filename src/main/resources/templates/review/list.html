@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>리뷰 목록</title>
+</head>
+<body>
+<div th:replace="fragments/bodyHeader :: bodyHeader" />
+
+<a th:href="@{/review/register}">
+    <input type="button" value="게시글 등록"></a>
+
+<table>
+    <tr th:each="item : ${reviewItemList}">
+        <td>
+            <a th:href="@{/personal/detail/{itemId}(itemId = ${item.id})}">
+                <span th:text="${item.title}"></span>
+            </a>
+        </td>
+    </tr>
+</table>
+</body>
+</html>

@@ -15,9 +15,15 @@ public class ReviewService {
 
     @Autowired
     ReviewRepository reviewRepository;
+
     //userId로 리뷰 리스트 반환
-    public List<Review> getReviewListByUserId(String userId){
-        return reviewRepository.findReviewByUserId(userId);
+    public List<Review> findByUserId(String userId){
+        return reviewDao.myReviewList(userId);
+    }
+
+    //orderItemId로 리뷰 리스트 반환
+    public List<Review> findByItemId(long itemId){
+        return reviewDao.findReviewListByItemId(itemId);
     }
 
     private static Review reqToReview(ReviewRequest req){

@@ -5,6 +5,7 @@ import com.example.somsom_market.domain.Account;
 import com.example.somsom_market.domain.item.GroupItem;
 import com.example.somsom_market.repository.GroupItemRepository;
 import com.example.somsom_market.service.GroupItemService;
+import com.example.somsom_market.service.WishlistService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -16,6 +17,8 @@ import org.springframework.web.util.WebUtils;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import javax.validation.Valid;
+import java.io.IOException;
 import java.util.Calendar;
 import java.util.List;
 
@@ -26,11 +29,15 @@ public class GroupItemController {
     private GroupItemService groupService;
     @Autowired
     private GroupItemRepository groupItemRepository;
-
+    @Autowired
+    private WishlistService wishlistService;
     private final String REGIST_GROUP_FORM = "items/group/groupItemRegisterForm";
     private final String UPDATE_GROUP_FORM = "items/group/groupItemUpdateForm";
+    private final String ITEM_NOT_FOUND = "items/group/notFound";
     private static final String LOGIN_FORM = "user/loginForm";
-    private final String MY_GROUP_LIST = "/group/list"; // 수정해라
+    private final String GROUP_ITEM_DETAIL = "items/group/groupDetail";
+    private final String GROUP_LIST = "items/group/list";
+    private final String MY_GROUP_LIST = "user/myPage/groupList";
     @ModelAttribute("groupItem")
     public GroupItemRequest formBackingObject(HttpServletRequest request){
         GroupItemRequest groupItemRequest = (GroupItemRequest) request.getSession().getAttribute("groupItem");
@@ -40,6 +47,7 @@ public class GroupItemController {
         return groupItemRequest;
     }
 
+    //등록
     @GetMapping("/group/register")
     public ModelAndView showRegistForm(HttpServletRequest request){
         UserSession userSession = (UserSession) WebUtils.getSessionAttribute(request, "userSession");
@@ -50,6 +58,7 @@ public class GroupItemController {
             mav.addObject("statusString", new String[] {"거래가능", "거래중", "거래완료"});
             GroupItemRequest groupItemRequest = new GroupItemRequest();
             groupItemRequest.setItemId((long) -1);
+            groupItemRequest.setSalesNow(0);
             mav.addObject("groupItem", groupItemRequest);
             return mav;
         } else {
@@ -60,10 +69,11 @@ public class GroupItemController {
     }
 
     @PostMapping("/group/register")
-    public String regist(HttpServletRequest req, @ModelAttribute("groupItem") GroupItemRequest comm,
-                               BindingResult bindingResult){
+    public String register(HttpServletRequest req, @Valid @ModelAttribute("groupItem") GroupItemRequest comm,
+                               Model model,
+                               BindingResult bindingResult) throws IOException {
         if(bindingResult.hasErrors()){
-            return REGIST_GROUP_FORM; // 입력값 검증 추가해라
+            return "redirect:/items/groupItemRegister";
         }
 
         //userId from session
@@ -78,17 +88,26 @@ public class GroupItemController {
         // comm 데이터 처리 ( 공동 구매 아이템 생성)
         GroupItem groupItem = groupService.registerNewGroupItem(comm, userId);
         long itemId = groupItem.getId();
-
-        // view name : /item/{itemId}
-        return "redirect:/group/detail/" + itemId; // 상품 상세 페이지로 이동
+        model.addAttribute("itemId", itemId);
+        // view name : /item/{itemId};return "redirect:/group/detail/" + itemId; // 상품 상세 페이지로 이동
+        return "redirect:/main";
     }
 
-    @GetMapping("/user/myPage/sell/group/update")
+    //수정
+    @GetMapping("/group/item/update")
     public ModelAndView showUpdateForm(HttpServletRequest request,
-                                       @RequestParam("itemId") long itemId){
+                                       @RequestParam("id") long itemId){
         ModelAndView mav = new ModelAndView();
-
+        UserSession userSession = (UserSession) WebUtils.getSessionAttribute(request, "userSession");
+        if(userSession == null){
+            mav.setViewName("redirect:/main");
+            return mav;
+        }
         GroupItem groupItem = groupService.searchItem(itemId);
+        if(groupItem == null){
+            mav.setViewName(ITEM_NOT_FOUND);
+            return mav;
+        }
 
         GroupItemRequest groupItemRequest = new GroupItemRequest();
 
@@ -97,26 +116,18 @@ public class GroupItemController {
         groupItemRequest.setTitle(groupItem.getTitle());
         groupItemRequest.setPrice(groupItem.getPrice());
         groupItemRequest.setDescription(groupItem.getDescription());
-        if (groupItem.getStatus().toString().equals("INSTOCK")) {
-            groupItemRequest.setStatus("거래가능");
-        } else if (groupItem.getStatus().toString().equals("ING")) {
-            groupItemRequest.setStatus("거래중");
-        } else {
-            groupItemRequest.setStatus("거래완료");
-        }
 
         mav.setViewName(UPDATE_GROUP_FORM);
-        mav.addObject("statusString", new String[] {"거래가능", "거래중", "거래완료"});
+        mav.addObject("statusString", new String[] {"재고있음", "재고 주문중", "재고없음"});
         mav.addObject("groupItem", groupItemRequest);
-
         return mav;
     }
 
-    @PostMapping("/user/myPage/sell/group/update")
+    @PostMapping("/group/item/update")
     public String update(HttpServletRequest request,
                                @ModelAttribute("groupItem") GroupItemRequest comm,
-                               BindingResult result){
-        //검증 추가해라
+                               @RequestParam("id") long id,
+                               BindingResult result) throws IOException {
         if(result.hasErrors()){
             return UPDATE_GROUP_FORM;
         }
@@ -127,19 +138,21 @@ public class GroupItemController {
         String userId = account.getId();
 
         // comm 데이터 처리 ( 공동 구매 아이템 수정)
-        GroupItem groupItem = groupService.updateGroupItem(comm, userId);
-        long itemId = groupItem.getId();
+        GroupItem groupItem = groupService.updateGroupItem(comm, userId, id);
+     //   long itemId = groupItem.getId();
        // view name : /item/{itemId}
-        return "redirect:/group/detail/" + itemId;
+        return "redirect:/main";
     }
 
-    @RequestMapping("/user/myPage/sell/group/delete")
-    public String delete(@RequestParam("itemId") Long itemId){
+    //삭제
+    @RequestMapping("/group/item/delete")
+    public String delete(@RequestParam("id") Long itemId){
         groupService.deleteGroupItem(itemId);
-        return "redirect:" + MY_GROUP_LIST;
+        return "redirect:/main";
     }
 
-    @GetMapping("/group/list") // 수정해라
+    //나의 리스트
+   @GetMapping("/sell/myGroupItems")
     public ModelAndView showMyGroupList(HttpServletRequest req) {
         //userId from session
         UserSession userSession = (UserSession) WebUtils.getSessionAttribute(req, "userSession");
@@ -148,8 +161,16 @@ public class GroupItemController {
 
         List<GroupItem> list = groupService.showGroupItemList(userId);
         ModelAndView mav = new ModelAndView(MY_GROUP_LIST);
-        mav.addObject("myGroupItemList", list);
+        mav.addObject("groupItemList", list);
         return mav;
+    }
+
+    // 공구 상품 목록
+    @GetMapping("/group/list")
+    public String showAllGroupList(HttpServletRequest req, Model model){
+        List<GroupItem> list = groupService.showAllGroupItemList();
+        model.addAttribute("groupItemList", list);
+        return GROUP_LIST;
     }
 
     //수정해라
@@ -158,6 +179,24 @@ public class GroupItemController {
         GroupItem groupItem = groupService.searchItem(itemId);
         groupService.changeStatus(groupItem);
         model.addAttribute("groupItem", groupItem);
-        return MY_GROUP_LIST;
+        return GROUP_LIST;
+    }
+
+    //상세 페이지
+    @GetMapping("/group/item/groupDetail/{itemId}")
+    public String showDetail(HttpServletRequest req, @PathVariable("itemId") long itemId, Model model){
+        UserSession userSession = (UserSession) WebUtils.getSessionAttribute(req, "userSession");
+        String userId;
+        int isExistWish = 0;
+        if(userSession != null){
+            Account account = userSession.getAccount();
+            userId = account.getId();
+            Wishlist wishlist = wishlistService.getGroupWishlistByAccountAndItem(userId, itemId);
+            if(wishlist != null) isExistWish = 1;
+        }else{
+
+        }
+        model.addAttribute("isExistWish", isExistWish);
+        return GROUP_ITEM_DETAIL;
     }
 }
