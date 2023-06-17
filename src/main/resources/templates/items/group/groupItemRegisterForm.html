@@ -5,7 +5,7 @@
     <!-- 글꼴 -->
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Do Hyeon">
     <title>공동 구매 게시글 등록</title>
-    <style>
+  <!--  <style>
         * {
             margin: 0;
             padding: 0;
@@ -116,48 +116,86 @@
         .btn:hover{
             color:azure;
         }
+    </style>-->
+    <style>
+        .container {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            font-family: 'Do Hyeon', serif;
+        }
+
+        table {
+            border-collapse: collapse;
+            width: 50%;
+            margin-bottom: 20px;
+        }
+
+        th, td {
+            border: 1px solid black;
+            padding: 8px;
+        }
+
+        th {
+            text-align: left;
+        }
+
+        .button-container {
+            transform: rotate(-45deg);
+        }
+
+        .button-container button {
+            width: 150px;
+            height: 40px;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            cursor: pointer;
+        }
     </style>
 </head>
 <body>
 <div th:replace="fragments/bodyHeader :: bodyHeader" />
+<div class="container">
 
-<form role="form" th:object="${groupItem}" th:action="@{/group/register}" method="post">
-    <div class="main">
-        <div>
-            <input type="text" th:field="*{title}" required>
-           <label th:for="title">제목</label>
-            <span></span>
+    <form role="form" th:object="${groupItem}" method="post"  enctype="multipart/form-data">
+        <div class="form-group">
+            <label th:for="name">상품명</label>
+            <input type="text" th:field="*{title}" class="form-control" placeholder="상품명을 입력하세요">
         </div>
 
-        <div>
-            <input type="text" th:field="*{price}" required>
+        <div th:if="${groupItem.itemId} == -1">
+            <div class="form-group">
+                <label th:for="img">이미지</label>
+                <input type="file" id="imgFile" name="imgFile" class="form-control" value="파일 선택">
+            </div>
+        </div>
+
+        <div class="form-group">
             <label th:for="price">가격</label>
-            <span></span>
+            <input type="text" th:field="*{price}" class="form-control" placeholder="가격을 입력하세요">
         </div>
 
-        <div>
-            <input type="date" id="now" th:field="*{endDate}" required>
+        <div class="form-group">
+            <label th:for="salesTarget">목표금액</label>
+            <input type="text" th:field="*{salesTarget}" class="form-control" placeholder="상품명을 입력하세요">
+        </div>
+
+        <div class="form-group">
             <label th:for="endDate">마감일</label>
-            <span></span>
+            <input type="date" th:field="*{endDate}" class="form-control" placeholder="상품명을 입력하세요">
         </div>
 
-        <div>
-            <input type="text" th:field="*{salesTarget}" required>
-            <label th:for="salesTarget">목표액</label>
-            <span></span>
+        <br/>
+
+        <div class="form-group">
+            <label th:for="description">소개</label>
+            <textarea th:field="*{description}" rows="15" cols="30" placeholder="내용을 입력해주세요"/>
         </div>
 
-
-        <div>
-            <textarea th:field=description" oninput='this.style.height = ""; this.style.height = this.scrollHeight + "px"' placeholder="내용을 입력하세요."></textarea>
-            <span></span>
-        </div>
-        <div><button type="submit" class="btn">submit</button></div>
-
-    </div>
-</form>
-<script>
-    document.getElementById("now").value = new Date().toDateInputValue();
-</script>
+        <button type="submit" class="btn btn-primary">Submit</button>
+    </form>
+    <div th:replace="fragments/footer :: footer" />
+</div>
 </body>
 </html>

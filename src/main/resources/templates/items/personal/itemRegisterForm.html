@@ -4,6 +4,18 @@
     <meta charset="UTF-8">
     <title>개인 거래 게시글 등록</title>
 </head>
+<style>
+  .regBtn {
+        border: 1px solid;
+		border-radius: 8px;
+		background-color: #AB2948;
+		color: white;
+		font-weight: bold;
+		width: 300px;
+		height: 70px;
+		font-size: 35px;
+    }
+</style>
 <body>
 <div th:replace="fragments/bodyHeader :: bodyHeader" />
 
@@ -61,10 +73,10 @@
   </script>
 
   <div th:if="${personalItem.itemId} &gt; 0">
-    <input type="submit" id="update" class="btn" onClick="" value="게시글 등록">
+    <input type="submit" id="update" class="regBtn" onClick="" value="게시글 등록">
   </div>
   <div th:if="${personalItem.itemId} == -1">
-    <input type="submit" id="register" class="btn" onClick="" value="게시글 등록">
+    <input type="submit" id="register" class="regBtn" onClick="" value="게시글 등록">
   </div>
 
 </form>

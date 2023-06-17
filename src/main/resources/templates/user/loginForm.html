@@ -1,31 +1,77 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<head>
+<head th:replace="fragments/header :: header">
     <meta charset="UTF-8">
     <title>로그인</title>
 </head>
+<style>
+    .content {
+        width: 100%;
+        text-align: center;
+    }
+
+    .idInput input[type="text"] {
+        padding-left: 30px;
+        background-image: url('/images/id.png');
+        background-repeat: no-repeat;
+        background-position: left center;
+
+        border: 1px solid #808080;
+        border-radius: 7px 7px 0px 0px;
+        width: 300px;
+        height: 50px;
+    }
+
+    .pwInput input[type="password"] {
+        padding-left: 30px;
+        background-image: url('/images/pw.png');
+        background-repeat: no-repeat;
+        background-position: left center;
+
+        border: 1px solid #808080;
+        border-radius: 0px 0px 7px 7px;
+        width: 300px;
+        height: 50px;
+    }
+
+    .regBtn {
+        border: 1px solid;
+		border-radius: 8px;
+		background-color: #AB2948;
+		color: white;
+		font-weight: bold;
+		width: 300px;
+		height: 70px;
+		font-size: 35px;
+    }
+</style>
 <body>
-<form th:action="@{/user/login}" name="loginForm" method="post">
-    <div>
-        <input type="text" name="id" placeholder="아이디">
-    </div>
-    <br>
-    <div>
-        <input type="password" name="password" placeholder="비밀번호">
-    </div>
-    <br>
-    <span th:text="${message}"></span><br><br>
-    <div>
-        <a th:href="@{/user/register}"><input type="button" value="회원가입"></a>
-    </div>
-    <br>
-    <div>
-        <input type="submit" value="로그인">
-    </div>
-    <br>
-    <div>
-        <a href="/user/findId">아이디 찾기</a>
-    </div>
-</form>
+<div class="content">
+    <a href="/"><img th:src="@{/images/somsom.png}" width="150" height="150"/></a>
+    <br><br><br><br><br><br>
+
+    <form th:action="@{/user/login}" name="loginForm" method="post">
+        <div class="idInput">
+            <input type="text" name="id" placeholder=" 아이디">
+        </div>
+        <div class="pwInput">
+            <input type="password" name="password" placeholder=" 비밀번호">
+        </div>
+        <br>
+        <span th:text="${message}"></span><br><br>
+        <div>
+            <input type="submit" class="regBtn" value="로그인">
+        </div>
+        <br>
+        <div>
+            <a th:href="@{/user/register}"><input type="button" class="regBtn" value="회원가입"></a>
+        </div>
+
+        <br>
+        <div>
+            <a href="/user/findId">아이디 찾기</a>
+        </div>
+    </form>
+</div>
 </body>
 </html>

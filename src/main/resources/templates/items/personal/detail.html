@@ -83,55 +83,120 @@ var frm = document.frmSubmit;
         }
         $("#frm").submit();
     }
+
+    function deleteAlert() {
+		if(confirm("정말로 삭제하시겠습니까?")){
+            var itemId = $("#itemId").val();
+            // /user/myPage/sell/personal/delete(itemId=${personalItem.id})
+            $("#delFrm").attr("action", "/user/myPage/sell/personal/delete?itemId=" + itemId);
+            $("#delFrm").submit();
+		}
+	}
 /*]]>*/
 </script>
+<style>
+    .content {
+		padding: 30px;
+	}
+
+	td {
+		padding: 10px;
+	}
+
+	.status {
+		border: 1px solid #AB2948;
+		border-radius: 5px;
+	}
+
+	.btn {
+		border: 1px solid;
+		border-radius: 5px;
+		background-color: #AB2948;
+		color: white;
+		font-weight: bold;
+		width: 300px;
+		height: 70px;
+		font-size: 35px;
+	}
+
+	.upBtn {
+        border: 1px solid;
+		border-radius: 5px;
+		background-color: #AB2948;
+		color: white;
+		font-weight: bold;
+		width: 60px;
+		height: 25px;
+		font-size: 13px;
+	}
+</style>
 <div th:replace="fragments/bodyHeader :: bodyHeader" />
 
 <input type="hidden" id="itemId" th:name="itemId" th:value="${personalItem.id}"/>
 <input type="hidden" id="sellerId" th:name="sellerId" th:value="${personalItem.sellerId}"/>
 
-<img th:src="@{${personalItem.imgPath}}"/>
-<h2><span th:text="${personalItem.title}"></span></h2><br>
-<span th:text="${personalItem.price}"></span>원<br><br><br>
-<textarea th:value="${personalItem.description}" th:text="${personalItem.description}"
-          rows="30" cols="100" style="border: none;" readonly></textarea><br>
-<!--<span th:text="${personalItem.status}"></span><br>-->
-<div th:if="${personalItem.sellerId} != 'unregister'">
-    <div th:switch="${personalItem.getStatus().toString()}">
-        <p th:case="INSTOCK">거래가능</p>
-        <p th:case="ING">거래중</p>
-        <p th:case="SOLDOUT">거래완료</p>
-    </div>
-</div>
-<div th:if="${personalItem.sellerId} == 'unregister'">
-    <p>거래불가</p>
-</div>
+<div class="content">
 
-<span th:text="${personalItem.nickName}"></span><br>
-담은 인원 : <span id="wishCount" th:text="${personalItem.wishCount}"></span>
+    <div th:if="${personalItem.sellerId} != 'unregister'">
+        <div th:switch="${personalItem.getStatus().toString()}">
+            <span class="status" th:case="INSTOCK">거래가능</span>
+            <span class="status" th:case="ING">거래중</span>
+            <span class="status" th:case="SOLDOUT">거래완료</span>
+        </div>
+        <div th:if="${personalItem.sellerId} == 'unregister'">
+            <p>거래불가</p>
+        </div>
+    </div>
 
-<div th:if="${userSession?.account}">
-    <div th:if="${userSession.account.id} == ${personalItem.sellerId}">
-        <a th:href="@{/user/myPage/sell/personal/update(itemId=${personalItem.id})}">
-            <input type="button" value="수정"></a>
-        <a th:href="@{/user/myPage/sell/personal/delete(itemId=${personalItem.id})}">
-            <input type="button" value="삭제"></a>
-    </div>
-</div>
+    <table>
+        <tr>
 
-<div th:if="${personalItem.sellerId} != 'unregister'">
-    <div class="add" id="add">
-        <img th:src="@{/images/hearts.png}" th:onclick="addHeart()" />
-    </div>
-    <div class="cancel" id="cancel">
-        <img th:src="@{/images/heartFill.png}" th:onclick="cancelHeart()" />
-    </div>
+            <td>
+                <img th:src="@{${personalItem.imgPath}}"/>
+                <h3><span th:text="${personalItem.nickName}"></span></h3>
+            </td>
+
+            <td>
+                <h2><span th:text="${personalItem.title}"></span></h2>
+                <h3><span th:text="${personalItem.price}"></span>원</h3>
+                <pre th:utext="${personalItem.description}"></pre>
+            </td>
+
+        </tr>
+    </table>
 
     <form id="frm" th:action="@{/personal/chat/send}" method="get">
         <input type="hidden" id="itemId2" th:name="itemId2" th:value="${personalItem.id}"/>
-        <input type="button" onClick="goInquires()" value="구매 문의하기"></a>
+        <input type="button" class="btn" onClick="goInquires()" value="쪽지"></a>
     </form>
+    <br>
+
+    <div th:if="${personalItem.sellerId} != 'unregister'" style="display: inline-block;">
+        <div class="add" id="add" style="display: inline-block;">
+            <img th:src="@{/images/hearts.png}" th:onclick="addHeart()"
+                 style="width: 30px; height: 30px; white-space: nowrap;"/>
+        </div>
+        <div class="cancel" id="cancel" style="display: inline-block;">
+            <img th:src="@{/images/heartFill.png}" th:onclick="cancelHeart()"
+                 style="width: 30px; height: 30px; white-space: nowrap;" />
+        </div>
+    </div>
+    찜 개수 : <span id="wishCount" th:text="${personalItem.wishCount}" style="white-space: nowrap"></span>개
+    <br><br>
+    <div th:if="${userSession?.account}">
+        <div th:if="${userSession.account.id} == ${personalItem.sellerId}">
+            <a th:href="@{/user/myPage/sell/personal/update(itemId=${personalItem.id})}" style="display: inline-block;">
+                <input type="button" class="upBtn" value="수정" style="white-space: nowrap"></a>
+            <form id="delFrm" name="delFrm" method="post" style="display: inline-block;">
+                <input type="button" class="upBtn" onClick="deleteAlert()" value="삭제" style="white-space: nowrap">
+            </form>
+        </div>
+    </div>
+
 </div>
+
+
+
 
 
 </body>

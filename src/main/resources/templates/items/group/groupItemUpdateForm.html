@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <!-- 글꼴 -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Do Hyeon">
+    <title>공동 구매 게시글 수정</title>
+    <!--  <style>
+          * {
+              margin: 0;
+              padding: 0;
+              box-sizing: border-box;
+              font-family: 'Do Hyeon', serif;
+          }
+          .main{
+              width: 600px;
+              margin: auto;
+          }
+
+          div {
+              position: relative;
+              width: 500px;
+              margin-left: 50px;
+              margin-top: 50px;
+          }
+
+          input, textarea {
+              font-size: 15px;
+              color: #6f263d;
+              width: 500px;
+              border: none;
+              border-bottom: solid #aaaaaa 1px;
+              padding-bottom: 10px;
+              padding-left: 10px;
+              position: relative;
+              background: none;
+              z-index: 5;
+          }
+
+          input::placeholder { color: #aaaaaa; }
+          input:focus { outline: none; }
+          textarea::placeholder { color: #aaaaaa; }
+          textarea:focus { outline: none; }
+
+          span {
+              display: block;
+              position: absolute;
+              bottom: 0;
+              left: 0%;
+              background-color: #6f263d;
+              width: 0;
+              height: 2px;
+              border-radius: 2px;
+              transition: 0.5s;
+          }
+
+          label{
+              position: absolute;
+              color: #aaa;
+              left: 10px;
+              font-size: 20px;
+              bottom: 8px;
+              transition: all .2s;
+          }
+
+          input:focus ~ label, input:valid ~ label, textarea:focus ~ label, textarea:valid ~ label {
+              font-size: 16px;
+              bottom: 40px;
+              color: #666;
+              font-weight: bold;
+          }
+
+          input:focus ~ span, input:valid ~ span, textarea:focus ~ span, textarea:valid ~ span{
+              width: 100%;
+          }
+          textarea{
+              resize: none;
+              height: 90px;
+              border: none;
+              max-height: 1000px;
+          }
+          .btn {
+              padding: 0.9rem 1.8rem;
+              font-size: 16px;
+              font-weight: 700;
+              color: #aaa;
+              border: 3px solid #6f263d;
+              cursor: pointer;
+              position: relative;
+              background-color: transparent;
+              text-decoration: none;
+              overflow: hidden;
+              z-index: 1;
+              font-family: inherit;
+              text-align: center;
+              margin: auto;
+              display: block;
+          }
+
+          .btn::before {
+              content: "";
+              position: absolute;
+              left: 0;
+              top: 0;
+              width: 100%;
+              height: 100%;
+              background-color: #6f263d;
+              transform: translateX(-100%);
+              transition: all .3s;
+              z-index: -1;
+          }
+
+          .btn:hover::before {
+              transform: translateX(0);
+          }
+          .btn:hover{
+              color:azure;
+          }
+      </style>-->
+    <style>
+        .container {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            font-family: 'Do Hyeon', serif;
+        }
+
+        table {
+            border-collapse: collapse;
+            width: 50%;
+            margin-bottom: 20px;
+        }
+
+        th, td {
+            border: 1px solid black;
+            padding: 8px;
+        }
+
+        th {
+            text-align: left;
+        }
+
+        .button-container {
+            transform: rotate(-45deg);
+        }
+
+        .button-container button {
+            width: 150px;
+            height: 40px;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+<div th:replace="fragments/bodyHeader :: bodyHeader" />
+<div class="container">
+
+    <form role="form" th:object="${groupItem}" method="post"  enctype="multipart/form-data">
+        <div class="form-group">
+            <label th:for="name">상품명</label>
+            <input type="text" th:field="*{title}" class="form-control" placeholder="상품명을 입력하세요">
+        </div>
+
+        <div th:if="${groupItem.itemId} == -1">
+            <div class="form-group">
+                <label th:for="img">이미지</label>
+                <input type="file" id="imgFile" name="imgFile" class="form-control" value="파일 선택">
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label th:for="price">가격</label>
+            <input type="text" th:field="*{price}" class="form-control" placeholder="가격을 입력하세요">
+        </div>
+
+        <div class="form-group">
+            <label th:for="salesTarget">목표금액</label>
+            <input type="text" th:field="*{salesTarget}" class="form-control" placeholder="상품명을 입력하세요">
+        </div>
+
+        <div class="form-group">
+            <label th:for="endDate">마감일</label>
+            <input type="date" th:field="*{endDate}" class="form-control" placeholder="상품명을 입력하세요">
+        </div>
+
+        <div class="form-group">
+            <label th:for="status">상태</label>
+            <select th:field="*{status}" class="form-select">
+                <!--<option th:each="INSTOCK" th:value="INSTOCK">재고있음</option>
+                <option th:each="ING" th:value="ING">재고 주문중</option>
+                <option th:each="SOLDOUT" th:value="SOLDOUT">재고없음</option>-->
+                <option th:each="statusString : ${statusString}" th:value="${statusString}"
+                        th:text="${statusString}">재고있음</option>
+            </select>
+        </div>
+
+        <br/>
+
+        <div class="form-group">
+            <label th:for="description">소개</label>
+            <textarea th:field="*{description}" rows="15" cols="30" placeholder="내용을 입력해주세요"/>
+        </div>
+
+        <button type="submit" class="btn btn-primary">Submit</button>
+    </form>
+    <div th:replace="fragments/footer :: footer" />
+</div>
+</body>
+</html>

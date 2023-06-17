@@ -4,6 +4,18 @@
     <meta charset="UTF-8">
     <title>비밀번호 확인</title>
 </head>
+<style>
+    .regBtn {
+        border: 1px solid;
+		border-radius: 5px;
+		background-color: #AB2948;
+		color: white;
+		font-weight: bold;
+		width: 300px;
+		height: 70px;
+		font-size: 35px;
+    }
+</style>
 <body onload="startPage();">
 <script th:inline="javascript">
 /*<![CDATA[*/
@@ -24,7 +36,7 @@
   </div>
   <br>
   <div>
-    <input type="submit" value="확인">
+    <input type="submit" class="regBtn" value="확인">
   </div>
   <br>
 </form>

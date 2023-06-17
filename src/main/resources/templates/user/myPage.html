@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<head>
+<head th:replace="fragments/header :: header">
     <meta charset="UTF-8">
     <title>마이페이지</title>
 </head>
@@ -27,19 +27,30 @@
         text-align: center;
     }
 
+    .regBtn {
+        border: 1px solid;
+		border-radius: 5px;
+		background-color: #AB2948;
+		color: white;
+		font-weight: bold;
+		width: 100px;
+		height: 25px;
+		font-size: 13px;
+    }
+
 </style>
 <body>
 <div th:replace="fragments/bodyHeader :: bodyHeader" />
 
 <span th:text="${userSession?.account.nickName}"></span>의 마이페이지
-<a th:href="@{/user/myPage/update/pwCheck}"> <input type="button" value="회원정보 수정"></a>
+<a th:href="@{/user/myPage/update/pwCheck}"> <input type="button" class="regBtn" value="회원정보 수정"></a>
 
 <br><br><br><br>
 
 <div class="a">
     <div class="inside">
         <div th:text="${myPageList[0]}"></div> <br>
-        <a th:href="@{/user/myPage/sell/order}">구매 내역</a>
+        <a th:href="@{/user/myPage/order}">구매 내역</a>
     </div>
 </div>
 
@@ -53,7 +64,8 @@
 <div class="a" th:href="@{/user/myPage/sell/group}">
     <div class="inside">
         <div th:text="${myPageList[2]}"></div> <br>
-        <a th:href="@{/user/myPage/sell/group}">공동구매 내역</a>
+       <!-- <a th:href="@{/user/myPage/sell/group}">공구 판매 내역</a>-->
+       <a th:href="@{/sell/myGroupItems}">공동구매 판매 내역</a>
     </div>
 </div>
 
