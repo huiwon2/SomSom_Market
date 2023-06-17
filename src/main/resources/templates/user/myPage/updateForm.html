@@ -42,6 +42,45 @@
 	right: 575px;
 }
 
+.regBtn {
+        border: 1px solid;
+		border-radius: 8px;
+		background-color: #AB2948;
+		color: white;
+		font-weight: bold;
+		width: 300px;
+		height: 70px;
+		font-size: 35px;
+}
+
+.pwBtn {
+        border: 1px solid;
+		border-radius: 8px;
+		background-color: #AB2948;
+		color: white;
+		font-weight: bold;
+        width: 150px;
+		height: 25px;
+		font-size: 13px;
+}
+
+.delBtn {
+        text-decoration: none;
+        color: #AB2948;
+        border: none;
+        background: none;
+}
+
+.upBtn {
+        border: 1px solid;
+		border-radius: 8px;
+		background-color: #AB2948;
+		color: white;
+		font-weight: bold;
+        width: 100px;
+		height: 25px;
+		font-size: 13px;
+}
 </style>
 <body>
 <script>
@@ -107,7 +146,7 @@
 
 
 <div class="form-group">
-    <input type="button" class="btn" onclick="open_pop();" value="비밀번호 수정하기">
+    <input type="button" class="pwBtn" onclick="open_pop();" value="비밀번호 수정하기">
 </div>
 <br>
 
@@ -129,7 +168,7 @@
             <br>
             <span id="confirm" style="color:red;">*비밀번호가 일치하지 않습니다.</span><br><br>
             <div>
-                <input type="button" onClick="pwFormSubmit()" value="변경하기">
+                <input type="button" class="upBtn" onClick="pwFormSubmit()" value="변경하기">
             </div>
 
         </form>
@@ -208,11 +247,12 @@
     </div>
     <br>
 
-
-    <input type="submit" class="btn" onClick="" value="변경사항 저장">
+    <a class="delA" th:href="@{/user/myPage/update/delete}">
+        <input class="delBtn" type="button" onClick="return deleteAlert();" value="회원 탈퇴"></a>
+    <br>
+    <input type="submit" class="regBtn" onClick="" value="변경사항 저장">
 </form>
 
-    <a th:href="@{/user/myPage/update/delete}">
-        <input class="btn btn-danger" type="button" onClick="return deleteAlert();" value="회원 탈퇴"></a>
+
 </body>
 </html>
