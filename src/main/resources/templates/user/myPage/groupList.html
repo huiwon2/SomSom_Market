@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<head>
+<head th:replace="fragments/header :: header">
     <meta charset="UTF-8">
     <title>공동구매 판매 내역</title>
 </head>
@@ -12,7 +12,7 @@
 <table>
   <tr th:each="item : ${userGroupSellList}">
     <td>
-        <a th:href="@{/personal/detail/{itemId}(itemId = ${item.id})}"> <!-- 경로 수정 필요 -->
+        <a th:href="@{/personal/detail/{itemId}(itemId = ${item.id})}">
             <span th:text="${item.title}"></span>
         </a>
         <span th:text="${item.price}"></span>

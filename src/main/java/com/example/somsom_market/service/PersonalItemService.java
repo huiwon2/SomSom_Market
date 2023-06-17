@@ -5,9 +5,11 @@ import com.example.somsom_market.dao.PersonalItemDao;
 import com.example.somsom_market.domain.ItemStatus;
 import com.example.somsom_market.domain.item.PersonalItem;
 import com.example.somsom_market.repository.PersonalItemRepository;
+import com.example.somsom_market.repository.WishlistRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
@@ -24,6 +26,8 @@ public class PersonalItemService {
     private PersonalItemDao personalItemDao;
     @Autowired
     private PersonalItemRepository personalItemRepository;
+    @Autowired
+    private WishlistRepository wishlistRepository;
 
     @Value("${resources.location}")
     private String resourcesLocation;
@@ -96,8 +100,11 @@ public class PersonalItemService {
     }
 
     // 아이템 게시글 삭제
+    @Transactional
     public void deleteItem(Long itemId) {
         PersonalItem personalItem = searchItem(itemId);
+        // wishlist에 추가되어 있는 경우 삭제
+        wishlistRepository.deleteByItemId(personalItem.getId());
         personalItemDao.deleteItem(personalItem);
     }
 }
