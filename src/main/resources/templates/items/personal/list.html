@@ -4,25 +4,63 @@
     <meta charset="UTF-8">
     <title>개인 거래 목록</title>
 </head>
+<style>
+    .a {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 300px;
+        height: 400px;
+        line-height: 20px;
+        float: left;
+        margin-left: 50px;
+        text-decoration: none;
+    }
+
+    a {
+        text-decoration: none;
+        color: black;
+    }
+    a:hover {
+        opacity: 0.8;
+    }
+
+</style>
 <body>
 <div th:replace="fragments/bodyHeader :: bodyHeader" />
 
 <a th:href="@{/personal/register}">
-    <input type="button" value="게시글 등록"></a>
+    <input type="button" value="게시글 등록"></a><br><br>
 
-<table>
-    <tr th:each="item : ${personalItemList}">
-        <td style="white-space: nowrap;">
-            <div th:switch="${item.getStatus().toString()}" style="display: inline-block;">
-                <p th:case="INSTOCK" style="white-space: nowrap">[거래가능]</p>
-                <p th:case="ING" style="white-space: nowrap">[거래중]</p>
-                <p th:case="SOLDOUT" style="white-space: nowrap">[거래완료]</p>
-            </div>
+<!--<table>-->
+<!--    <tr th:each="item : ${personalItemList}">-->
+<!--        <td style="white-space: nowrap;">-->
+<!--            <div th:switch="${item.getStatus().toString()}" style="display: inline-block;">-->
+<!--                <p th:case="INSTOCK" style="white-space: nowrap">[거래가능]</p>-->
+<!--                <p th:case="ING" style="white-space: nowrap">[거래중]</p>-->
+<!--                <p th:case="SOLDOUT" style="white-space: nowrap">[거래완료]</p>-->
+<!--            </div>-->
+<!--            <a th:href="@{/personal/detail/{itemId}(itemId = ${item.id})}" style="display: inline-block;">-->
+<!--                <span th:text="${item.title}"></span>-->
+<!--            </a>-->
+<!--        </td>-->
+<!--    </tr>-->
+<!--</table>-->
+
+<div th:each="item : ${personalItemList}">
+    <div class="a">
             <a th:href="@{/personal/detail/{itemId}(itemId = ${item.id})}" style="display: inline-block;">
-                <span th:text="${item.title}"></span>
+                <img th:src="@{${item.imgPath}}"/><br>
+                <div th:switch="${item.getStatus().toString()}" style="display: inline-block;">
+                    <p th:case="INSTOCK" style="white-space: nowrap">[거래가능]</p>
+                    <p th:case="ING" style="white-space: nowrap">[거래중]</p>
+                    <p th:case="SOLDOUT" style="white-space: nowrap">[거래완료]</p>
+                </div>
+                <span th:text="${item.title}"></span><br>
+                <span th:text="${item.price}"></span>원
             </a>
-        </td>
-    </tr>
-</table>
+    </div>
+</div>
+
 </body>
 </html>
