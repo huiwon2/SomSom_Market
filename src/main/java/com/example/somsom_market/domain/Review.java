@@ -10,11 +10,13 @@ import java.io.Serializable;
 @Entity
 public class Review implements Serializable {
 
+    @Column(name = "account_id")
     private String userId;
 
+    @Column(name = "order_item_id")
     private Long orderItemId;
 
-    @Id
+    @Id @Column(name = "review_id")
     @GeneratedValue
     private Long reviewId;
 
