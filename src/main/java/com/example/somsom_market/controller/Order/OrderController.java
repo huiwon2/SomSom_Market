@@ -28,7 +28,7 @@ import java.util.List;
 
 @Controller
 @RequiredArgsConstructor
-@SessionAttributes("userSession")
+@SessionAttributes({"sessionCart", "orderForm"})
 public class OrderController {
 
     private final OrderService orderService;
@@ -49,96 +49,35 @@ public class OrderController {
                              Model model,
                              @PathVariable("itemId") Long itemId) {
 
+
         UserSession userSession = (UserSession) WebUtils.getSessionAttribute(request, "userSession");
+        if (userSession == null) {
+            return "redirect:/user/loginForm";
+        }
+
         Account account = userSession.getAccount();
         SomsomItem item = somsomItemService.findOne(itemId);
+        int count = 1;
 
         model.addAttribute("account", account);
         model.addAttribute("item", item);
+        model.addAttribute("count", count);
 
         return "order/orderForm";
     }
 
-    @PostMapping(value = "/order")
+    @PostMapping(value = "/order/{itemId}/{count}")
     public String orderInsert(HttpServletRequest request,
-                              @RequestParam Long itemId,
-                              @RequestParam int count) {
-        UserSession userSession = (UserSession) request.getSession().getAttribute("userSession");
+                              @PathVariable Long itemId,
+                              @PathVariable int count) {
+        UserSession userSession = (UserSession) WebUtils.getSessionAttribute(request, "userSession");
         String accountId = userSession.getAccount().getId();
 
         orderService.insertOrder(accountId, itemId, count);
 
-        return "redirect:order/confirm";
+        return "order/orderList";
     }
 
-//    @PostMapping(value = "/order")
-//    public String orderInsert(HttpServletRequest request,
-//                              Model model,
-//                              @RequestParam Long itemId,
-//                              @RequestParam int count,
-//                              @ModelAttribute("orderQuantity") String orderQuantity) {
-//        UserSession userSession = (UserSession) request.getSession().getAttribute("userSession");
-//        Account account = accountService.getAccount(userSession.getAccount().getId());
-//        SomsomItem item = somsomItemService.getSomsomItem(itemId);
-//
-//        model.addAttribute("account", account);
-//        model.addAttribute("item", item);
-//        model.addAttribute("orderQuantity", orderQuantity);
-//
-//        return "order/confirm";
-//    }
-
-
-
-//    //주문 객체를 생성하고 "order"라는 이름으로 모델에 추가
-//    @ModelAttribute("orderForm")
-//    public OrderForm createOrderForm() {
-//        return new OrderForm();
-//    }
-//
-//    //결제수단 객체를 생성하고 "paymentTypes"라는 이름으로 모델에 추가
-//    @ModelAttribute("paymentTypes")
-//    public List<String> referenceData() {
-//        ArrayList<String> paymentTypes = new ArrayList<String>();
-//        paymentTypes.add("무통장 입금");
-//        return paymentTypes;
-//    }
-//
-//    //주문서 폼 생성
-//    @GetMapping("/order")
-//    public String createForm(HttpServletRequest request,
-//                             Model model,
-//                             @RequestParam("itemId") Long itemId) {
-//
-//        UserSession userSession = (UserSession) request.getSession().getAttribute("userSession");
-//        Account account = accountService.getAccount(userSession.getAccount().getId());
-//        SomsomItem item = somsomItemService.getSomsomItem(itemId);
-//
-//        model.addAttribute("account", account);
-//        model.addAttribute("item", item);
-//
-//        return "redirect:order/orderForm";
-//    }
-//
-//    //주문서 제출
-//    @PostMapping("/order")
-//    public String registerOrder(HttpServletRequest request,
-//                                @RequestParam("itemId") Long itemId,
-//                                @RequestParam("count") int count,
-//                                SessionStatus status,
-//                                BindingResult result) {
-//        if (result.hasErrors()) return "order/orderForm";
-//
-//        UserSession userSession = (UserSession) WebUtils.getSessionAttribute(request, "userSession");
-//        String accountId = userSession.getAccount().getId();
-//        SomsomItem item = somsomItemService.getSomsomItem(itemId);
-//
-//        orderService.order(accountId, orderForm.getOrder());
-//        status.setComplete();  // remove sessionCart and orderForm from session
-//
-//        return "order/confirm";
-//    }
-//
 //    //주문 정보 확인 및 결제 안내
 //    @GetMapping("/order/confirm")
 //    public String confirmOrder(

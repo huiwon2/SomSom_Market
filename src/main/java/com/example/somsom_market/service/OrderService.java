@@ -47,10 +47,10 @@ public class OrderService {
     }
 
     @Transactional
-    public Long insertOrder(String memberId, Long itemId, int count) {
+    public Long insertOrder(String accountId, Long itemId, int count) {
 
         //엔티티 조회
-        Account account = accountDao.findOne(memberId);
+        Account account = accountDao.findOne(accountId);
         SomsomItem item = somsomItemDao.findOne(itemId);
 
         //주문상품 생성

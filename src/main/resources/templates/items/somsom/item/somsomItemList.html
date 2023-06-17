@@ -29,7 +29,9 @@
 <!--                <td th:text="${item.title}"></td>-->
                 <td th:text="${item.price}"></td>
                 <td th:text="${item.stockQuantity}"></td>
-                <td class="btn btn-primary" role="button">장바구니</td>
+                <td>
+                    <a href="#" th:href="@{/cart/addItemToCart(workingItemId=${item.id})}">장바구니 추가</a>
+                </td>
                 <td>
                     <a href="#" th:href="@{/order/{itemId} (itemId=${item.id})}">주문</a>
                 </td>
