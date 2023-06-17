@@ -10,7 +10,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -26,7 +25,7 @@ public class OrderService {
      * 주문
      */
     @Transactional
-    public Long insertOrder(String memberId, Order order) {
+    public Long order(String memberId, Order order) {
 
         //엔티티 조회
         Account account = accountDao.findOne(memberId);
