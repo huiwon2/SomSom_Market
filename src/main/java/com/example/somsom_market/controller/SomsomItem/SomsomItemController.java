@@ -29,12 +29,12 @@ import java.util.List;
 @RequiredArgsConstructor
 public class SomsomItemController {
 //    mvc설계 보고 경로 채우기
-    private static String SOMSOM_REGISTRATION_FORM = "/somsom/item/somsomItemRegister";
-    private static String SOMSOM_UPDATE_FORM = "/somsom/item/somsomItemRegister";
-    private static String ITEM_NOT_FOUND = "/somsom/item/notFound";
-    private static String ITEM_FORM = "/somsom/item/somsomItemList";
+    private static String SOMSOM_REGISTRATION_FORM = "items/somsom/item/somsomItemRegister";
+    private static String SOMSOM_UPDATE_FORM = "items/somsom/item/somsomItemRegister";
+    private static String ITEM_NOT_FOUND = "items/somsom/item/notFound";
+    private static String ITEM_FORM = "items/somsom/item/somsomItemList";
 
-    private static String SOMSOM_ITEM_DETAIL = "/somsom/item/somsomDetail";
+    private static String SOMSOM_ITEM_DETAIL = "items/somsom/item/somsomDetail";
     @Autowired
     @Setter
     private SomsomItemService  somsomItemService;
@@ -52,18 +52,19 @@ public class SomsomItemController {
 //    Register
 //    form(register method)
     @GetMapping("/somsom/item/somsomItemRegister")
-    public ModelAndView registerForm(HttpServletRequest request) {
+    public String registerForm(HttpServletRequest request, Model model) {
         UserSession userSession = (UserSession) WebUtils.getSessionAttribute(request, "userSession");
-        ModelAndView modelAndView = new ModelAndView();
+        if (userSession == null) {
+            return "redirect:/user/loginForm";
+        }
         Account account = userSession.getAccount();
         if(isTrueAdmin(account)){
-            modelAndView.setViewName(SOMSOM_REGISTRATION_FORM);
+            somsomItem = new SomsomItem();
             somsomItem.setId((long)-1);
-            modelAndView.addObject("somsomItem", somsomItem);
-            return modelAndView;
+            model.addAttribute("somsomItem", somsomItem);
+            return SOMSOM_REGISTRATION_FORM;
         }
-        modelAndView.setViewName(ITEM_FORM);
-        return modelAndView;
+        return ITEM_FORM;
     }
 
     @PostMapping("/somsom/item/somsomItemRegister")
@@ -79,10 +80,8 @@ public class SomsomItemController {
         if (bindingResult.hasErrors()) {
             return "redirect:/somsom/item/somsomItemRegister";
         }
-        Long itemId = somsomItem.getId();
-        model.addAttribute("itemId", itemId);
-        somsomItemService.registerSomsomItem(itemRegistRequest, itemId);
-        return "redirect:/main";
+        somsomItemService.registerSomsomItem(itemRegistRequest);
+        return "redirect:/";
     }
 
 //    form(Update method)
@@ -129,7 +128,7 @@ public class SomsomItemController {
 
 //    상세 페이지
     @GetMapping("/somsom/item/somsomDetail/{item_id}")
-    public String itemView(HttpServletRequest request, @PathVariable("itemId")Long itemId, Model model){
+    public String itemView(HttpServletRequest request, @PathVariable("item_id")Long itemId, Model model){
         String userId;
         UserSession userSession = (UserSession) WebUtils.getSessionAttribute(request, "userSession");
         int isExistWish = 0;
@@ -143,6 +142,8 @@ public class SomsomItemController {
         } else {
             userId = "false";
         }
+        somsomItem = somsomItemService.getSomsomItem(itemId);
+
         model.addAttribute("somsomItem", somsomItem);
         model.addAttribute("isExistWish", isExistWish);
         model.addAttribute("userId", userId);
