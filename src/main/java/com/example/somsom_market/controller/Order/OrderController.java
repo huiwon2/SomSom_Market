@@ -4,7 +4,8 @@ import com.example.somsom_market.controller.User.UserSession;
 import com.example.somsom_market.domain.Account;
 import com.example.somsom_market.domain.Cart;
 import com.example.somsom_market.domain.Order;
-import com.example.somsom_market.repository.OrderSearch;
+import com.example.somsom_market.domain.OrderItem;
+import com.example.somsom_market.domain.item.SomsomItem;
 import com.example.somsom_market.service.AccountService;
 import com.example.somsom_market.service.OrderService;
 import com.example.somsom_market.service.OrderValidator;
@@ -21,76 +22,81 @@ import org.springframework.web.servlet.ModelAndViewDefiningException;
 import org.springframework.web.util.WebUtils;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.validation.Valid;
-import java.text.SimpleDateFormat;
+import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 @Controller
-@SessionAttributes({"userSession"})
 @RequiredArgsConstructor
+@SessionAttributes("userSession")
 public class OrderController {
 
     private final OrderService orderService;
     private final SomsomItemService somsomItemService;
     private final AccountService accountService;
 
-    @Autowired
-    private OrderValidator orderValidator;
+    //결제수단 객체를 생성하고 "paymentTypes"라는 이름으로 모델에 추가
+    @ModelAttribute("paymentTypes")
+    public List<String> referenceData() {
+        ArrayList<String> paymentTypes = new ArrayList<String>();
+        paymentTypes.add("무통장 입금");
+        return paymentTypes;
+    }
 
-    @GetMapping("/order")
-    public String createForm(Model model) {
+    //주문서 폼 생성
+    @GetMapping("/order/{itemId}")
+    public String createForm(HttpServletRequest request,
+                             Model model,
+                             @PathVariable("itemId") Long itemId) {
 
-        model.addAttribute("orderReq", new OrderForm());
+        UserSession userSession = (UserSession) WebUtils.getSessionAttribute(request, "userSession");
+        Account account = userSession.getAccount();
+        SomsomItem item = somsomItemService.findOne(itemId);
+
+        model.addAttribute("account", account);
+        model.addAttribute("item", item);
 
         return "order/orderForm";
     }
 
-    @PostMapping("/order")
-    public String order(HttpServletRequest request,
-                        @RequestParam("itemId") Long itemId,
-                        @RequestParam("count") int count) {
+    @PostMapping(value = "/order")
+    public String orderInsert(HttpServletRequest request,
+                              @RequestParam Long itemId,
+                              @RequestParam int count) {
+        UserSession userSession = (UserSession) request.getSession().getAttribute("userSession");
+        String accountId = userSession.getAccount().getId();
 
-        UserSession userSession = (UserSession) WebUtils.getSessionAttribute(request, "userSession");
-        Account account = userSession.getAccount();
+        orderService.insertOrder(accountId, itemId, count);
 
-        orderService.order(account.getId(), itemId, count);
-        return "redirect:/order/payment";
+        return "redirect:order/confirm";
     }
 
-    @GetMapping("/order/payment")
-    public String showOrderPaymentPage(@ModelAttribute("order") Order order) {
-        return "redirect:/order/complete";
-    }
+//    @PostMapping(value = "/order")
+//    public String orderInsert(HttpServletRequest request,
+//                              Model model,
+//                              @RequestParam Long itemId,
+//                              @RequestParam int count,
+//                              @ModelAttribute("orderQuantity") String orderQuantity) {
+//        UserSession userSession = (UserSession) request.getSession().getAttribute("userSession");
+//        Account account = accountService.getAccount(userSession.getAccount().getId());
+//        SomsomItem item = somsomItemService.getSomsomItem(itemId);
+//
+//        model.addAttribute("account", account);
+//        model.addAttribute("item", item);
+//        model.addAttribute("orderQuantity", orderQuantity);
+//
+//        return "order/confirm";
+//    }
 
-    @GetMapping("/order/complete")
-    public String showCompletePage(@ModelAttribute("order") Order order) {
-        return "redirect:/order/list";
-    }
 
-    //주문 목록 조회
-    @GetMapping("/orders")
-    public String orderList(@ModelAttribute("orderSearch") OrderSearch orderSearch, Model model) {
-        List<Order> orders = orderService.findOrders(orderSearch);
-        model.addAttribute("orders", orders);
 
-        return "order/orderList";
-    }
-
-    @PostMapping("/{orderId}/cancel") // TODO: 2023/05/27  마이페이지에서 접근
-    public String cancelOrder(@PathVariable("orderId") Long orderId) {
-        orderService.cancelOrder(orderId);
-        return "redirect:/"; // TODO: 2023/05/27 마이페이지로 리다이렉트
-    }
-
-//    // 주문 객체를 생성하고 "order"라는 이름으로 모델에 추가
+//    //주문 객체를 생성하고 "order"라는 이름으로 모델에 추가
 //    @ModelAttribute("orderForm")
 //    public OrderForm createOrderForm() {
 //        return new OrderForm();
 //    }
 //
-//    // 결제수단 객체를 생성하고 "paymentTypes"라는 이름으로 모델에 추가
+//    //결제수단 객체를 생성하고 "paymentTypes"라는 이름으로 모델에 추가
 //    @ModelAttribute("paymentTypes")
 //    public List<String> referenceData() {
 //        ArrayList<String> paymentTypes = new ArrayList<String>();
@@ -98,92 +104,52 @@ public class OrderController {
 //        return paymentTypes;
 //    }
 //
-//    @RequestMapping("/shop/newOrder.do")
-//    public String initNewOrder(HttpServletRequest request,
-//                               @ModelAttribute("sessionCart") Cart cart,
-//                               @ModelAttribute("orderForm") OrderForm orderForm
-//    ) throws ModelAndViewDefiningException {
+//    //주문서 폼 생성
+//    @GetMapping("/order")
+//    public String createForm(HttpServletRequest request,
+//                             Model model,
+//                             @RequestParam("itemId") Long itemId) {
+//
 //        UserSession userSession = (UserSession) request.getSession().getAttribute("userSession");
-//        if (cart != null) {
-//            // Re-read account from DB at team's request.
-//            Account account = accountService.getAccount(userSession.getAccount().getId());
-//            orderForm.getOrder().initOrder(account, cart);
-//            return "NewOrderForm";
-//        }
-//        else {
-//            ModelAndView modelAndView = new ModelAndView("Error");
-//            modelAndView.addObject("message", "An order could not be created because a cart could not be found.");
-//            throw new ModelAndViewDefiningException(modelAndView);
-//        }
+//        Account account = accountService.getAccount(userSession.getAccount().getId());
+//        SomsomItem item = somsomItemService.getSomsomItem(itemId);
+//
+//        model.addAttribute("account", account);
+//        model.addAttribute("item", item);
+//
+//        return "redirect:order/orderForm";
 //    }
 //
-//    // GET 요청이 들어오면 "orderReq" 모델 속성이 모델에 추가되고 ORDER 뷰를 반환
-//    @GetMapping("/order/form")
-//    public String createForm(Model model) {
-//        model.addAttribute("orderReq", new OrderForm());
-//        return "/order/form";
-//    }
-
-    // POST 요청이 들어오면 OrderRequest 객체가 세션에 저장되고 BindingResult를 통해 유효성 검사 결과를 확인
-//    @PostMapping("/order/form")
-//    public String create(HttpServletRequest request,
-//                         @Valid @ModelAttribute("orderForm") OrderForm orderForm,
-//                         BindingResult result) throws ModelAndViewDefiningException {
-//        UserSession userSession = (UserSession) request.getSession().getAttribute("userSession")
-//        if (result.hasErrors()) {
-//            return "/order/form";
-//        } else {
-//            Account account = accountService.getAccount(userSession.getAccount().getId());
-//            Order order = Order.createOrder(account, orderForm)
-//            Date orderDate = new Date();
-//            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy.MM.dd HH:mm:ss");
+//    //주문서 제출
+//    @PostMapping("/order")
+//    public String registerOrder(HttpServletRequest request,
+//                                @RequestParam("itemId") Long itemId,
+//                                @RequestParam("count") int count,
+//                                SessionStatus status,
+//                                BindingResult result) {
+//        if (result.hasErrors()) return "order/orderForm";
 //
-//            // TODO: 2023/05/27 데이터 매핑
-//            order.setOrderDate(simpleDateFormat.format(orderDate));
-//            order.setTotalPrice(orderRequest.getTotalPrice());
+//        UserSession userSession = (UserSession) WebUtils.getSessionAttribute(request, "userSession");
+//        String accountId = userSession.getAccount().getId();
+//        SomsomItem item = somsomItemService.getSomsomItem(itemId);
 //
-//            // Order 객체를 세션에 저장
-//            model.addAttribute("order", order);
-//            status.setComplete();
-//
-//            return "redirect:/order/payment";
-//        }
-//    }
-
-    @RequestMapping("/shop/newOrderSubmitted.do")
-    public String bindAndValidateOrder(HttpServletRequest request,
-                                       @ModelAttribute("orderForm") OrderForm orderForm,
-                                       BindingResult result) {
-        if (orderForm.didShippingAddressProvided() == false) {
-            // from NewOrderForm
-            orderValidator.validateCreditCard(orderForm.getOrder(), result);
-            orderValidator.validateBillingAddress(orderForm.getOrder(), result);
-            if (result.hasErrors()) return "NewOrderForm";
-
-            if (orderForm.isShippingAddressRequired() == true) {
-                orderForm.setShippingAddressProvided(true);
-                return "ShippingForm";
-            }
-            else {
-                return "ConfirmOrder";
-            }
-        }
-        else {		// from ShippingForm
-            orderValidator.validateShippingAddress(orderForm.getOrder(), result);
-            if (result.hasErrors()) return "ShippingForm";
-            return "ConfirmOrder";
-        }
-    }
-
-//    @RequestMapping("/shop/confirmOrder.do")
-//    protected ModelAndView confirmOrder(
-//            @ModelAttribute("orderForm") OrderForm orderForm,
-//            SessionStatus status) {
-//        orderService.order(orderForm.getOrder());
-//        ModelAndView mav = new ModelAndView("ViewOrder");
-//        mav.addObject("order", orderForm.getOrder());
-//        mav.addObject("message", "Thank you, your order has been submitted.");
+//        orderService.order(accountId, orderForm.getOrder());
 //        status.setComplete();  // remove sessionCart and orderForm from session
-//        return mav;
+//
+//        return "order/confirm";
 //    }
+//
+//    //주문 정보 확인 및 결제 안내
+//    @GetMapping("/order/confirm")
+//    public String confirmOrder(
+//            HttpServletRequest request,
+//            @ModelAttribute("orderForm") OrderForm orderForm,
+//            Model model) {
+//        UserSession userSession = (UserSession) request.getSession().getAttribute("userSession");
+//        String accountId = userSession.getAccount().getId();
+//
+//        model.addAttribute("order", orderForm.getOrder());
+//        return "home";
+//    }
+
 }

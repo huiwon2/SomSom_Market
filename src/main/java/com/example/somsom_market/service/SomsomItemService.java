@@ -94,9 +94,10 @@ public class SomsomItemService {
         somsomItemRepository.save(item); }
 //    읽기
     public Optional<SomsomItem> itemView(long id) { return somsomItemRepository.findById(id); }
+    public SomsomItem findOne(Long id) { return somsomItemDao.findOne(id); }
 //    전체 리스트 읽기
     public List<SomsomItem> allItemView(){
-        return somsomItemRepository.findAll();
+        return somsomItemDao.findAll();
     }
 //    상품 삭제
     public void itemDelete(long id){
