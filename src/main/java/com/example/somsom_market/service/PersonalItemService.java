@@ -6,6 +6,7 @@ import com.example.somsom_market.domain.ItemStatus;
 import com.example.somsom_market.domain.item.PersonalItem;
 import com.example.somsom_market.repository.PersonalItemRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -23,6 +24,11 @@ public class PersonalItemService {
     private PersonalItemDao personalItemDao;
     @Autowired
     private PersonalItemRepository personalItemRepository;
+
+    @Value("${resources.location}")
+    private String resourcesLocation;
+    @Value("${resources.uri_path:}")
+    private String resourcesUriPath;
 
     // 개인 게시글 리스트
     public List<PersonalItem> personalItemList() {
@@ -58,30 +64,28 @@ public class PersonalItemService {
         String oriImgName = itemRegistReq.getImgFile().getOriginalFilename(); // 원래 이미지 이름
         String imgName = "";
 
-        // 프로그램 폴더 위치 + 프로그램 내에서 저장할 폴더까지의 경로
-        String path = System.getProperty("user.dir") + "/src/main/resources/static/images/personalItem";
-        // 폴더 없을 시 생성
-        if (!new File(path).exists()) {
-            try {
-                new File(path).mkdir();
-            } catch (Exception e) {
-                e.getStackTrace();
-            }
-        }
-
         // 이미지 이름 겹치지 않게 현재 시간 가져오기
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyyMMddHHmmss");
         String current_date = simpleDateFormat.format(new Date());
 
         imgName = current_date + "_" + oriImgName; // 이미지 이름 : 현재시간_원래이미지이름
-        String filePath = path + "\\" + imgName; // 이미지 저장할 위치 (이미지 이름까지)
 
-        File saveFile = new File(filePath); // 파일 생성
-        itemRegistReq.getImgFile().transferTo(saveFile);
+        // 이미지 경로
+        String path = resourcesLocation + File.separator + "images";
+        // 폴더 없을 시 생성
+        if (!new File(path).exists()) {
+            try {
+                new File(path).mkdirs();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+
+        itemRegistReq.getImgFile().transferTo(new File(path+File.separator+imgName));
 
         item.setImgName(imgName); // 이미지 이름 저장
-        item.setImgPath("/images/personalItem/"+imgName);
-        // 경로 저장 (resource/static쪽에 저장하므로 위와 같이 저장 후 이미지 보여주기 위해!)
+        item.setImgPath(resourcesUriPath + "/images/" + imgName);
+        // 경로 저장
 
         return personalItemDao.insertItem(item);
     }
