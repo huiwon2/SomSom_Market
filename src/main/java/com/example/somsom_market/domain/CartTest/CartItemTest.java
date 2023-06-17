@@ -32,7 +32,7 @@ public class CartItemTest implements Serializable {
         this.quantity = quantity;
     }
 
-    public double getTotalPrice() {
+    public int getTotalPrice() {
         if (item != null) {
             return item.getPrice() * quantity;
         }

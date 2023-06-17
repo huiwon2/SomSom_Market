@@ -20,7 +20,7 @@
             </tr>
             </thead>
             <tbody>
-            <tr th:each="cartItem : ${cart.cartItemList.pageList}">
+            <tr th:each="cartItem : ${cart.getAllCartItems()}">
                 <td th:text="${cartItem.item.id}"></td>
                 <td>
                     <a href="#" th:href="@{/somsom/item/somsomDetail/{item_id} (itemId=${cartItem.item.id})}" th:text="${cartItem.item.title}"></a>
@@ -29,6 +29,13 @@
 <!--                <td th:text="${cartItem.item}"></td>-->
             </tr>
             </tbody>
+        </table>
+        <table class="table table-striped">
+            <thead>
+            <tr>
+                <td>총 금액</td>
+                <td th:text="${cart.getSubTotal()}"></td>
+            </tr>
         </table>
     </div>
 

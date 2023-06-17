@@ -68,8 +68,8 @@ public class CartTest implements Serializable {
         cartItem.setQuantity(quantity);
     }
 
-    public double getSubTotal() {
-        double subTotal = 0;
+    public int getSubTotal() {
+        int subTotal = 0;
         Iterator<CartItemTest> items = getAllCartItems();
         while (items.hasNext()) {
             CartItemTest cartItem = (CartItemTest) items.next();
