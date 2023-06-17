@@ -45,24 +45,25 @@ public class OrderService {
 
         return order.getId();
     }
-//    @Transactional
-//    public Long insertOrder(String memberId, Long itemId, int count) {
-//
-//        //엔티티 조회
-//        Account account = accountDao.findOne(memberId);
-//        SomsomItem item = somsomItemDao.findOne(itemId);
-//
-//        //주문상품 생성
-//        OrderItem orderItem = OrderItem.createOrderItem(item, item.getPrice(), count);
-//
-//        //주문 생성
-//        Order order = Order.createOrder(account, orderItem);
-//
-//        //주문 저장
-//        orderDao.save(order);
-//
-//        return order.getId();
-//    }
+
+    @Transactional
+    public Long insertOrder(String memberId, Long itemId, int count) {
+
+        //엔티티 조회
+        Account account = accountDao.findOne(memberId);
+        SomsomItem item = somsomItemDao.findOne(itemId);
+
+        //주문상품 생성
+        OrderItem orderItem = OrderItem.createOrderItem(item, item.getPrice(), count);
+
+        //주문 생성
+        Order order = Order.createOrder(account, orderItem);
+
+        //주문 저장
+        orderDao.save(order);
+
+        return order.getId();
+    }
 
     /**
      * 주문 취소

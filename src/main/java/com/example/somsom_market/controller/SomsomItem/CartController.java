@@ -57,7 +57,7 @@ public class CartController {
             model.addAttribute("cartItems", cartItemList);
             model.addAttribute("user", accountService.getAccount(id));
 
-            return "/somsom/cart";
+            return "items/somsom/cart";
 
         }
         else{

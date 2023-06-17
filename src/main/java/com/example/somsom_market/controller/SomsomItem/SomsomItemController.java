@@ -118,13 +118,13 @@ public class SomsomItemController {
     }
 
     //솜솜아이템 리스트
-    @GetMapping("/somsom/item/somsomItemlist")
+    @GetMapping("/somsom/item/somsomItemList")
     public String showList(HttpServletRequest request, Model model) {
 
         List<SomsomItem> somsomItems = somsomItemService.somsomItemList();
         model.addAttribute("somsomItems", somsomItems);
 
-        return "/somsom/item/somsomItemList";
+        return "items/somsom/item/somsomItemList";
     }
 
 //    상세 페이지
@@ -146,7 +146,7 @@ public class SomsomItemController {
         model.addAttribute("somsomItem", somsomItem);
         model.addAttribute("isExistWish", isExistWish);
         model.addAttribute("userId", userId);
-        return SOMSOM_ITEM_DETAIL;
+        return "items/somsom/item/somsomDetail";
     }
 //     관리자 아이디 검증하기
      private boolean isTrueAdmin(Account account){
