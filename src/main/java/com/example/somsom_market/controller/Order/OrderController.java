@@ -28,7 +28,7 @@ import java.util.List;
 
 @Controller
 @RequiredArgsConstructor
-@SessionAttributes("userSession")
+@SessionAttributes({"sessionCart", "orderForm"})
 public class OrderController {
 
     private final OrderService orderService;
@@ -43,14 +43,18 @@ public class OrderController {
         return paymentTypes;
     }
 
-
     //주문서 폼 생성
     @GetMapping("/order/{itemId}")
     public String createForm(HttpServletRequest request,
                              Model model,
                              @PathVariable("itemId") Long itemId) {
 
+
         UserSession userSession = (UserSession) WebUtils.getSessionAttribute(request, "userSession");
+        if (userSession == null) {
+            return "redirect:/user/loginForm";
+        }
+
         Account account = userSession.getAccount();
         SomsomItem item = somsomItemService.findOne(itemId);
         int count = 1;

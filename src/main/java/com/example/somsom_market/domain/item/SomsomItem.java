@@ -3,6 +3,7 @@ package com.example.somsom_market.domain.item;
 import com.example.somsom_market.domain.CartItem;
 import com.example.somsom_market.domain.item.Item;
 import lombok.*;
+import org.springframework.dao.DataAccessException;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -38,5 +39,11 @@ public class SomsomItem extends Item {
         this.stockQuantity = restStock;
     }
 
+    public boolean isItemInStock(Long itemId) throws DataAccessException {
+        return (stockQuantity > 0);
+    }
 
+    public boolean existsByItemIdAndQuantityGreaterThan(Long itemId, int qty) {
+        return (stockQuantity > qty);
+    }
 }

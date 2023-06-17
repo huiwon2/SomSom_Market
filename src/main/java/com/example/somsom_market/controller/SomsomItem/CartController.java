@@ -12,16 +12,13 @@ import com.example.somsom_market.service.SomsomItemService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.SessionAttributes;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Optional;
 
 @Controller
-@SessionAttributes("userSession")
+@SessionAttributes({"sessionCart", "orderForm"})
 public class CartController {
     @Autowired
     AccountService accountService;
@@ -29,6 +26,7 @@ public class CartController {
     SomsomItemService somsomItemService;
     @Autowired
     CartService cartService;
+
 //    장바구니에 물건 담기
     @PostMapping("/somsom/cart/{id}/{item_id}")
     public String addCartItem(@PathVariable("id") String id, @PathVariable("item_id") long itemId, int amount){

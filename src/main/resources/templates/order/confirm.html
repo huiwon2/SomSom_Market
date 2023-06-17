@@ -1,10 +1,57 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
-주문서 확인
-</body>
-</html>
+<!--<!DOCTYPE HTML>-->
+<!--<html xmlns:th="http://www.thymeleaf.org">-->
+<!--<head th:replace="fragments/header :: header"/>-->
+<!--<body>-->
+
+<!--<div class="container">-->
+
+<!--    <div th:replace="fragments/bodyHeader :: bodyHeader"/>-->
+
+<!--    <div>-->
+<!--        <table class="table table-striped">-->
+<!--            <thead>-->
+<!--            <tr>-->
+<!--                <th>#</th>-->
+<!--                <th>총 금액</th>-->
+<!--                <th>결제 수단</th>-->
+<!--                <th>주문자 이름</th>-->
+<!--                <th>주문자 연락처</th>-->
+<!--                <th>대표상품 주문가격</th>-->
+<!--                <th>대표상품 주문수량</th>-->
+<!--                <th></th>-->
+<!--            </tr>-->
+<!--            </thead>-->
+<!--            <tbody>-->
+<!--            <tr th:each="item : ${orders}">-->
+<!--                <td th:text="${item.id}"></td>-->
+<!--                <td th:text="${item.member.name}"></td>-->
+<!--                <td th:text="${item.orderItems[0].item.name}"></td>-->
+<!--                <td th:text="${item.orderItems[0].orderPrice}"></td>-->
+<!--                <td th:text="${item.orderItems[0].count}"></td>-->
+<!--                <td th:text="${item.status}"></td>-->
+<!--                <td th:text="${item.orderDate}"></td>-->
+<!--                <td>-->
+<!--                    <a th:if="${item.status.name() == 'ORDER'}" href="#" th:href="'javascript:cancel('+${item.id}+')'"-->
+<!--                       class="btn btn-danger">CANCEL</a>-->
+<!--                </td>-->
+<!--            </tr>-->
+
+<!--            </tbody>-->
+<!--        </table>-->
+<!--    </div>-->
+
+<!--    <div th:replace="fragments/footer :: footer"/>-->
+
+<!--</div> &lt;!&ndash; /container &ndash;&gt;-->
+
+<!--</body>-->
+<!--<script>-->
+<!--    function cancel(id) {-->
+<!--        var form = document.createElement("form");-->
+<!--        form.setAttribute("method", "post");-->
+<!--        form.setAttribute("action", "/orders/" + id + "/cancel");-->
+<!--        document.body.appendChild(form);-->
+<!--        form.submit();-->
+<!--    }-->
+<!--</script>-->
+<!--</html>-->
