@@ -30,7 +30,7 @@ import java.util.List;
 public class SomsomItemController {
 //    mvc설계 보고 경로 채우기
     private static final String SOMSOM_REGISTRATION_FORM = "/somsom/somsomItemRegister";
-    private static final String SOMSOM_UPDATE_FORM = "/somsom/somsomItemUpdate";
+    private static final String SOMSOM_UPDATE_FORM = "/somsom/somsomItemRegister";
     private static final String ITEM_NOT_FOUND = "/somsom/notFound";
     private static final String ITEM_FORM = "/somsom/somsomItemList";
 
@@ -51,7 +51,7 @@ public class SomsomItemController {
 
 //    Register
 //    form(register method)
-    @GetMapping("somsomItem/somsomItemRegister")
+    @GetMapping("somsom/somsomItemRegister")
     public ModelAndView registerForm(HttpServletRequest request) {
         UserSession userSession = (UserSession) WebUtils.getSessionAttribute(request, "userSession");
         ModelAndView modelAndView = new ModelAndView();
@@ -66,7 +66,7 @@ public class SomsomItemController {
         return modelAndView;
     }
 
-    @PostMapping("somsomItem/somsomItemRegister/product")
+    @PostMapping("/somsom/somsomItemRegister")
     public String register(@Valid @ModelAttribute("registerReq") SomsomItemRegistRequest itemRegistRequest,
                            BindingResult bindingResult,
                            Model model, HttpServletRequest request) throws IOException {
@@ -77,7 +77,7 @@ public class SomsomItemController {
             return ITEM_FORM;
         }
         if (bindingResult.hasErrors()) {
-            return "redirect:/somsomItem/register";
+            return "redirect:/somsom/somsomItemRegister";
         }
         Long itemId = somsomItem.getId();
         model.addAttribute("itemId", itemId);
@@ -86,7 +86,7 @@ public class SomsomItemController {
     }
 
 //    form(Update method)
-    @GetMapping("somsomItem/update/{item_id}")
+    @GetMapping("somsom/update/{item_id}")
     public String form(SomsomItemUpdateRequest itemUpdateRequest, @RequestParam("itemId")Long itemId, Model model) {
         SomsomItem itemInfo = somsomItemService.getSomsomItem(itemId);
         if(itemInfo == null){
@@ -99,7 +99,7 @@ public class SomsomItemController {
         return SOMSOM_UPDATE_FORM;
     }
 
-    @PostMapping("somsomItem/update/product/{item_id}")
+    @PostMapping("somsom/update/{item_id}")
     public String update(@ModelAttribute("updateReq") SomsomItemUpdateRequest itemUpdateRequest, Errors errors, HttpServletRequest request) {
         UserSession userSession = (UserSession) WebUtils.getSessionAttribute(request, "userSession");
         Account account = userSession.getAccount();
@@ -118,17 +118,17 @@ public class SomsomItemController {
     }
 
     //솜솜아이템 리스트
-    @GetMapping("/somsomItem/list")
+    @GetMapping("/somsom/somsomItemlist")
     public String showList(HttpServletRequest request, Model model) {
 
         List<SomsomItem> somsomItems = somsomItemService.somsomItemList();
         model.addAttribute("somsomItems", somsomItems);
 
-        return "/items/somsom/somsomItemList";
+        return "/somsom/somsomItemList";
     }
 
 //    상세 페이지
-    @GetMapping("somsomItem/somsomDetail/{item_id}")
+    @GetMapping("somsom/somsomDetail/{item_id}")
     public String itemView(HttpServletRequest request, @PathVariable("itemId")Long itemId, Model model){
         String userId;
         UserSession userSession = (UserSession) WebUtils.getSessionAttribute(request, "userSession");
