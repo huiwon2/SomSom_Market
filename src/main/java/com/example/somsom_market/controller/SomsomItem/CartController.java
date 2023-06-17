@@ -37,7 +37,7 @@ public class CartController {
         Optional<SomsomItem> item = somsomItemService.itemView(itemId);
 
         cartService.addCart(account, item, amount);
-        return "redirect:/somsomItem/view/{itemId}";
+        return "redirect:/somsom/cart/cart";
 
     }
 
@@ -94,4 +94,6 @@ public class CartController {
             return "redirect:/main";
         }
     }
+//    @PostMapping
+
 }

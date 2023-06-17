@@ -2,7 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>아이템 상세내역</title>
 </head>
 <body>
 <div th:replace="fragments/bodyHeader :: bodyHeader" />
@@ -26,11 +26,12 @@
     <!--</select><br><br>-->
 
     <button type="button" onclick="purchase()">구매하기</button>
-    <form class="d-flex" th:action="@{/user/cart/{id}/{itemId}(id=${account.id}, itemId=${item.id})}" method="post">
+    <!--넘어갈 컨트롤러 지정해야함-->
+    <form class="d-flex" th:action="@{/cart/{id}/{itemId}(id=${account.id}, itemId=${item.id})}" method="post">
         <div class="d-flex">
             <input class="form-control text-center me-3" id="amount" name="amount" type="num" value="1"
-                   style="max-width: 3rem"/>
-            <button class="btn btn-outline-dark flex-shrink-0" type="submit">
+                   style="max-qwidth: 3rem"/>
+            <button class="btn btn-outline-dark flex-shrink-0" type="submit">0
                 <i class="bi-cart-fill me-1"></i>
                 장바구니
             </button>

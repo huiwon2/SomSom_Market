@@ -22,13 +22,17 @@
             <tbody>
             <tr th:each="item : ${cartItems}">
                 <td th:text="${cartItem.id}"></td>
-                <td th:text="${cartItem.item.title}"></td>
+                <td>
+                    <a th:href="@{/templates/items/somsom/somsomDetail/{itemId}(itemId=${cartItem.item.id})}">
+                        <span th:text="${cartItem.item.title}"></span>
+                    </a>
+                </td>
                 <td th:text="${cartItem.item.price}"></td>
                 <td th:text="${cartItem.count}"></td>
             </tr>
             <tr>
                 <td>
-                    <a href="#" th:href="@{/templates/order}" class="btn btn-primary" role="button">결제하기</a>
+                    <a href="#" th:href="@{/templates/order/orderForm}" class="btn btn-primary" role="button">결제하기</a>
                 </td>
             </tr>
             </tbody>
