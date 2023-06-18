@@ -37,6 +37,11 @@ public class ViewUserItemController {
     @GetMapping
     public String view(HttpServletRequest request, Model model) {
         UserSession userSession = (UserSession) WebUtils.getSessionAttribute(request, "userSession");
+
+        if (userSession == null) {
+            return "redirect:/user/loginForm";
+        }
+
         Account account = userSession.getAccount();
 
         int[] myPageList = accountService.getMyPageList(account.getId());
