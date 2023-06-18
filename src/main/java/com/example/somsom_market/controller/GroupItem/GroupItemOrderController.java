@@ -69,19 +69,37 @@ public class GroupItemOrderController {
         return "order/groupOrderForm";
     }
 
+    //주문서 제출
     @PostMapping(value = "/order/group/{itemId}/{count}")
     public String orderInsert(HttpServletRequest request,
                               @PathVariable Long itemId,
-                              @PathVariable int count) {
+                              @PathVariable int count,
+                              Model model) {
         UserSession userSession = (UserSession) WebUtils.getSessionAttribute(request, "userSession");
         String accountId = userSession.getAccount().getId();
 
-        OrderItem orderItem = orderService.insertOrder(accountId, itemId, count);
-        int price = orderItem.getOrderPrice();
-        orderService.addToSalesNow(price, itemId);
-        orderService.minusToStockQuantity(count, itemId);
-        return "order/orderList";
+        orderService.insertOrder(accountId, itemId, count);
+
+        Account account = userSession.getAccount();
+        List<Order> orders = orderService.findOrders(account.getId());
+        model.addAttribute("userOrderList", orders);
+
+        return "user/myPage/orderList";
     }
+
+//    @PostMapping(value = "/order/group/{itemId}/{count}")
+//    public String orderInsert(HttpServletRequest request,
+//                              @PathVariable Long itemId,
+//                              @PathVariable int count) {
+//        UserSession userSession = (UserSession) WebUtils.getSessionAttribute(request, "userSession");
+//        String accountId = userSession.getAccount().getId();
+//
+//        OrderItem orderItem = orderService.insertOrder(accountId, itemId, count);
+//        int price = orderItem.getOrderPrice();
+//        orderService.addToSalesNow(price, itemId);
+//        orderService.minusToStockQuantity(count, itemId);
+//        return "order/orderList";
+//    }
 
     @PostMapping("/orders/group/{orderId}/cancel")
     public String cancelOrder(@PathVariable("orderId") Long orderId) {

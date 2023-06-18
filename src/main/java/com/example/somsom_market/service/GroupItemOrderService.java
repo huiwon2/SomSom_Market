@@ -9,6 +9,7 @@ import com.example.somsom_market.domain.Order;
 import com.example.somsom_market.domain.OrderItem;
 import com.example.somsom_market.domain.item.GroupItem;
 import com.example.somsom_market.domain.item.SomsomItem;
+import com.example.somsom_market.repository.OrderRepository;
 import com.example.somsom_market.repository.OrderSearch;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,6 +28,7 @@ public class GroupItemOrderService {
     private final AccountDao accountDao;
     @Autowired
     private final GroupItemDao groupItemDao;
+    private final OrderRepository orderRepository;
     private AccountService accountService;
 
     /**
@@ -63,8 +65,7 @@ public class GroupItemOrderService {
         OrderItem orderItem = OrderItem.createOrderItem(item, item.getPrice(), count);
 
         //주문 생성
-        Order order = new Order();
-        order.initOrder(account, orderItem);
+        Order order = Order.createOrder(account, orderItem);
 
         //주문 저장
         orderDao.save(order);
@@ -107,7 +108,7 @@ public class GroupItemOrderService {
     }
 
     //검색
-    public List<Order> findOrders(OrderSearch orderSearch) {
-        return orderDao.findAllByString(orderSearch);
+    public List<Order> findOrders(String accountId) {
+        return orderRepository.findByAccountId(accountId);
     }
 }
