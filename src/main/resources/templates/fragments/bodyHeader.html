@@ -2,7 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <div th:fragment="bodyHeader">
 <style>
-    .ta {
+    .taHeader {
 		width: 100%;
 		border: none;
 		padding: 25px;
@@ -18,7 +18,7 @@
 		font-weight: bold;
 	}
 
-	.sel {
+	.selHeader {
 		width: 55%;
 	}
 
@@ -34,14 +34,14 @@
 		padding-left: 25px;
 	}
 
-	.sele {
+	.seleHeader {
 		width: 15%;
 		height: 50px;
 		font-size: 20px;
 		border: none;
 	}
 
-	.word {
+	.wordHeader {
 		width: 70%;
 		height: 80px;
 		font-size: 25px;
@@ -49,7 +49,7 @@
 		outline: none;
 	}
 
-	.q {
+	.qHeader {
 		float: right;
 		padding-right: 25px;
 		padding-top: 25px;
@@ -59,7 +59,7 @@
 		display: flex;
 	}
 
-	.menuContainer {
+	.menuContainerHeader {
 		margin-left: 60px;
 		padding-left: 25px;
 		padding-right: 25px;
@@ -67,66 +67,72 @@
 		font-weight: bold;
 	}
 
-    a {
+    .aHeader {
         text-decoration: none;
         color: black;
     }
 
-	a:hover {
+	.aHeader:hover {
         opacity: 0.7;
 	}
 </style>
+<script>
+    function goSearch() {
+        $('.searchFrm').submit();
+    }
+</script>
 
-    <table class="ta">
+    <table class="taHeader">
 
         <tr class="one">
             <td class="logo">
-                <a href="/">
+                <a href="/" class="aHeader">
                     <img th:src="@{/images/somsom.png}" width="90" height="90"/><br>
                     <span class="logoText">SOMSOM</span><br>
                     <span class="logoText">MARKET</span>
                 </a>
             </td>
 
-            <td class="sel">
+            <td class="selHeader">
                 <div class="search">
-                    <form>
-                        <select class="sele" id="sel" name="sel">
+                    <form id="searchFrm" name="searchFrm" th:action="@{/search}" method="post">
+                        <select class="seleHeader" id="type" name="type">
                             <option value="통합검색">통합검색</option>
                             <option value="솜솜이">솜솜이</option>
                             <option value="장터">장터</option>
                             <option value="공동구매">공동구매</option>
                         </select>
-                        <input type="text" class="word" id="word" name="word" placeholder="검색어를 입력해주세요.">
-                        <a href="/"><img th:src="@{/images/q.png}" width="40" height="40" class="q"></a> <!-- 경로 수정 -->
+                        <input type="text" class="wordHeader" id="query" name="query" placeholder="검색어를 입력해주세요.">
+                        <img th:src="@{/images/q.png}" onclick="goSearch()"
+                             width="40" height="40" class="qHeader">
                     </form>
                 </div>
             </td>
 
             <td class="mypage">
                 <div th:unless="${userSession?.account}">
-                     <a th:href="@{/user/loginForm}">로그인</a>&nbsp;&nbsp;|&nbsp;&nbsp;
-                     <a th:href="@{/user/register}">회원가입</a>
+                     <a class="aHeader" th:href="@{/user/loginForm}">로그인</a>&nbsp;&nbsp;|&nbsp;&nbsp;
+                     <a class="aHeader" th:href="@{/user/register}">회원가입</a>
                 </div>
                 <div th:if="${userSession?.account}">
-                    <a><span th:text="${userSession?.account.nickName}"></span>님</a>&nbsp;&nbsp;|&nbsp;&nbsp;
-                    <a th:href="@{/user/logout}">로그아웃</a>
+                    <a class="aHeader"><span th:text="${userSession?.account.nickName}"></span>님</a>&nbsp;&nbsp;|&nbsp;&nbsp;
+                    <a class="aHeader" th:href="@{/user/logout}">로그아웃</a>
 <!--                    <a th:href="@{/user/myPage}">-->
 <!--                        <input type="button" value="마이페이지"></a>-->
                 </div><br><br>
-                <a th:href="@{/personal/chat/list}"><img th:src="@{/images/notes.png}" width="90" height="60"></a>
-                <a th:href="@{/user/myPage}"><img th:src="@{/images/mypage.png}" width="70" height="70"></a>
-                <a th:href="@{/user/myPage/wishlist}"><img th:src="@{/images/hearts.png}" width="70" height="70"></a>
-                <a th:href="@{/cart}"><img th:src="@{/images/cart.png}" width="70" height="70"></a>
+                <a class="aHeader" th:href="@{/personal/chat/list}"><img th:src="@{/images/notes.png}" width="90" height="60"></a>
+                <a class="aHeader" th:href="@{/user/myPage}"><img th:src="@{/images/mypage.png}" width="70" height="70"></a>
+                <a class="aHeader" th:href="@{/user/myPage/wishlist}"><img th:src="@{/images/hearts.png}" width="70" height="70"></a>
+                <a class="aHeader" th:href="@{/cart}"><img th:src="@{/images/cart.png}" width="70" height="70"></a>
             </td>
         </tr>
 
     </table>
 
     <div class="headerMenu">
-        <a th:href="@{/somsom/item/somsomItemList}"><div class="menuContainer">솜솜이</div></a>
-        <a th:href="@{/personal/list}"><div class="menuContainer">장터</div></a>
-        <a th:href="@{/group/list}"><div class="menuContainer">공동구매</div></a>
+        <a class="aHeader" th:href="@{/somsom/item/somsomItemList}"><div class="menuContainerHeader">솜솜이</div></a>
+        <a class="aHeader" th:href="@{/personal/list}"><div class="menuContainerHeader">장터</div></a>
+        <a class="aHeader" th:href="@{/group/list}"><div class="menuContainerHeader">공동구매</div></a>
     </div>
 
     <br><br><br>
