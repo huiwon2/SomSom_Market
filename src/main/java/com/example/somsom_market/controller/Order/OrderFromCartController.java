@@ -2,11 +2,8 @@ package com.example.somsom_market.controller.Order;
 
 import com.example.somsom_market.controller.User.UserSession;
 import com.example.somsom_market.domain.Account;
-import com.example.somsom_market.domain.CartSession.CartItemSession;
 import com.example.somsom_market.domain.CartSession.CartSession;
-import com.example.somsom_market.domain.Order;
 import com.example.somsom_market.domain.OrderItem;
-import com.example.somsom_market.domain.item.SomsomItem;
 import com.example.somsom_market.service.AccountService;
 import com.example.somsom_market.service.OrderService;
 import com.example.somsom_market.service.SomsomItemService;
@@ -24,11 +21,10 @@ import org.springframework.web.util.WebUtils;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 @Controller
-@SessionAttributes({"sessionCart", "userSession"})
+@SessionAttributes({"sessionCart", "userSession", "orderForm"})
 @RequiredArgsConstructor
 public class OrderFromCartController {
 
@@ -86,17 +82,19 @@ public class OrderFromCartController {
                              @ModelAttribute("orderForm") OrderForm orderForm,
                              Model model) throws ModelAndViewDefiningException {
         UserSession userSession = (UserSession) WebUtils.getSessionAttribute(request, "userSession");
+
         if (userSession == null) {
             return "redirect:/user/loginForm";
         } else if (cart != null) {
             Account account = userSession.getAccount();
+            orderForm.getOrder().initOrder(account, cart);
             int count = 1;
 
             model.addAttribute("account", account);
-            model.addAttribute("orderItemsFromCart", cart);
+            model.addAttribute("cart", cart);
             model.addAttribute("count", count);
 
-            return "order/orderForm";
+            return "order/orderRegisterForm";
         } else {
             return "error"; // TODO: 2023/06/17 오류페이지 생성
         }
@@ -108,7 +106,7 @@ public class OrderFromCartController {
                               @ModelAttribute("orderForm") OrderForm orderForm,
                               SessionStatus status,
                               BindingResult result) {
-        if (result.hasErrors()) return "order/orderForm";
+        if (result.hasErrors()) return "redirect:/order/fromCart";
 
         UserSession userSession = (UserSession) WebUtils.getSessionAttribute(request, "userSession");
         String accountId = userSession.getAccount().getId();
@@ -116,7 +114,7 @@ public class OrderFromCartController {
         orderService.insertOrderFromCart(accountId, (OrderItem) orderForm.getOrder().getOrderItems());
         status.setComplete();  // remove sessionCart and orderForm from session
 
-        return "order/confirm";
+        return "order/orderList";
     }
 
 //

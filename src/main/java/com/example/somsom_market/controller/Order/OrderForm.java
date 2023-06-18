@@ -15,23 +15,4 @@ import java.util.Iterator;
 public class OrderForm implements Serializable {
 
     private final Order order = new Order();
-    private boolean shippingAddressRequired = false;
-    private boolean shippingAddressProvided = false;
-
-    public void setShippingAddressRequired(boolean shippingAddressRequired) {
-        this.shippingAddressRequired = shippingAddressRequired;
-    }
-
-    public boolean isShippingAddressRequired() {
-        return shippingAddressRequired;
-    }
-
-    public void setShippingAddressProvided(boolean shippingAddressProvided) {
-        this.shippingAddressProvided = shippingAddressProvided;
-    }
-
-    public boolean didShippingAddressProvided() {
-        return shippingAddressProvided;
-    }
-
 }
