@@ -110,7 +110,7 @@ public class SomsomItemController {
         }
         try {
             somsomItemService.updateItem(somsomItem, somsomItem.getId());
-            return "redirect:/main";
+            return "redirect:/";
         } catch (ItemNotFoundException ex) {
             return ITEM_NOT_FOUND;
         }
