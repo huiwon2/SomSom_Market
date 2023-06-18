@@ -43,18 +43,20 @@
 			data : {
 				"email" : email, "phone" : phone
 			},
-			success : function(responseVal) {
-			    alert(responseVal);
-			    if (responseVal.code == "OK") {
-                    var id = responseVal.idList;
+			success : function(accountList) {
+			    var size = accountList.length;
+                if (size == 0) {
+                    $('#idAlert').text("아이디를 찾을 수 없습니다.");
+                } else {
                     var str = "아이디 : ";
-                    for (var i=0 in id) {
-                        str += id[i].id + " / ";
+                    for (var i = 0; i < size; i++) {
+                        str += accountList[i];
+                        if (i != size-1) {
+                            str += " / ";
+                        }
                     }
                     $('#idAlert').text(str);
-			    } else {
-                    $('#idAlert').text("아이디를 찾을 수 없습니다.");
-			    }
+                }
 			}
 		});
     }
