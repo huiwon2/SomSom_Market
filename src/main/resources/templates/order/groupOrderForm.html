@@ -3,7 +3,6 @@
 <head th:replace="fragments/header :: header" />
 <body>
 
-<div class="container">
   <div th:replace="fragments/bodyHeader :: bodyHeader"/>
 
   <form th:if="${item != null}" role="form" th:action="@{/order/group/{itemId}/{count} (itemId=${item.id}, count=${count})}" method="post">
@@ -88,7 +87,6 @@
   <br/>
   <div th:replace="fragments/footer :: footer" />
 
-</div> <!-- /container -->
 
 </body>
 </html>
