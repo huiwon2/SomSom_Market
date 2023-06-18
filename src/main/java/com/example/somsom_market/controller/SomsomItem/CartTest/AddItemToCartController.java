@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 @Controller
-@SessionAttributes({"sessionCart", "orderForm"})
+@SessionAttributes({"sessionCart", "orderForm", "userSession"})
 public class AddItemToCartController {
     @Autowired
     AccountService accountService;

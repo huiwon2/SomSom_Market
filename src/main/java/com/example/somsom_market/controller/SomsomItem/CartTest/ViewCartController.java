@@ -14,7 +14,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 @Controller
-@SessionAttributes("sessionCart")
+@SessionAttributes({"sessionCart", "userSession"})
 public class ViewCartController { 
 	
 	@ModelAttribute("sessionCart")

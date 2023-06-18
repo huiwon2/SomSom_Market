@@ -23,7 +23,7 @@
             <tr th:each="cartItem : ${cart.getAllCartItems()}">
                 <td th:text="${cartItem.item.id}"></td>
                 <td>
-                    <a href="#" th:href="@{/somsom/item/somsomDetail/{item_id} (itemId=${cartItem.item.id})}" th:text="${cartItem.item.title}"></a>
+                    <a th:href="@{/somsom/item/somsomDetail/{item_id}(item_id=${cartItem.item.id})}" th:text="${cartItem.item.title}"></a>
                 </td>
                 <td th:text="${cartItem.item.price}"></td>
 <!--                <td th:text="${cartItem.item}"></td>-->
