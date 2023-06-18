@@ -4,6 +4,8 @@ import com.example.somsom_market.controller.User.UserSession;
 import com.example.somsom_market.domain.Account;
 import com.example.somsom_market.domain.CartSession.CartItemSession;
 import com.example.somsom_market.domain.CartSession.CartSession;
+import com.example.somsom_market.domain.Order;
+import com.example.somsom_market.domain.OrderItem;
 import com.example.somsom_market.domain.item.SomsomItem;
 import com.example.somsom_market.service.AccountService;
 import com.example.somsom_market.service.OrderService;
@@ -26,13 +28,18 @@ import java.util.Iterator;
 import java.util.List;
 
 @Controller
-@SessionAttributes({"sessionCart", "orderForm", "userSession"})
+@SessionAttributes({"sessionCart", "userSession"})
 @RequiredArgsConstructor
 public class OrderFromCartController {
 
     private final OrderService orderService;
     private final SomsomItemService somsomItemService;
     private final AccountService accountService;
+
+    @ModelAttribute("orderForm")
+    public OrderForm createOrderForm() {
+        return new OrderForm();
+    }
 
     //결제수단 객체를 생성하고 "paymentTypes"라는 이름으로 모델에 추가
     @ModelAttribute("paymentTypes")
@@ -42,27 +49,51 @@ public class OrderFromCartController {
         return paymentTypes;
     }
 
+//    //주문서 생성 - 카트에서 가져오기
+//    @GetMapping("/order/fromCart")
+//    public String createForm(HttpServletRequest request,
+//                             Model model) throws ModelAndViewDefiningException {
+//        UserSession userSession = (UserSession) WebUtils.getSessionAttribute(request, "userSession");
+//        CartSession cart = (CartSession) WebUtils.getSessionAttribute(request, "sessionCart");
+//
+//        if (userSession == null) {
+//            return "redirect:/user/loginForm";
+//        } else if (cart != null) {
+//            Account account = userSession.getAccount();
+//            List<SomsomItem> items = new ArrayList<SomsomItem>();
+//            Iterator<CartItemSession> i = cart.getAllCartItems();
+//            while (i.hasNext()) {
+//                CartItemSession cartItem = (CartItemSession) i.next();
+//                SomsomItem somsomItem = cartItem.getItem();
+//                items.add(somsomItem);
+//            }
+//            int count = 1;
+//
+//            model.addAttribute("account", account);
+//            model.addAttribute("orderItemsFromCart", items);
+//            model.addAttribute("count", count);
+//
+//            return "order/orderForm";
+//        } else {
+//            return "error"; // TODO: 2023/06/17 오류페이지 생성
+//        }
+//    }
+
     //주문서 생성 - 카트에서 가져오기
     @GetMapping("/order/fromCart")
     public String createForm(HttpServletRequest request,
                              @ModelAttribute("sessionCart") CartSession cart,
+                             @ModelAttribute("orderForm") OrderForm orderForm,
                              Model model) throws ModelAndViewDefiningException {
         UserSession userSession = (UserSession) WebUtils.getSessionAttribute(request, "userSession");
         if (userSession == null) {
             return "redirect:/user/loginForm";
         } else if (cart != null) {
             Account account = userSession.getAccount();
-            List<SomsomItem> items = new ArrayList<SomsomItem>();
-            Iterator<CartItemSession> i = cart.getAllCartItems();
-            while (i.hasNext()) {
-                CartItemSession cartItem = (CartItemSession) i.next();
-                SomsomItem somsomItem = cartItem.getItem();
-                items.add(somsomItem);
-            }
             int count = 1;
 
             model.addAttribute("account", account);
-            model.addAttribute("orderItemsFromCart", items);
+            model.addAttribute("orderItemsFromCart", cart);
             model.addAttribute("count", count);
 
             return "order/orderForm";
@@ -73,16 +104,16 @@ public class OrderFromCartController {
 
     //주문서 제출
     @PostMapping("/order/fromCart")
-    public String registerOrder(HttpServletRequest request,
-                                @ModelAttribute("orderForm") OrderForm orderForm,
-                                SessionStatus status,
-                                BindingResult result) {
+    public String orderInsert(HttpServletRequest request,
+                              @ModelAttribute("orderForm") OrderForm orderForm,
+                              SessionStatus status,
+                              BindingResult result) {
         if (result.hasErrors()) return "order/orderForm";
 
         UserSession userSession = (UserSession) WebUtils.getSessionAttribute(request, "userSession");
         String accountId = userSession.getAccount().getId();
 
-        orderService.order(accountId, orderForm.getOrder());
+        orderService.insertOrderFromCart(accountId, (OrderItem) orderForm.getOrder().getOrderItems());
         status.setComplete();  // remove sessionCart and orderForm from session
 
         return "order/confirm";

@@ -28,30 +28,6 @@ public class OrderService {
      * 주문
      */
     @Transactional
-    public Long order(String accountId, Order order) {
-        Account account = accountDao.findOne(accountId);
-
-        for (int i = 0; i < order.getOrderItems().size(); i++) {
-            OrderItem orderItem = (OrderItem) order.getOrderItems().get(i);
-            Long itemId = orderItem.getId();
-            int increment = orderItem.getQuantity();
-            SomsomItem somsomItem = somsomItemDao.findOne(itemId);
-            somsomItem.setStockQuantity(somsomItem.getStockQuantity() - increment);
-        }
-
-        orderDao.save(order);
-
-        return order.getId();
-    }
-
-//    //장바구니에서 주문
-//    @Transactional
-//    public Long orderFromCart(String accountId, CartSession cartItem) {
-//        Account account = accountService.getAccount(accountId);
-//
-//    }
-
-    @Transactional
     public Long insertOrder(String accountId, Long itemId, int count) {
 
         //엔티티 조회
@@ -62,9 +38,23 @@ public class OrderService {
         OrderItem orderItem = OrderItem.createOrderItem(item, item.getPrice(), count);
 
         //주문 생성
-        Order order = Order.initOrder(account, orderItem);
+        Order order = new Order();
+        order.initOrder(account, orderItem);
 
         //주문 저장
+        orderDao.save(order);
+
+        return order.getId();
+    }
+
+    @Transactional
+    public Long insertOrderFromCart(String accountId, OrderItem... orderItems) {
+        Account account = accountDao.findOne(accountId);
+
+        //주문 생성
+        Order order = new Order();
+        order.initOrder(account, orderItems);
+
         orderDao.save(order);
 
         return order.getId();
