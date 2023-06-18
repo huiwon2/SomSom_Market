@@ -1,7 +1,7 @@
-package com.example.somsom_market.controller.SomsomItem.CartTest;
+package com.example.somsom_market.controller.SomsomItem.CartSession;
 
 import com.example.somsom_market.controller.User.UserSession;
-import com.example.somsom_market.domain.CartTest.CartTest;
+import com.example.somsom_market.domain.CartSession.CartSession;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -14,13 +14,13 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 @Controller
-@SessionAttributes({"sessionCart", "userSession"})
+@SessionAttributes({"sessionCart", "orderForm", "userSession"})
 public class ViewCartController { 
 	
 	@ModelAttribute("sessionCart")
-	public CartTest createCart(HttpSession session) {
-		CartTest cart = (CartTest)session.getAttribute("sessionCart");
-		if (cart == null) cart = new CartTest();
+	public CartSession createCart(HttpSession session) {
+		CartSession cart = (CartSession)session.getAttribute("sessionCart");
+		if (cart == null) cart = new CartSession();
 		return cart;
 	}
 	
@@ -28,7 +28,7 @@ public class ViewCartController {
 	public ModelAndView viewCart(
 			HttpServletRequest request,
 			@RequestParam(value="page", required=false) String page,
-			@ModelAttribute("sessionCart") CartTest cart)
+			@ModelAttribute("sessionCart") CartSession cart)
 			throws Exception {
 		UserSession userSession =
 			(UserSession) WebUtils.getSessionAttribute(request, "userSession");
@@ -36,7 +36,7 @@ public class ViewCartController {
 		return new ModelAndView("items/somsom/cart/cart", "cart", cart);
 	}
 	
-	private void handleRequest(String page, CartTest cart, UserSession userSession)
+	private void handleRequest(String page, CartSession cart, UserSession userSession)
 			throws Exception {
 		if (userSession != null) {
 			if ("next".equals(page)) {

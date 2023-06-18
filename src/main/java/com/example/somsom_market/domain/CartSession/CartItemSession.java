@@ -1,16 +1,11 @@
-package com.example.somsom_market.domain.CartTest;
+package com.example.somsom_market.domain.CartSession;
 
 import com.example.somsom_market.domain.item.SomsomItem;
-import org.springframework.beans.support.PagedListHolder;
 
 import java.io.Serializable;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
 
 @SuppressWarnings("serial")
-public class CartItemTest implements Serializable {
+public class CartItemSession implements Serializable {
     /* Private Fields */
 
     private SomsomItem item;
