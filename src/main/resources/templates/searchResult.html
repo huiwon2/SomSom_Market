@@ -5,8 +5,39 @@
     <title>솜솜마켓</title>
 </head>
 <body>
+<style>
+    .a {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 300px;
+        height: 400px;
+        line-height: 20px;
+        float: left;
+        margin-left: 50px;
+        text-decoration: none;
+    }
+
+    a {
+        text-decoration: none;
+        color: black;
+    }
+    a:hover {
+        opacity: 0.8;
+    }
+
+
+</style>
 <div th:replace="fragments/bodyHeader :: bodyHeader" />
 
-
+<div th:each="item : ${items}">
+    <div class="a">
+        <a th:href="@{/personal/detail/{itemId}(itemId = ${item.id})}" style="display: inline-block;">
+            <img th:src="@{${item.imgPath}}"/><br>
+            <span th:text="${item.title}"></span><br>
+            <span th:text="${item.price}"></span>원
+        </a>
+    </div>
+</div>
 </body>
 </html>

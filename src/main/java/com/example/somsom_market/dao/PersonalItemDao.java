@@ -2,6 +2,7 @@ package com.example.somsom_market.dao;
 
 import com.example.somsom_market.controller.PersonalItem.PersonalItemRequest;
 import com.example.somsom_market.domain.ItemStatus;
+import com.example.somsom_market.domain.item.Item;
 import com.example.somsom_market.domain.item.PersonalItem;
 import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Repository;
@@ -68,5 +69,18 @@ public class PersonalItemDao {
         Query query = em.createNativeQuery("Update Item i SET i.wish_count = i.wish_count-1 Where i.item_id = ?1");
         query.setParameter(1, itemId);
         query.executeUpdate();
+    }
+
+    public List<Item> searchItem(String word, String type) {
+        Query query = em.createQuery("SELECT i FROM Item i WHERE i.dtype = :dtype AND i.title LIKE :word");
+        query.setParameter("dtype", type);
+        query.setParameter("word", "%"+word+"%");
+        return query.getResultList();
+    }
+
+    public List<Item> searchAllItem(String word) {
+        Query query = em.createQuery("SELECT i FROM Item i WHERE i.title LIKE :word");
+        query.setParameter("word", "%"+word+"%");
+        return query.getResultList();
     }
 }

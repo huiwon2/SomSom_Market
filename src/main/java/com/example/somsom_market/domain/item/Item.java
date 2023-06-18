@@ -36,4 +36,7 @@ public abstract class Item {
     private String imgName;
     @Column(name = "img_path")
     private String imgPath;
+
+    @Column(insertable = false, updatable = false)
+    private String dtype;
 }

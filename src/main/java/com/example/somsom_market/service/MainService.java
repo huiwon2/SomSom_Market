@@ -1,6 +1,8 @@
 package com.example.somsom_market.service;
 
+import com.example.somsom_market.dao.PersonalItemDao;
 import com.example.somsom_market.domain.item.Item;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
@@ -9,6 +11,10 @@ import java.util.Map;
 
 @Service
 public class MainService {
+
+    @Autowired
+    private PersonalItemDao personalItemDao;
+
     private Map<String, Item> itemMap = new HashMap<String, Item>();
 
     // 전체 상품 조회
@@ -33,7 +39,16 @@ public class MainService {
 
     // type에 해당하는 상품 title 검색, 카테고리 조회
     public List<Item> searchItemByQuery(String query, String type) {
-
-        return null;
+        String typeStr;
+        if (type.equals("통합검색")) {
+            return personalItemDao.searchAllItem(query);
+        } else if (type.equals("솜솜이")) {
+            typeStr = "SOMSOM";
+        } else if (type.equals("장터")) {
+            typeStr = "PERSONAL";
+        } else {
+            typeStr = "GROUP";
+        }
+        return personalItemDao.searchItem(query, typeStr);
     }
 }
