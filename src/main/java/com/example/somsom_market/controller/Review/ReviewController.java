@@ -83,7 +83,7 @@ public class ReviewController {
         return MY_REVIEW_LIST;
     }
 
-    @GetMapping("/review/list") // 수정요망
+    @GetMapping("/review/myReviews")
     public ModelAndView showMyReviewList(HttpServletRequest request) {
         //userId from session
         UserSession userSession = (UserSession) WebUtils.getSessionAttribute(request, "userSession");
@@ -97,9 +97,9 @@ public class ReviewController {
         return mav;
     }
 
-    @GetMapping("review/review") // 수정요망
+    @GetMapping("review/list") // 수정요망
     public ModelAndView showReviewListOfItem(HttpServletRequest request,
-                                             @ModelAttribute("itemId") long itemId) {
+                              @RequestParam("id") long id, @ModelAttribute("itemId") long itemId) {
 
         List<Review> reviews = reviewService.findByItemId(itemId);
         ModelAndView mav = new ModelAndView();

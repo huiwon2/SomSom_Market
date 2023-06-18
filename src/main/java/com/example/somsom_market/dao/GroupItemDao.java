@@ -54,12 +54,21 @@ public class GroupItemDao{
         return groupItems;
     }
 
-    // 공구 판매자 ---> 모인 총 금액 확인
+    // 공구 판매자 ---> 모인 총 금액 확인....수정 필요
     @Transactional
-    public int getTotalPriceOfGroupItemOrders(Long itemId){
-        Query query = em.createNativeQuery("SELECT SUM(o.ORDER_PRICE) FROM ORDER_ITEM o JOIN ITEM i WHERE o.ITEM_ID = ?1");
+    public long getTotalPriceOfGroupItemOrders(Long itemId){
+        Query query = em.createNativeQuery("SELECT SUM(o.ORDER_PRICE) FROM ORDER_ITEM o WHERE o.ITEM_ID = ?1");
         query.setParameter(1, itemId);
-        return (int) query.getSingleResult();
+        long cnt = ((Number)query.getSingleResult()).longValue();
+        return cnt;
+    }
+
+    @Transactional
+    public long getTotalCntOfGroupItemOrders(Long itemId){
+        Query query = em.createNativeQuery("SELECT COUNT(o.ORDER_ITEM_ID) FROM ORDER_ITEM o WHERE o.ITEM_ID = ?1");
+        query.setParameter(1, itemId);
+        long cnt = ((Number)query.getSingleResult()).longValue();
+        return cnt;
     }
 
     // 공구 판매자 ---> 마감 기한까지 모금액이 안모였을 경우, 주문 취소 상태로 일괄 변경
@@ -76,6 +85,7 @@ public class GroupItemDao{
         int updateCnt = query.executeUpdate();
         return updateCnt;
     }
+
 
     //공구 마감
     @Transactional

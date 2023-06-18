@@ -2,40 +2,233 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
+    <!-- 글꼴 -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Do Hyeon">
+    <script src="https://kit.fontawesome.com/ad470c6cf7.js" crossorigin="anonymous"></script>
     <title>공동구매 아이템 상세 페이지</title>
+    <style>
+        body {
+            height: 100%;
+            margin: 0;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+            font-family: 'Do Hyeon', serif;
+            background-color: #f5f5f5;
+        }
+        .main{
+            max-width: 1000px;
+            margin: 5% auto;
+        }
+        .card {
+            box-shadow: 0 6px 6px rgba(0, 0, 0, 0.3);
+            transition: 200ms;
+            background: #fff;
+        }
+        .card .card__title {
+            display: flex;
+            align-items: center;
+            padding: 30px 40px;
+        }
+        .card .card__title h3 {
+            flex: 0 1 300px;
+            text-align: right;
+            margin: 0;
+            color: #252525;
+            font-weight: 600;
+            font-size: 20px;
+            text-transform: uppercase;
+        }
+        .card .card__title .icon {
+            flex: 1 0 10px;
+            background: #6f263d;
+            color: #fff;
+            padding: 10px 10px;
+            transition: 200ms;
+        }
+        .card .card__title .icon > a {
+            color: #fff;
+        }
+        .card .card__title .icon:hover {
+            background: #252525;
+        }
+        .card .card__body {
+            padding: 0 40px;
+            display: flex;
+            margin-bottom: 25px;
+        }
+        .card .card__body > .half {
+            box-sizing: border-box;
+            padding: 0 15px;
+            flex: 1 0 50%;
+        }
+        .card .card__body .featured_text h1 {
+            margin: 0;
+            padding: 0;
+            font-weight: 800;
+            font-size: 64px;
+            line-height: 50px;
+            color: #181e28;
+        }
+        .card .card__body .featured_text p {
+            margin: 0;
+            padding: 0;
+        }
+        .card .card__body .featured_text p.sub {
+            font-size: 26px;
+            text-transform: uppercase;
+            color: #686e77;
+            font-weight: 300;
+            margin-bottom: 5px;
+        }
+        .card .card__body .featured_text p.price {
+            color: #252525;
+            font-size: 26px;
+        }
+        .card .card__body .image {
+            padding-top: 15px;
+            width: 100%;
+        }
+        .card .card__body .image img {
+            display: block;
+            max-width: 100%;
+            height: auto;
+        }
+        .card .card__body .description {
+            margin-bottom: 25px;
+        }
+        .card .card__body .description p {
+            margin: 0;
+            font-weight: 300;
+            line-height: 27px;
+            font-size: 16px;
+            color: #555;
+        }
+        .card .card__body span.stock {
+            font-weight: 600;
+            color: #6f263d;
+        }
+        .btn{
+            padding: 0.9rem 1.8rem;
+            font-size: 16px;
+            font-weight: 700;
+            color: #aaa;
+            border: 3px solid #6f263d;
+            cursor: pointer;
+            position: relative;
+            background-color: transparent;
+            text-decoration: none;
+            overflow: hidden;
+            z-index: 1;
+            font-family: inherit;
+            text-align: left;
+            margin: auto;
+            display: block;
+        }
+
+        .btn::before {
+            content: "";
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: #6f263d;
+            transform: translateX(-100%);
+            transition: all .3s;
+            z-index: -1;
+        }
+
+        .btn:hover::before {
+            transform: translateX(0);
+        }
+        .btn:hover{
+            color:azure;
+        }
+        .reviews span {
+            font-style: italic;
+        }
+        .card .card__footer {
+            padding: 30px 40px;
+            display: flex;
+            flex-flow: row no-wrap;
+            align-items: center;
+            position: relative;
+        }
+        .card .card__footer::before {
+            content: "";
+            position: absolute;
+            display: block;
+            top: 0;
+            left: 40px;
+            height: 3px;
+            background: #6f263d;
+        }
+
+    </style>
 </head>
 <body>
 <div th:replace="fragments/bodyHeader :: bodyHeader" />
 
 <div class="main">
-    <div>
-        <label>제목</label>
-        <h2><span th:text="${groupItem.title}"></span></h2>
-    </div>
-    <div>
-        <label>모인 금액</label>
-        <span th:text="${totalPrice}">원</span>
-        <span th:text="${percent}">%</span>
-    </div>
-    <div>
-        <label>목표 금액</label>
-        <span th:text="${groupItem.salesTarget}"></span>
-    </div>
-    <div>
-        <label>펀딩 기간</label>
-        <span th:text="${groupItem.startDate}"></span>~
-        <span th:text="${groupItem.endDate}"></span>
-    </div>
-    <div>
-        <label>가격</label>
-        <span th:text="${groupItem.price}">원</span>
-    </div>
-    <div>
-        <label>소개</label>
-        <textarea th:text="${groupItem.description}"></textarea>
-    </div>
+    <div class="card">
+        <div class="card__title">
+            <div class="icon">
+                <a th:href="@{/group/list}"><i class="fa fa-arrow-left"> </i></a>
+            </div>
 
+            <h3>공동구매 아이템</h3>
+        </div>
+
+        <div class="card__body">
+            <div class="half">
+                <div class="featured_text">
+                    <h1><div th:text="${groupItem.title}"/></h1><br/>
+                    <p class="sub"><span th:text="${groupItem.sellerId}"/> 작가님</p>
+                    <p class="price"><span th:text="${groupItem.price}"/>원</p>
+                </div>
+                <div class="image">
+                    <img th:src="@{${groupItem.imgPath}}"/>
+                </div>
+            </div>
+            <div class="half">
+                <div class="description">
+                    <p th:text="${groupItem.description}"/>
+                </div>
+                <div class="featured_text">
+                    <p>목표금액 : <span th:text="${groupItem.salesTarget}"></span> 원</p>
+                    <p>모인금액 : <span th:text="${groupItem.salesNow}"></span> 원</p>
+                    <p>남은시간 : <span th:text="${timeleft}"></span> 일</p>
+                    <p>후원자 : <span th:text="${cnt}"></span> 명</p>
+<!--                    <p>결제 : 목표금액 달성시 마감일에 결제 진행</p>-->
+                </div>
+        <!-- 하트 수정해야 --- POSTmapping이라 url로 파라미터 넘겨주는게 안통하는듯-->
+                <div th:if="${isExistWish}">
+                    <a th:href="@{/delete(itemId=${groupItem.id})}"><i class="fa-solid fa-heart" style="color: #ee3211;"></i></a>
+                </div>
+                <div th:unless="${isExistWish}">
+                    <a th:href="@{/add(itemId=${groupItem.id}, sellerId=${groupItem.sellerId})}"><i class="fa-regular fa-heart" style="color: #ee3211;"></i></a>
+                </div>
+
+                <span th:if="${groupItem.getStatus().toString().equals('INSTOCK')}">상태 : 재고있음</span>
+                <span th:if="${groupItem.getStatus().toString().equals('ING')}">상태 : 재고 주문 중</span>
+                <span th:if="${groupItem.getStatus().toString().equals('SOLDOUT')}">상태 : 마감됨</span>
+
+                <span class="reviews">
+                    <span><a th:href="@{/review/list(id=${groupItem.id})}">리뷰</a></span>
+                </span>
+            </div>
+        </div>
+        <div class="card__footer">
+             <button type="button" class="btn">주문하기</button>
+        </div>
+
+
+    </div>
+    </div>
 </div>
+
+<div th:replace="fragments/footer :: footer"/>
+
 <script>
     
 </script>
