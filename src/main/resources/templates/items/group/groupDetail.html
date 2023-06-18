@@ -163,12 +163,14 @@
             height: 3px;
             background: #6f263d;
         }
-
     </style>
 </head>
+<style>
+    .add { display: block; }
+    .cancel { display: none;	}
+</style>
 <body>
 <div th:replace="fragments/bodyHeader :: bodyHeader" />
-
 <div class="main">
     <div class="card">
         <div class="card__title">
@@ -199,14 +201,18 @@
                     <p>모인금액 : <span th:text="${groupItem.salesNow}"></span> 원</p>
                     <p>남은시간 : <span th:text="${timeleft}"></span> 일</p>
                     <p>후원자 : <span th:text="${cnt}"></span> 명</p>
+                    <p>남은 수량 : <span th:text="${groupItem.stockQuantity}"></span> 개</p>
 <!--                    <p>결제 : 목표금액 달성시 마감일에 결제 진행</p>-->
                 </div>
-        <!-- 하트 수정해야 --- POSTmapping이라 url로 파라미터 넘겨주는게 안통하는듯-->
+        <!-- 하트 수정해야 --- 아이콘 클릭이 안먹힘...-->
+
+                <div class="inf2">
                 <div th:if="${isExistWish}">
-                    <a th:href="@{/delete(itemId=${groupItem.id})}"><i class="fa-solid fa-heart" style="color: #ee3211;"></i></a>
+                    <i class="fa-solid fa-heart" style="color: #ee3211;"></i>
                 </div>
                 <div th:unless="${isExistWish}">
-                    <a th:href="@{/add(itemId=${groupItem.id}, sellerId=${groupItem.sellerId})}"><i class="fa-regular fa-heart" style="color: #ee3211;"></i></a>
+                    <i class="fa-regular fa-heart" style="color: #ee3211;"></i>
+                </div>
                 </div>
 
                 <span th:if="${groupItem.getStatus().toString().equals('INSTOCK')}">상태 : 재고있음</span>
@@ -219,18 +225,56 @@
             </div>
         </div>
         <div class="card__footer">
-             <button type="button" class="btn">주문하기</button>
+            <span><a th:href="@{/order/group/{itemId}(itemId=${groupItem.id})}"><button type="button" class="btn">주문하기</button></a></span>
+
         </div>
 
 
     </div>
     </div>
 </div>
-
-<div th:replace="fragments/footer :: footer"/>
-
 <script>
-    
+    $(".inf2 i").click(function(){
+        let likes ="";
+
+        if($(this).hasClass("fa-solid")) {
+            likes = "on";
+        } else {
+            likes = "off";
+        }
+        if(likes == "on"){
+            $.ajax({
+                type : "POST",
+                url : "/user/myPage/wishlist/add",
+                data : {
+                    "itemId" : $('#itemId').val(),
+                    "sellerId" : $('#sellerId').val()
+                },
+                success : function(data) {
+                    if (data == true) {
+                        $(".inf2 i").removeClass("fa-solid").addClass("fa-regular");
+
+                    } else {
+                        alert('로그인 후 이용해주세요.');
+                    }
+                }
+            })
+        }else{
+            $.ajax({
+                type : "POST",
+                url : "/user/myPage/wishlist/delete",
+                data : {
+                    "itemId" : $('#itemId').val()
+                },
+                success : function(data) {
+                    if (data == true) {
+                       $(".inf2 i").removeClass("fa-regular").addClass("fa-solid");
+                    }
+                }
+            })
+        }
+    })
 </script>
+<div th:replace="fragments/footer :: footer"/>
 </body>
 </html>

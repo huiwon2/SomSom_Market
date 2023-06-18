@@ -198,7 +198,10 @@ public class GroupItemController {
             userId = account.getId();
             Wishlist wishlist = wishlistService.getGroupWishlistByAccountAndItem(userId, itemId);
             if (wishlist != null) isExistWish = 1;
+        }else{
+            userId="false";
         }
+        model.addAttribute("userId", userId);
         GroupItem groupItem = groupService.searchItem(itemId);
         model.addAttribute("groupItem", groupItem);
 

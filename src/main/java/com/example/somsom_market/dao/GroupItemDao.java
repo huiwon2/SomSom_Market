@@ -57,7 +57,8 @@ public class GroupItemDao{
     // 공구 판매자 ---> 모인 총 금액 확인....수정 필요
     @Transactional
     public long getTotalPriceOfGroupItemOrders(Long itemId){
-        Query query = em.createNativeQuery("SELECT SUM(o.ORDER_PRICE) FROM ORDER_ITEM o WHERE o.ITEM_ID = ?1");
+        Query query = em.createNativeQuery("SELECT SUM(o.ORDER_PRICE) FROM ORDER_ITEM o, ORDERS r " +
+                "WHERE o.ORDER_ID = r.ORDER_ID AND o.ITEM_ID = ?1 AND r.STATUS != 'CANCEL'");
         query.setParameter(1, itemId);
         long cnt = ((Number)query.getSingleResult()).longValue();
         return cnt;
@@ -65,7 +66,8 @@ public class GroupItemDao{
 
     @Transactional
     public long getTotalCntOfGroupItemOrders(Long itemId){
-        Query query = em.createNativeQuery("SELECT COUNT(o.ORDER_ITEM_ID) FROM ORDER_ITEM o WHERE o.ITEM_ID = ?1");
+        Query query = em.createNativeQuery("select count(o.ORDER_ITEM_ID) FROM ORDER_ITEM o JOIN ORDERS r " +
+                "ON o.ORDER_ID = r.ORDER_ID WHERE r.STATUS != 'CANCEL' AND o.ITEM_ID = ?1");
         query.setParameter(1, itemId);
         long cnt = ((Number)query.getSingleResult()).longValue();
         return cnt;

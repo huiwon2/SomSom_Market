@@ -34,4 +34,6 @@ public class GroupItemRequest {
     private Date endDate;
     private String status;
 
+    @PositiveOrZero
+    private int stockQuantity;
 }

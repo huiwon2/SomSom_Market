@@ -116,6 +116,16 @@ public class Order implements Serializable{
             orderItem.cancel();
         }
     }
+    public void cancelGroup(){
+        if (shipState == ShipState.DELIVERED) {
+            throw new IllegalStateException("이미 배송완료된 상품은 취소가 불가능합니다.");
+        }
+
+        this.setStatus(OrderStatus.CANCEL);
+        for (OrderItem orderItem : orderItems) {
+            orderItem.cancelGroup();
+        }
+    }
 
     //==조회 로직==//
     /**

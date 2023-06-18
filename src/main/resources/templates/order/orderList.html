@@ -29,7 +29,7 @@
                 <td th:text="${item.status}"></td>
                 <td th:text="${item.orderDate}"></td>
                 <td>
-                    <a th:if="${item.status.name() == 'PROCESSED'}" href="#" th:href="'javascript:cancel('+${item.id}+')'"
+                     <a th:if="${item.status.name() == 'PROCESSED'}" href="#" th:href="'javascript:cancel('+${item.id}+')'"
                        class="btn btn-danger">CANCEL</a>
                 </td>
             </tr>

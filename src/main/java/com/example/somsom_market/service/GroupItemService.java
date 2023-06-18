@@ -52,8 +52,8 @@ public class GroupItemService {
         tmp.setDescription(req.getDescription());
         tmp.setPrice(req.getPrice());
         tmp.setTitle(req.getTitle());
-       // tmp.setWishCount(req.getWishCount());
-
+        tmp.setWishCount(0);
+        tmp.setStockQuantity(req.getStockQuantity());
         String oriImgName = req.getImgFile().getOriginalFilename();
         String path = System.getProperty("user.dir") + "/src/main/resources/static/images/groupItem";
         if(!new File(path).exists()){
@@ -88,6 +88,8 @@ public class GroupItemService {
         tmp.setDescription(groupItem.getDescription());
         tmp.setPrice(groupItem.getPrice());
         tmp.setEndDate(groupItem.getEndDate());
+        tmp.setStockQuantity(groupItem.getStockQuantity());
+
         if(groupItem.getStatus().equals("재고있음")) tmp.setStatus(ItemStatus.INSTOCK);
         else if(groupItem.getStatus().equals("재고 주문중")) tmp.setStatus(ItemStatus.ING);
         else tmp.setStatus(ItemStatus.SOLDOUT);
