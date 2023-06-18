@@ -4,6 +4,16 @@
     <meta charset="UTF-8">
     <title>구매 내역</title>
 </head>
+<style>
+  a:hover {
+    opacity: 0.7;
+  }
+
+  a {
+    text-decoration: none;
+    color: black;
+  }
+</style>
 <body>
 <div th:replace="fragments/bodyHeader :: bodyHeader" />
 
@@ -12,15 +22,16 @@
 <table>
   <tr th:each="item : ${userOrderList}">
     <td>
-      <a th:each="orderItem : item.orderItems"
-         th:href="@{/personal/detail/{itemId}(itemId = ${orderItem.item.id})}">
-        <span th:text="${orderItem.item.title}"></span>
+      <a th:href="@{/personal/detail/{itemId}(itemId = ${item.id})}"> <!-- 링크 수정 필요!! -->
+        <span th:each="orderItem : ${item.orderItems}">
+          <span th:text="${orderItem.item.title}"></span>
+        </span>
+        <span th:text="${item.name}"></span>
+        <span th:text="${item.phone}"></span>
+        <span th:text="${item.address}"></span>
+        <span th:text="${item.zipcode}"></span>
+        <span th:text="${item.totalPrice}"></span>
       </a>
-      <span th:text="${item.name}"></span>
-      <span th:text="${item.phone}"></span>
-      <span th:text="${item.address}"></span>
-      <span th:text="${item.zipcode}"></span>
-      <span th:text="${item.totalPrice}"></span>
     </td>
   </tr>
 </table>
