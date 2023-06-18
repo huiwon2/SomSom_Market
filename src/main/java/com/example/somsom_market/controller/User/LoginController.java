@@ -56,16 +56,13 @@ public class LoginController {
 
     @PostMapping("/user/findId")
     @ResponseBody
-    public Map<String,Object> findId(@RequestParam("email") String email,
+    public List<String> findId(@RequestParam("email") String email,
                                     @RequestParam("phone") String phone) {
         List<Account> accountList = accountService.getIdByEmailAndPhone(email, phone);
-        Map<String, Object> responseVal = new HashMap<String, Object>();
-        if (accountList.size() == 0) {
-            responseVal.put("code", "false");
-            return responseVal;
+        List<String> idList = new ArrayList<>();
+        for (Account ac : accountList) {
+            idList.add(ac.getId());
         }
-        responseVal.put("code", "OK");
-        responseVal.put("idList", accountList);
-        return responseVal;
+        return idList;
     }
 }

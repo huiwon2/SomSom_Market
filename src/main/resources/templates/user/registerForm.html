@@ -107,7 +107,7 @@ function formSubmit() {
                class="form-control" onChange="checkId()" placeholder="아이디를 입력해주세요"
                th:class="${#fields.hasErrors('id')}? 'form-control fieldError' : 'form-control'">
 <!--        <input type="button" id="idCheck" value="중복 확인">-->
-        <span id="idAlert" style="color:red;"></span>
+        <br><span id="idAlert" style="color:red;"></span>
         <p th:if="${#fields.hasErrors('id')}" th:errors="*{id}"></p>
     </div>
     <br>
