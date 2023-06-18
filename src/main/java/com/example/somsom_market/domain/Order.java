@@ -60,40 +60,39 @@ public class Order implements Serializable{
     }
 
     //==생성 메서드==//
-    public static Order initOrder(Account account, OrderItem... orderItems) {
-        Order order = new Order();
-        order.setAccount(account);
-        order.setOrderDate(LocalDate.now());
-        order.setName(account.getName());
-        order.setPhone(account.getPhone());
-        order.setAddress(account.getAddress());
-        order.setZipcode(account.getZipcode());
-        order.setShipState(ShipState.PROCESSING);
-        order.setStatus(OrderStatus.PROCESSED);
-        order.setTotalPrice(order.getTotalPrice());
-        for (OrderItem orderItem : orderItems) {
-            order.addOrderItem(orderItem);
-        }
-        return order;
-    }
-//
-//    // TODO: 2023/06/04 카트 아이템 바탕으로 주문 생성하는 로직 필요
-//    public void initOrder(Account account, OrderItem... orderItems) {
-//        this.account = account;
-//        orderDate = LocalDate.now();
-//        name = account.getName();
-//        phone = account.getPhone();
-//        address = account.getAddress();
-//        zipcode = account.getZipcode();
-//        shipState = ShipState.PROCESSING;
-//        status = OrderStatus.PROCESSED;
-//
-//        totalPrice = cart.getSubTotal();
-//
+//    public static Order initOrder(Account account, OrderItem... orderItems) {
+//        Order order = new Order();
+//        order.setAccount(account);
+//        order.setOrderDate(LocalDate.now());
+//        order.setName(account.getName());
+//        order.setPhone(account.getPhone());
+//        order.setAddress(account.getAddress());
+//        order.setZipcode(account.getZipcode());
+//        order.setShipState(ShipState.PROCESSING);
+//        order.setStatus(OrderStatus.PROCESSED);
+//        order.setTotalPrice(order.getTotalPrice());
 //        for (OrderItem orderItem : orderItems) {
 //            order.addOrderItem(orderItem);
 //        }
+//        return order;
 //    }
+//
+    // TODO: 2023/06/04 카트 아이템 바탕으로 주문 생성하는 로직 필요
+    public void initOrder(Account account, OrderItem... orderItems) {
+        this.account = account;
+        orderDate = LocalDate.now();
+        name = account.getName();
+        phone = account.getPhone();
+        address = account.getAddress();
+        zipcode = account.getZipcode();
+        shipState = ShipState.PROCESSING;
+        status = OrderStatus.PROCESSED;
+
+        for (OrderItem orderItem : orderItems) {
+            totalPrice = orderItem.getTotalPrice();
+            addOrderItem(orderItem);
+        }
+    }
 
     public static CartItem createCartItem(Cart cart, SomsomItem item, int amount){
         CartItem cartItem = new CartItem();

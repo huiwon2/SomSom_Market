@@ -18,10 +18,6 @@ public class OrderForm implements Serializable {
     private boolean shippingAddressRequired = false;
     private boolean shippingAddressProvided = false;
 
-    public Order getOrder() {
-        return order;
-    }
-
     public void setShippingAddressRequired(boolean shippingAddressRequired) {
         this.shippingAddressRequired = shippingAddressRequired;
     }
