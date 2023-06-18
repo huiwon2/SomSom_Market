@@ -58,10 +58,10 @@
                 </tr>
                 </thead>
                 <tbody>
-                <tr th:each="cItem : ${orderItemsFromCart}">
-                    <td th:name="itemId" th:value="${cItem.id}" th:text="${cItem.id}"></td>
-                    <td th:text="${cItem.title}"></td>
-                    <td th:text="${cItem.price}"></td>
+                <tr th:each="cartItem : ${cart.getAllCartItems()}">
+                    <td th:name="itemId" th:value="${cartItem.item.id}" th:text="${cartItem.item.id}"></td>
+                    <td th:text="${cartItem.item.title}"></td>
+                    <td th:text="${cartItem.item.price}"></td>
                     <td>
                         <input type="number" name="count" class="form-control" th:value="${count}">
                     </td>
