@@ -36,12 +36,12 @@ public class MainController {
 //        return "items/somsom/somsomItemList";
 //    }
 
-    @GetMapping("/search")
+    @PostMapping("/search")
     public String searchItems(@RequestParam("query") String query,
                               @RequestParam("type") String type, Model model) {
         List<Item> items = mainService.searchItemByQuery(query, type);
         model.addAttribute("items", items);
-        return "home";
+        return "searchResult";
     }
 
     @GetMapping("/category")

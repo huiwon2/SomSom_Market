@@ -6,12 +6,12 @@
 </head>
 <body>
 <style>
-	table {
+	.taNotes {
 		border: 1px solid;
 		border-collapse: collapse;
 		width: 100%;
 	}
-	td {
+	.tdNotes {
 		padding: 20px;
 		border: 1px solid;
 		width: 45%;
@@ -230,9 +230,9 @@
     <span id="sendedText">보낸 쪽지함</span>
 </div>
 
-<table>
+<table class="taNotes">
   <tr>
-    <td style="vertical-align: top;">
+    <td class="tdNotes" style="vertical-align: top;">
         <div class="receive">
             <div class="con" th:each="note : ${receivedNotes}"
                  th:onclick="|javascript:detailView('${note.notesId}')|">
@@ -250,7 +250,7 @@
         </div>
     </td>
 
-    <td>
+    <td class="tdNotes">
         <div class="message">
             <input type="hidden" id="notesId" name="notesId">
             <h2><span id="title" style="font-weight: bold;"></span></h2>

@@ -10,18 +10,18 @@
             align-items: flex-start;
         }
 
-        table {
+        .taRegister {
             border-collapse: collapse;
             width: 50%;
             margin-bottom: 20px;
         }
 
-        th, td {
+        .thRegister, .tdRegister {
             border: 1px solid black;
             padding: 8px;
         }
 
-        th {
+        .thRegister {
             text-align: left;
         }
 
@@ -42,8 +42,8 @@
 </head>
 <body>
 <div th:replace="fragments/bodyHeader :: bodyHeader" />
-<div class="container">
-
+<!--<div class="container">-->
+<div>
     <form th:object="${somsomItem}" method="post" enctype="multipart/form-data">
         <div class="form-group">
             <label th:for="name">상품명</label>
