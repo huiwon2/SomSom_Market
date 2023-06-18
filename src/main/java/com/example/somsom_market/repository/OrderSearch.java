@@ -6,6 +6,6 @@ import lombok.Data;
 @Data
 public class OrderSearch {
 
-    private String memberName; //회원 이름
-    private OrderStatus orderStatus; //주문 상태[PROCESSING, INDELIVERY, DELIVERED, CANCEL]
+    private String accountId; //회원 아이디
+    private OrderStatus orderStatus; //주문 상태[PROCESSED, CANCEL]
 }

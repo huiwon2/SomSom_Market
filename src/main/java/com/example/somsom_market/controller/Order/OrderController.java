@@ -6,11 +6,13 @@ import com.example.somsom_market.domain.Cart;
 import com.example.somsom_market.domain.Order;
 import com.example.somsom_market.domain.OrderItem;
 import com.example.somsom_market.domain.item.SomsomItem;
+import com.example.somsom_market.repository.OrderSearch;
 import com.example.somsom_market.service.AccountService;
 import com.example.somsom_market.service.OrderService;
 import com.example.somsom_market.service.OrderValidator;
 import com.example.somsom_market.service.SomsomItemService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -29,7 +31,8 @@ import java.util.List;
 @Controller
 @RequiredArgsConstructor
 @SessionAttributes({"sessionCart", "orderForm"})
-public class OrderController {
+@Slf4j
+public class OrderController { //상세페이지에서 바로 결제
 
     private final OrderService orderService;
     private final SomsomItemService somsomItemService;
@@ -64,6 +67,7 @@ public class OrderController {
         return "order/orderForm";
     }
 
+    //주문서 제출
     @PostMapping(value = "/order/{itemId}/{count}")
     public String orderInsert(HttpServletRequest request,
                               @PathVariable Long itemId,
@@ -76,17 +80,31 @@ public class OrderController {
         return "order/orderList";
     }
 
-//    //주문 정보 확인 및 결제 안내
-//    @GetMapping("/order/confirm")
-//    public String confirmOrder(
-//            HttpServletRequest request,
-//            @ModelAttribute("orderForm") OrderForm orderForm,
-//            Model model) {
-//        UserSession userSession = (UserSession) request.getSession().getAttribute("userSession");
-//        String accountId = userSession.getAccount().getId();
+//    @GetMapping("/orders")
+//    public String orderList(@ModelAttribute("orderSearch") OrderSearch orderSearch, Model model) {
+//        List<Order> orders = orderService.findOrders(orderSearch);
+//        model.addAttribute("orders", orders);
 //
-//        model.addAttribute("order", orderForm.getOrder());
-//        return "home";
+//
+//        return "order/orderList";
 //    }
+
+    @GetMapping("/orders")
+    public String orderList(HttpServletRequest request, Model model) {
+        UserSession userSession = (UserSession) WebUtils.getSessionAttribute(request, "userSession");
+        if (userSession == null) {
+            return "redirect:/user/loginForm";
+        }
+        Account account = userSession.getAccount();
+        List<Order> orders = orderService.findOrders(account.getId());
+        model.addAttribute("orders", orders);
+        return "order/orderList";
+    }
+
+    @PostMapping("/orders/{orderId}/cancel")
+    public String cancelOrder(@PathVariable("orderId") Long orderId) {
+        orderService.cancelOrder(orderId);
+        return "redirect:/orders";
+    }
 
 }

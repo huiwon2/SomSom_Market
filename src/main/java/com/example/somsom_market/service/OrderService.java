@@ -6,6 +6,7 @@ import com.example.somsom_market.dao.SomsomItemDao;
 import com.example.somsom_market.domain.*;
 import com.example.somsom_market.domain.CartSession.CartSession;
 import com.example.somsom_market.domain.item.SomsomItem;
+import com.example.somsom_market.repository.OrderRepository;
 import com.example.somsom_market.repository.OrderSearch;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -21,8 +22,7 @@ public class OrderService {
     private final OrderDao orderDao;
     private final AccountDao accountDao;
     private final SomsomItemDao somsomItemDao;
-    private AccountService accountService;
-    private SomsomItem item;
+    private final OrderRepository orderRepository;
 
     /**
      * 주문
@@ -81,9 +81,13 @@ public class OrderService {
         order.cancel();
     }
 
-    //검색
-    public List<Order> findOrders(OrderSearch orderSearch) {
-        return orderDao.findAllByString(orderSearch);
+//    //검색
+//    public List<Order> findOrders(OrderSearch orderSearch) {
+//        return orderDao.findAllByString(orderSearch);
+//    }
+    // 사용자 PK로 구매 내역 리스트 검색
+    public List<Order> findOrders(String accountId) {
+        return orderRepository.findOrdersByAccountId(accountId);
     }
 
 }

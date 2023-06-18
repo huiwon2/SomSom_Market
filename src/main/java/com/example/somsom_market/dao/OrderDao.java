@@ -27,10 +27,10 @@ public class OrderDao {
         return em.find(Order.class, id);
     }
 
-    public List<Order> findAllByUserId(long userId) throws DataAccessException {
+    public List<Order> findAllByUserId(String userId) throws DataAccessException {
         TypedQuery<Order> query = em.createQuery(
-                "select order from Order order "
-                        + "where order.getUserId()=?1", Order.class);
+                "select o from Order o "
+                        + "where o.id.eq(userId)", Order.class);
         query.setParameter(1, userId);
         return query.getResultList();
     }
@@ -51,15 +51,15 @@ public class OrderDao {
             jpql += " o.status = :status";
         }
 
-        //회원 이름 검색
-        if (StringUtils.hasText(orderSearch.getMemberName())) {
+        //회원 아이디 검색
+        if (StringUtils.hasText(orderSearch.getAccountId())) {
             if (isFirstCondition) {
                 jpql += " where";
                 isFirstCondition = false;
             } else {
                 jpql += " and";
             }
-            jpql += " m.name like :name";
+            jpql += " a.id like :id";
         }
 
         TypedQuery<Order> query = em.createQuery(jpql, Order.class)
@@ -68,8 +68,8 @@ public class OrderDao {
         if (orderSearch.getOrderStatus() != null) {
             query = query.setParameter("status", orderSearch.getOrderStatus());
         }
-        if (StringUtils.hasText(orderSearch.getMemberName())) {
-            query = query.setParameter("name", orderSearch.getMemberName());
+        if (StringUtils.hasText(orderSearch.getAccountId())) {
+            query = query.setParameter("id", orderSearch.getAccountId());
         }
 
         return query.getResultList();
