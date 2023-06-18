@@ -60,25 +60,42 @@ public class Order implements Serializable{
     }
 
     //==생성 메서드==//
-//    public static Order initOrder(Account account, OrderItem... orderItems) {
-//        Order order = new Order();
-//        order.setAccount(account);
-//        order.setOrderDate(LocalDate.now());
-//        order.setName(account.getName());
-//        order.setPhone(account.getPhone());
-//        order.setAddress(account.getAddress());
-//        order.setZipcode(account.getZipcode());
-//        order.setShipState(ShipState.PROCESSING);
-//        order.setStatus(OrderStatus.PROCESSED);
-//        order.setTotalPrice(order.getTotalPrice());
-//        for (OrderItem orderItem : orderItems) {
-//            order.addOrderItem(orderItem);
-//        }
-//        return order;
-//    }
+    public static Order initOrder(Account account, OrderItem... orderItems) {
+        Order order = new Order();
+        order.setAccount(account);
+        order.setOrderDate(LocalDate.now());
+        order.setName(account.getName());
+        order.setPhone(account.getPhone());
+        order.setAddress(account.getAddress());
+        order.setZipcode(account.getZipcode());
+        order.setShipState(ShipState.PROCESSING);
+        order.setStatus(OrderStatus.PROCESSED);
+        order.setTotalPrice(order.getTotalPrice());
+        for (OrderItem orderItem : orderItems) {
+            order.addOrderItem(orderItem);
+        }
+        return order;
+    }
 //
+//    // TODO: 2023/06/04 카트 아이템 바탕으로 주문 생성하는 로직 필요
+//    public void initOrder(Account account, OrderItem... orderItems) {
+//        this.account = account;
+//        orderDate = LocalDate.now();
+//        name = account.getName();
+//        phone = account.getPhone();
+//        address = account.getAddress();
+//        zipcode = account.getZipcode();
+//        shipState = ShipState.PROCESSING;
+//        status = OrderStatus.PROCESSED;
+//
+//        for (OrderItem orderItem : orderItems) {
+//            totalPrice = orderItem.getTotalPrice();
+//            addOrderItem(orderItem);
+//        }
+//    }
+
     // TODO: 2023/06/04 카트 아이템 바탕으로 주문 생성하는 로직 필요
-    public void initOrder(Account account, OrderItem... orderItems) {
+    public void initOrder(Account account, CartSession cart) {
         this.account = account;
         orderDate = LocalDate.now();
         name = account.getName();
@@ -88,19 +105,18 @@ public class Order implements Serializable{
         shipState = ShipState.PROCESSING;
         status = OrderStatus.PROCESSED;
 
-        for (OrderItem orderItem : orderItems) {
-            totalPrice = orderItem.getTotalPrice();
+        totalPrice = cart.getSubTotal();
+
+        this.orderItems = new ArrayList<OrderItem>();
+        Iterator<CartItemSession> i = cart.getAllCartItems();
+        while (i.hasNext()) {
+            CartItemSession cartItem = (CartItemSession) i.next();
+            OrderItem orderItem = new OrderItem();
+            orderItem.setItem(cartItem.getItem());
             addOrderItem(orderItem);
         }
     }
 
-    public static CartItem createCartItem(Cart cart, SomsomItem item, int amount){
-        CartItem cartItem = new CartItem();
-        cartItem.setCart(cart);
-        cartItem.setItem(item);
-        cartItem.setCount(amount);
-        return cartItem;
-    }
 
     //==비즈니스 로직==//
     /**
