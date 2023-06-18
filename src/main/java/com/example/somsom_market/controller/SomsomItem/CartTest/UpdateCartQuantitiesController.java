@@ -17,7 +17,7 @@ import java.util.Iterator;
  * @modified-by Changsup Park
  */
 @Controller
-@SessionAttributes("sessionCart")
+@SessionAttributes({"sessionCart", "userSession"})
 public class UpdateCartQuantitiesController { 
 
 	@RequestMapping("/cart/updateCartQuantities")
