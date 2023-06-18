@@ -178,12 +178,17 @@
 
         <div class="form-group">
             <label th:for="salesTarget">목표금액</label>
-            <input type="text" th:field="*{salesTarget}" class="form-control" placeholder="상품명을 입력하세요">
+            <input type="text" th:field="*{salesTarget}" class="form-control" placeholder="목표금액을 입력하세요">
+        </div>
+
+        <div class="form-group">
+            <label th:for="stockQuantity">현재 재고량</label>
+            <input type="text" th:field="*{stockQuantity}" class="form-control" placeholder="재고량을 입력하세요">
         </div>
 
         <div class="form-group">
             <label th:for="endDate">마감일</label>
-            <input type="date" th:field="*{endDate}" class="form-control" placeholder="상품명을 입력하세요">
+            <input type="date" th:field="*{endDate}" class="form-control">
         </div>
 
         <div class="form-group">

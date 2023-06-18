@@ -1,0 +1,94 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/header :: header" />
+<body>
+
+<div class="container">
+  <div th:replace="fragments/bodyHeader :: bodyHeader"/>
+
+  <form th:if="${item != null}" role="form" th:action="@{/order/group/{itemId}/{count} (itemId=${item.id}, count=${count})}" method="post">
+    <div>
+      <table class="table table-striped">
+        <thead>
+        <tr>
+          <th>#</th>
+          <th>상품명</th>
+          <th>상품 수량</th>
+          <th>개수</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+          <td th:name="itemId" th:value="${item.id}" th:text="${item.id}"></td>
+          <td th:text="${item.title}"></td>
+          <td th:text="${item.price}"></td>
+          <td>
+            <input type="number" name="count" class="form-control" id="count"  th:value="${count}">
+          </td>
+        </tr>
+        </tbody>
+      </table>
+    </div><br><br>
+
+    <div class="form-group">
+      <label for="account">주문자 아이디</label>
+      <input type="text" name="accountId" id="account" class="form-control" th:value="${account.id}" readonly><br>
+      <label for="name">주문자 이름</label>
+      <input type="text" id="name" class="form-control" th:value="${account.name}"><br>
+      <label for="phone">주문자 연락처</label>
+      <input type="text" id="phone" name="phone" class="form-control" th:value="${account.phone}"><br>
+      <label for="address">주소</label>
+      <input type="text" id="address" name="address" class="form-control" th:value="${account.address}"><br>
+      <label for="zipcode">우편번호</label>
+      <input type="text" id="zipcode" name="name" class="form-control" th:value="${account.zipcode}"><br>
+    </div>
+    <button type="submit" class="btn btn-primary">결제</button>
+  </form>
+
+
+  <form th:if="${orderItemsFromCart != null}" role="form" th:action="@{/order/fromCart}" method="post">
+    <div>
+      <table class="table table-striped">
+        <thead>
+        <tr>
+          <th>#</th>
+          <th>상품명</th>
+          <th>상품 수량</th>
+          <th>개수</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="cItem : ${orderItemsFromCart}">
+          <td th:name="itemId" th:value="${cItem.id}" th:text="${cItem.id}"></td>
+          <td th:text="${cItem.title}"></td>
+          <td th:text="${cItem.price}"></td>
+          <td>
+            <input type="number" name="count" class="form-control" th:value="${count}" >
+          </td>
+        </tr>
+        </tbody>
+      </table>
+    </div><br><br>
+
+    <div class="form-group">
+      <label for="cAccount">주문자 아이디</label>
+      <input type="text" name="accountId" id="cAccount" class="form-control" th:value="${account.id}" readonly><br>
+      <label for="cName">주문자 이름</label>
+      <input type="text" id="cName" class="form-control" th:value="${account.name}"><br>
+      <label for="cPhone">주문자 연락처</label>
+      <input type="text" id="cPhone" name="phone" class="form-control" th:value="${account.phone}"><br>
+      <label for="cAddress">주소</label>
+      <input type="text" id="cAddress" name="address" class="form-control" th:value="${account.address}"><br>
+      <label for="cZipcode">우편번호</label>
+      <input type="text" id="cZipcode" name="name" class="form-control" th:value="${account.zipcode}"><br>
+    </div>
+    <button type="submit" class="btn btn-primary">결제</button>
+  </form>
+
+  <br/>
+  <div th:replace="fragments/footer :: footer" />
+
+</div> <!-- /container -->
+
+</body>
+</html>

@@ -113,7 +113,7 @@
                 <td th:text="${#dates.format(item.endDate, 'dd-MMM-yyyy')}"></td>
                 <td th:text="${item.salesTarget}"></td>
                 <!--아래 수정하기-->
-                <td><a href="#" th:href="@{/templates/order}" class="btn btn-primary" role="button">주문</a></td>
+                <td><a href="#" th:href="@{/order/group/{itemId}(itemId=${item.id})}" class="btn btn-primary" role="button">주문</a></td>
             </tr>
 
             </tbody>
