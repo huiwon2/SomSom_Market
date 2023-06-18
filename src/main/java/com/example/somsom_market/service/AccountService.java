@@ -188,7 +188,7 @@ public class AccountService {
 
     // 사용자 PK로 구매 내역 리스트 검색
     public List<Order> getOrderList(String id) {
-        return orderRepository.findOrdersByAccountId(id);
+        return orderRepository.findByAccountId(id);
     }
 
 }

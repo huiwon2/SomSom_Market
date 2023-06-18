@@ -61,40 +61,18 @@ public class OrderController { //상세페이지에서 바로 결제
     @PostMapping(value = "/order/{itemId}/{count}")
     public String orderInsert(HttpServletRequest request,
                               @PathVariable Long itemId,
-                              @PathVariable int count) {
+                              @PathVariable int count,
+                              Model model) {
         UserSession userSession = (UserSession) WebUtils.getSessionAttribute(request, "userSession");
         String accountId = userSession.getAccount().getId();
 
         orderService.insertOrder(accountId, itemId, count);
 
-        return "order/orderList";
-    }
-
-//    @GetMapping("/orders")
-//    public String orderList(@ModelAttribute("orderSearch") OrderSearch orderSearch, Model model) {
-//        List<Order> orders = orderService.findOrders(orderSearch);
-//        model.addAttribute("orders", orders);
-//
-//
-//        return "order/orderList";
-//    }
-
-    @GetMapping("/orders")
-    public String orderList(HttpServletRequest request, Model model) {
-        UserSession userSession = (UserSession) WebUtils.getSessionAttribute(request, "userSession");
-        if (userSession == null) {
-            return "redirect:/user/loginForm";
-        }
         Account account = userSession.getAccount();
         List<Order> orders = orderService.findOrders(account.getId());
-        model.addAttribute("orders", orders);
-        return "order/orderList";
-    }
+        model.addAttribute("userOrderList", orders);
 
-    @PostMapping("/orders/{orderId}/cancel")
-    public String cancelOrder(@PathVariable("orderId") Long orderId) {
-        orderService.cancelOrder(orderId);
-        return "redirect:/orders";
+        return "user/myPage/orderList";
     }
 
 }

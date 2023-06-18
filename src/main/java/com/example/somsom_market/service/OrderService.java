@@ -4,10 +4,8 @@ import com.example.somsom_market.dao.AccountDao;
 import com.example.somsom_market.dao.OrderDao;
 import com.example.somsom_market.dao.SomsomItemDao;
 import com.example.somsom_market.domain.*;
-import com.example.somsom_market.domain.CartSession.CartSession;
 import com.example.somsom_market.domain.item.SomsomItem;
 import com.example.somsom_market.repository.OrderRepository;
-import com.example.somsom_market.repository.OrderSearch;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -38,8 +36,7 @@ public class OrderService {
         OrderItem orderItem = OrderItem.createOrderItem(item, item.getPrice(), count);
 
         //주문 생성
-        Order order = new Order();
-        order.initOrder(account, orderItem);
+        Order order = Order.createOrder(account, orderItem);
 
         //주문 저장
         orderDao.save(order);
@@ -77,7 +74,10 @@ public class OrderService {
 //    }
     // 사용자 PK로 구매 내역 리스트 검색
     public List<Order> findOrders(String accountId) {
-        return orderRepository.findOrdersByAccountId(accountId);
+        return orderRepository.findByAccountId(accountId);
     }
 
+    public Order findOne(Long orderId) {
+        return orderDao.findOne(orderId);
+    }
 }
