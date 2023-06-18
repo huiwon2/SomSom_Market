@@ -1,4 +1,4 @@
-package com.example.somsom_market.domain.CartTest;
+package com.example.somsom_market.domain.CartSession;
 
 import com.example.somsom_market.domain.item.SomsomItem;
 import org.springframework.beans.support.PagedListHolder;
@@ -10,21 +10,21 @@ import java.util.Iterator;
 import java.util.Map;
 
 @SuppressWarnings("serial")
-public class CartTest implements Serializable {
+public class CartSession implements Serializable {
     /* Private Fields */
 
-    private final Map<Long, CartItemTest> itemMap = Collections.synchronizedMap(new HashMap<Long, CartItemTest>());
+    private final Map<Long, CartItemSession> itemMap = Collections.synchronizedMap(new HashMap<Long, CartItemSession>());
 
-    private final PagedListHolder<CartItemTest> itemList = new PagedListHolder<CartItemTest>();
+    private final PagedListHolder<CartItemSession> itemList = new PagedListHolder<CartItemSession>();
 
     /* JavaBeans Properties */
 
-    public CartTest() {
+    public CartSession() {
         this.itemList.setPageSize(4);
     }
 
-    public Iterator<CartItemTest> getAllCartItems() { return itemList.getSource().iterator(); }
-    public PagedListHolder<CartItemTest> getCartItemList() { return itemList; }
+    public Iterator<CartItemSession> getAllCartItems() { return itemList.getSource().iterator(); }
+    public PagedListHolder<CartItemSession> getCartItemList() { return itemList; }
     public int getNumberOfItems() { return itemList.getSource().size(); }
 
     /* Public Methods */
@@ -34,9 +34,9 @@ public class CartTest implements Serializable {
     }
 
     public void addItem(SomsomItem item, boolean isInStock) {
-        CartItemTest cartItem = itemMap.get(item.getId());
+        CartItemSession cartItem = itemMap.get(item.getId());
         if (cartItem == null) {
-            cartItem = new CartItemTest();
+            cartItem = new CartItemSession();
             cartItem.setItem(item);
             cartItem.setQuantity(0);
             cartItem.setInStock(isInStock);
@@ -48,7 +48,7 @@ public class CartTest implements Serializable {
 
 
     public SomsomItem removeItemById(Long itemId) {
-        CartItemTest cartItem = itemMap.remove(itemId);
+        CartItemSession cartItem = itemMap.remove(itemId);
         if (cartItem == null) {
             return null;
         }
@@ -59,20 +59,20 @@ public class CartTest implements Serializable {
     }
 
     public void incrementQuantityByItemId(Long itemId) {
-        CartItemTest cartItem = itemMap.get(itemId);
+        CartItemSession cartItem = itemMap.get(itemId);
         cartItem.incrementQuantity();
     }
 
     public void setQuantityByItemId(Long itemId, int quantity) {
-        CartItemTest cartItem = itemMap.get(itemId);
+        CartItemSession cartItem = itemMap.get(itemId);
         cartItem.setQuantity(quantity);
     }
 
     public int getSubTotal() {
         int subTotal = 0;
-        Iterator<CartItemTest> items = getAllCartItems();
+        Iterator<CartItemSession> items = getAllCartItems();
         while (items.hasNext()) {
-            CartItemTest cartItem = (CartItemTest) items.next();
+            CartItemSession cartItem = (CartItemSession) items.next();
             SomsomItem item = cartItem.getItem();
             double listPrice = item.getPrice();
             int quantity = cartItem.getQuantity();

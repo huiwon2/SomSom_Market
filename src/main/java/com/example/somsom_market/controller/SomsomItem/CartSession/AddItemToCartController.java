@@ -1,6 +1,6 @@
-package com.example.somsom_market.controller.SomsomItem.CartTest;
+package com.example.somsom_market.controller.SomsomItem.CartSession;
 
-import com.example.somsom_market.domain.CartTest.CartTest;
+import com.example.somsom_market.domain.CartSession.CartSession;
 import com.example.somsom_market.domain.item.SomsomItem;
 import com.example.somsom_market.service.AccountService;
 import com.example.somsom_market.service.CartService;
@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 @Controller
-@SessionAttributes({"sessionCart", "orderForm"})
+@SessionAttributes({"sessionCart", "orderForm", "userSession"})
 public class AddItemToCartController {
     @Autowired
     AccountService accountService;
@@ -22,15 +22,15 @@ public class AddItemToCartController {
 
     //카트 객체 생성
     @ModelAttribute("sessionCart")
-    public CartTest createCart() {
-        return new CartTest();
+    public CartSession createCart() {
+        return new CartSession();
     }
 
     //장바구니에 물건 담기
     @RequestMapping("/cart/addItemToCart")
     public ModelAndView handleRequest(
             @RequestParam("workingItemId") Long workingItemId,
-            @ModelAttribute("sessionCart") CartTest cart
+            @ModelAttribute("sessionCart") CartSession cart
     ) throws Exception {
         if (cart.containsItemId(workingItemId)) {
             cart.incrementQuantityByItemId(workingItemId);

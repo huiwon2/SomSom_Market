@@ -48,8 +48,6 @@ public class OrderController {
     public String createForm(HttpServletRequest request,
                              Model model,
                              @PathVariable("itemId") Long itemId) {
-
-
         UserSession userSession = (UserSession) WebUtils.getSessionAttribute(request, "userSession");
         if (userSession == null) {
             return "redirect:/user/loginForm";

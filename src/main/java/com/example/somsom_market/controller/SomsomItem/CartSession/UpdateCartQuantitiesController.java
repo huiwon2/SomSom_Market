@@ -1,7 +1,7 @@
-package com.example.somsom_market.controller.SomsomItem.CartTest;
+package com.example.somsom_market.controller.SomsomItem.CartSession;
 
-import com.example.somsom_market.domain.CartTest.CartItemTest;
-import com.example.somsom_market.domain.CartTest.CartTest;
+import com.example.somsom_market.domain.CartSession.CartItemSession;
+import com.example.somsom_market.domain.CartSession.CartSession;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -17,16 +17,16 @@ import java.util.Iterator;
  * @modified-by Changsup Park
  */
 @Controller
-@SessionAttributes("sessionCart")
+@SessionAttributes({"sessionCart", "orderForm", "userSession"})
 public class UpdateCartQuantitiesController { 
 
 	@RequestMapping("/cart/updateCartQuantities")
 	public ModelAndView handleRequest(
 			HttpServletRequest request,	
-			@ModelAttribute("sessionCart") CartTest cart) throws Exception {
-		Iterator<CartItemTest> cartItems = cart.getAllCartItems();
+			@ModelAttribute("sessionCart") CartSession cart) throws Exception {
+		Iterator<CartItemSession> cartItems = cart.getAllCartItems();
 		while (cartItems.hasNext()) {
-			CartItemTest cartItem = (CartItemTest) cartItems.next();
+			CartItemSession cartItem = (CartItemSession) cartItems.next();
 			Long itemId = cartItem.getItem().getId();
 			try {
 				int quantity = Integer.parseInt(request.getParameter(itemId.toString()));

@@ -4,6 +4,7 @@ import com.example.somsom_market.dao.AccountDao;
 import com.example.somsom_market.dao.OrderDao;
 import com.example.somsom_market.dao.SomsomItemDao;
 import com.example.somsom_market.domain.*;
+import com.example.somsom_market.domain.CartSession.CartSession;
 import com.example.somsom_market.domain.item.SomsomItem;
 import com.example.somsom_market.repository.OrderSearch;
 import lombok.RequiredArgsConstructor;
@@ -27,10 +28,8 @@ public class OrderService {
      * 주문
      */
     @Transactional
-    public Long order(String memberId, Order order) {
-
-        //엔티티 조회
-        Account account = accountDao.findOne(memberId);
+    public Long order(String accountId, Order order) {
+        Account account = accountDao.findOne(accountId);
 
         for (int i = 0; i < order.getOrderItems().size(); i++) {
             OrderItem orderItem = (OrderItem) order.getOrderItems().get(i);
@@ -40,11 +39,17 @@ public class OrderService {
             somsomItem.setStockQuantity(somsomItem.getStockQuantity() - increment);
         }
 
-        //주문 저장
         orderDao.save(order);
 
         return order.getId();
     }
+
+//    //장바구니에서 주문
+//    @Transactional
+//    public Long orderFromCart(String accountId, CartSession cartItem) {
+//        Account account = accountService.getAccount(accountId);
+//
+//    }
 
     @Transactional
     public Long insertOrder(String accountId, Long itemId, int count) {
@@ -57,7 +62,7 @@ public class OrderService {
         OrderItem orderItem = OrderItem.createOrderItem(item, item.getPrice(), count);
 
         //주문 생성
-        Order order = Order.createOrder(account, orderItem);
+        Order order = Order.initOrder(account, orderItem);
 
         //주문 저장
         orderDao.save(order);
@@ -81,10 +86,4 @@ public class OrderService {
         return orderDao.findAllByString(orderSearch);
     }
 
-    //장바구니
-//    @Transactional
-//    public OrderItem addCartOrder(int itemId, String accountId, CartItem cartItem) {
-//
-//        Account account = accountService.getAccount(accountId);
-//    }
 }

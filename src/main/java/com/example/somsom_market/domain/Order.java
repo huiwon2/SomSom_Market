@@ -1,6 +1,8 @@
 package com.example.somsom_market.domain;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.example.somsom_market.domain.CartSession.CartItemSession;
+import com.example.somsom_market.domain.CartSession.CartSession;
+import com.example.somsom_market.domain.item.SomsomItem;
 import lombok.*;
 
 import javax.persistence.*;
@@ -58,7 +60,7 @@ public class Order implements Serializable{
     }
 
     //==생성 메서드==//
-    public static Order createOrder(Account account, OrderItem orderItem) {
+    public static Order initOrder(Account account, OrderItem... orderItems) {
         Order order = new Order();
         order.setAccount(account);
         order.setOrderDate(LocalDate.now());
@@ -69,39 +71,36 @@ public class Order implements Serializable{
         order.setShipState(ShipState.PROCESSING);
         order.setStatus(OrderStatus.PROCESSED);
         order.setTotalPrice(order.getTotalPrice());
-        order.addOrderItem(orderItem);
+        for (OrderItem orderItem : orderItems) {
+            order.addOrderItem(orderItem);
+        }
         return order;
     }
-
-    // TODO: 2023/06/04 카트 아이템 바탕으로 주문 생성하는 로직 필요
-    public void createOrderFromCart(Account account, Cart cart) {
-//        setAccount(account);
-//        orderDate.setOrderDate(LocalDate.now());
 //
-//        setName(account.getUserName());
-//        shipToLastName = account.getLastName();
-//        shippingAddress = account.getAddress();
-//
-//        billToFirstName = account.getFirstName();
-//        billToLastName = account.getLastName();
-//        billingAddress = new Address(account.getAddress());
+//    // TODO: 2023/06/04 카트 아이템 바탕으로 주문 생성하는 로직 필요
+//    public void initOrder(Account account, OrderItem... orderItems) {
+//        this.account = account;
+//        orderDate = LocalDate.now();
+//        name = account.getName();
+//        phone = account.getPhone();
+//        address = account.getAddress();
+//        zipcode = account.getZipcode();
+//        shipState = ShipState.PROCESSING;
+//        status = OrderStatus.PROCESSED;
 //
 //        totalPrice = cart.getSubTotal();
 //
-//        creditCard = "999 9999 9999 9999";
-//        expiryDate = "12/03";
-//        cardType = "Visa";
-//        courier = "UPS";
-//        locale = "CA";
-//        status = "P";
-//        timestamp = orderDate;
-//
-//        this.lineItems = new ArrayList<LineItem>();
-//        Iterator<CartItem> i = cart.getAllCartItems();
-//        while (i.hasNext()) {
-//            CartItem cartItem = (CartItem) i.next();
-//            addLineItem(cartItem);
+//        for (OrderItem orderItem : orderItems) {
+//            order.addOrderItem(orderItem);
 //        }
+//    }
+
+    public static CartItem createCartItem(Cart cart, SomsomItem item, int amount){
+        CartItem cartItem = new CartItem();
+        cartItem.setCart(cart);
+        cartItem.setItem(item);
+        cartItem.setCount(amount);
+        return cartItem;
     }
 
     //==비즈니스 로직==//
