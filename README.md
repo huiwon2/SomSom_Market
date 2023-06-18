@@ -1,5 +1,5 @@
 # SomSom_Market
-
+![image](https://github.com/huiwon2/SomSom_Market/assets/56381189/fa7a6cb9-6284-4e2c-aaff-8e254ec58fc5)
 ### 개발 배경 및 목적
 - 현재 학교 굿즈를 오프라인에서만 만나볼 수 있기에 온라인으로 구매하고자 하는 소비자의 니즈를 반영
 ### 특징 및 장점
