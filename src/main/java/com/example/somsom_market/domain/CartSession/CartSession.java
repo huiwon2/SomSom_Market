@@ -1,6 +1,8 @@
 package com.example.somsom_market.domain.CartSession;
 
 import com.example.somsom_market.domain.item.SomsomItem;
+import lombok.Getter;
+import lombok.Setter;
 import org.springframework.beans.support.PagedListHolder;
 
 import java.io.Serializable;
@@ -10,24 +12,18 @@ import java.util.Iterator;
 import java.util.Map;
 
 @SuppressWarnings("serial")
+@Getter @Setter
 public class CartSession implements Serializable {
-    /* Private Fields */
 
     private final Map<Long, CartItemSession> itemMap = Collections.synchronizedMap(new HashMap<Long, CartItemSession>());
-
     private final PagedListHolder<CartItemSession> itemList = new PagedListHolder<CartItemSession>();
-
-    /* JavaBeans Properties */
 
     public CartSession() {
         this.itemList.setPageSize(4);
     }
-
     public Iterator<CartItemSession> getAllCartItems() { return itemList.getSource().iterator(); }
     public PagedListHolder<CartItemSession> getCartItemList() { return itemList; }
     public int getNumberOfItems() { return itemList.getSource().size(); }
-
-    /* Public Methods */
 
     public boolean containsItemId(Long itemId) {
         return itemMap.containsKey(itemId);
